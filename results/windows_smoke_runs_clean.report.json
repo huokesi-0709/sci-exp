@@ -1,0 +1,45 @@
+{
+  "counts": {
+    "analysis_eligible_rows": 12,
+    "input_rows": 12,
+    "output_rows": 12,
+    "quarantined_rows": 0
+  },
+  "created_at_utc": "2026-07-29T09:57:50.581226+00:00",
+  "input": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\results\\windows_smoke_runs.jsonl",
+    "sha256": "498e67e9150771b1f57a509620c0397161e96f8710e166e4b8527525e8d45e0a"
+  },
+  "missing_metrics": {
+    "energy_j": 12,
+    "process_peak_rss_mb": 12,
+    "temperature_c_peak": 12
+  },
+  "outlier_flags": {},
+  "outputs": {
+    "events": {
+      "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\results\\windows_smoke_runs_clean.events.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "quarantine": {
+      "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\results\\windows_smoke_runs_clean.quarantine.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records": {
+      "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\results\\windows_smoke_runs_clean.jsonl",
+      "sha256": "21359bba08118692589714147439debeb59a7340292e24f5718bf52e25cc2e63"
+    }
+  },
+  "parameters": {
+    "outlier_action": "flag_only",
+    "require_energy": false,
+    "robust_z_threshold": 3.5
+  },
+  "preprocessing_version": "1.1",
+  "quality_gates": {
+    "failed_runs_preserved": true,
+    "outliers_not_silently_deleted": true,
+    "physical_energy_required": false
+  },
+  "schema_version": "1.0"
+}

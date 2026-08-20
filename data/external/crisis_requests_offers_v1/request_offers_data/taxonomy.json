@@ -1,0 +1,1543 @@
+{
+    "Supplies": {
+      "Transport": {
+        "Spare Parts": [
+          "Motor Vehicle accessories and parts",
+          "Motorcycle accessories and parts",
+          "Snow chains",
+          "Roller crowbars"
+        ],
+        "Vehicles": {
+          "Ground Vehicles": [
+            "Ambulances",
+            "Armored Vehicles",
+            "Bicycles",
+            "Motorcycles",
+            "Pickups"
+          ],
+          "Watercraft": [
+            "Boats",
+            "Rafts"
+          ],
+          "Aerial Transport": [
+            "Helicopters",
+            "Drones",
+            "Light aircraft"
+          ]
+        }
+      },
+      "Medical": {
+        "First Aid and Wound Care": {
+          "Bandages and Dressings": [
+            "Bandaids",
+            "adhesive strips",
+            "plasters",
+            "wound coverings",
+            "adhesive bandages",
+            "medical strips",
+            "sticking plasters",
+            "wound dressing",
+            "sterile dressing",
+            "medical dressing",
+            "gauze wrap",
+            "medical gauze",
+            "surgical gauze",
+            "sling bandages",
+            "cravat bandages",
+            "sterile pads",
+            "medical gauze pads",
+            "cotton gauze pads",
+            "self-adhesive wrap",
+            "cohesive tape",
+            "elastic bandage"
+          ],
+          "Antiseptics and Sanitizers": [
+            "hand gel",
+            "disinfectant gel",
+            "alcohol rub",
+            "disinfectant wipes",
+            "cleaning wipes",
+            "alcohol pads",
+            "Antibiotic ointment",
+            "germicidal ointment",
+            "wound ointment"
+          ],
+          "First Aid Kits and Trauma Care": {
+            "Emergency trauma kit": [],
+            "bleeding control kit": [],
+            "first response kit": [],
+            "Burn gel": [],
+            "cooling ointment": [],
+            "relief gel": [],
+            "Immobilizers": [],
+            "fracture splints": [],
+            "support braces": [],
+            "Emergency blankets": [],
+            "thermal blankets": [],
+            "space blankets": [],
+            "Syringes": [
+              "medical syringes",
+              "disposable syringes",
+              "hypodermic syringes"
+            ],
+            "Ice pack": [],
+            "gel ice pack": [],
+            "cold compress": [],
+            "Vaseline": [],
+            "petroleum balm": [],
+            "healing jelly": [],
+            "Sunblock": [],
+            "UV protection lotion": [],
+            "SPF cream": [],
+            "Face shield": [],
+            "CPR mask": [],
+            "mouth barrier": [],
+            "First aid guide": [],
+            "emergency care manual": [],
+            "first responder handbook": [],
+            "Saline solution": [],
+            "sterile saline": [],
+            "wound rinse": []
+          }
+        },
+        "Medical Tools and Protective Gear": {
+          "Tools and Instruments": [
+            "Medical tape",
+            "surgical tape",
+            "micropore tape",
+            "Medical scissors",
+            "surgical scissors",
+            "EMT shears",
+            "tweezers",
+            "medical tweezers",
+            "clamps",
+            "Forceps",
+            "pincers",
+            "Medical safety pins",
+            "fastening pins",
+            "Tongue blades",
+            "spatula sticks",
+            "Temperature gauge",
+            "digital thermometer",
+            "infrared thermometer"
+          ],
+          "Protective Equipment": [
+            "Respirators",
+            "filtration masks",
+            "Protective eyewear",
+            "safety glasses",
+            "Facial visors",
+            "transparent shields",
+            "Latex gloves",
+            "nitrile gloves",
+            "non-latex gloves",
+            "Isolation gowns",
+            "surgical gowns",
+            "protective robes",
+            "Medical boots",
+            "shoe covers",
+            "Medical caps",
+            "scrub caps"
+          ],
+          "Sterilization and Burial Supplies": [
+            "Autoclave supplies",
+            "sterilizing tools",
+            "disinfectant materials",
+            "Waste disposal bags",
+            "infectious waste bags",
+            "Body bags",
+            "burial shrouds"
+          ]
+        },
+        "Medications and Therapeutics": {
+          "Pain Management": [
+            "Local anesthetics",
+            "general anesthetics",
+            "numbing agents",
+            "NSAIDs",
+            "paracetamol",
+            "acetaminophen",
+            "Morphine",
+            "oxycodone",
+            "codeine",
+            "Pain relievers",
+            "pain suppressants",
+            "anti-swelling medication"
+          ],
+          "Anti-infectives": [
+            "Penicillins",
+            "cephalosporins",
+            "broad-spectrum antibiotics",
+            "Flu medications",
+            "antiviral drugs",
+            "virus inhibitors",
+            "ARVs",
+            "HIV drugs",
+            "Antimycotics",
+            "fungal medications",
+            "Malaria drugs",
+            "antiplasmodial agents",
+            "Protozoan treatments",
+            "antiparasitic drugs",
+            "Deworming drugs",
+            "parasitic worm treatments"
+          ],
+          "Vaccines": [],
+          "Gastrointestinal Drugs": [
+            "Diarrhea medicine",
+            "anti-loose stools",
+            "Anti-nausea drugs",
+            "anti-vomiting medication",
+            "Acid reducers",
+            "heartburn relief",
+            "Stool softeners",
+            "constipation relief"
+          ],
+          "Blood and Coagulation": [
+            "Iron supplements",
+            "anemia treatments",
+            "Blood clotting drugs",
+            "anti-bleeding agents"
+          ],
+          "Neurological and Mental Health": [
+            "Anti-seizure drugs",
+            "epilepsy medications",
+            "Parkinson’s medications",
+            "Mental health drugs",
+            "antidepressants"
+          ],
+          "Hormones and Endocrines": [
+            "Insulins",
+            "Hormones"
+          ],
+          "Dermatologicals": [
+            "Dermatologicals",
+            "Disinfectants",
+            "Antiseptics"
+          ],
+          "Drugs for Obstetrics": [],
+          "Supplements": {
+            "Vitamins": [
+              "Multivitamins",
+              "essential nutrients"
+            ],
+            "Minerals": [
+              "Iron",
+              "Calcium",
+              "Magnesium"
+            ],
+            "Electrolytes": [
+              "Oral rehydration salts",
+              "electrolyte drinks"
+            ]
+          },
+          "Antidotes": [],
+          "Ophthalmologicals": []
+        },
+        "Diagnostics": [
+          "Cholera kits",
+          "Dengue test kits",
+          {
+            "Hepatitis test kits": [
+              "HepB Elisa",
+              "HepC Elisa"
+            ]
+          },
+          {
+            "HIV test kits": [
+              "HIV VL",
+              "CD4",
+              "HIV simple/rapid",
+              "ELISA kits"
+            ]
+          },
+          {
+            "Malaria test kits": [
+              "PF and Pan",
+              "PF only",
+              "Malaria RDTs",
+              "plasmodium diagnostics"
+            ]
+          },
+          {
+            "Syphilis test kits": [
+              "RPR",
+              "TPHA",
+              "Syphilis Elisa"
+            ]
+          },
+          "Yellow fever diagnostic test",
+          {
+            "Pregnancy test kits": [
+              "Pregnancy strips",
+              "hCG tests"
+            ]
+          },
+          "Rapid diagnostic tests (RDTs)",
+          "Automated molecular tests (e.g., point of care, near point of care)",
+          "Laboratory test strips"
+        ],
+        "Respiratory Support Equipment": {
+          "Oxygen Therapy Equipment": [
+            "Oxygen Concentrators",
+            "Oxygen machines",
+            "oxygen generators",
+            "portable oxygen devices",
+            "Oxygen Masks",
+            "Nasal Cannulas",
+            "Oxygen Cylinders",
+            "Tubing"
+          ],
+          "Ventilators": [
+            "Mechanical Ventilators",
+            "Breathing machines",
+            "respiratory ventilators"
+          ],
+          "Nebulizers": [
+            "Aerosol Therapy Machines",
+            "Nebulizer Accessories"
+          ],
+          "Respiratory Access Devices": [
+            "Breathing Tubes",
+            "Airway Access Devices",
+            "Tracheostomy Supplies"
+          ],
+          "Respiratory Accessories": [
+            "Humidifiers",
+            "Filters"
+          ]
+        },
+        "Mobility Aids": {
+          "Wheelchairs": [
+            "Mobility chairs",
+            "transport chairs",
+            "manual wheelchairs",
+            "power wheelchairs"
+          ],
+          "Walkers": [
+            "Walking aids",
+            "rollators",
+            "mobility walkers"
+          ],
+          "Canes": [
+            "Walking sticks",
+            "mobility canes",
+            "support sticks"
+          ],
+          "Crutches": [
+            "Underarm crutches",
+            "forearm crutches",
+            "walking crutches"
+          ]
+        },
+        "Laboratory Equipment": {
+          "Biosafety Cabinet": [
+            "Safety cabinets",
+            "microbiological safety cabinets",
+            "containment workstations"
+          ],
+          "Lab Reagents": [
+            "Chemical reagents",
+            "lab chemicals",
+            "laboratory solutions"
+          ],
+          "Specimen Collection": [
+            "Sample collection kits",
+            "swabs",
+            "blood collection tubes",
+            "urine containers"
+          ]
+        },
+        "Cold Chain and Temperature-Controlled Storage": {
+          "Cold Chain Equipment": [
+            "Blood bank box",
+            "blood storage box",
+            "portable blood cooler",
+            "blood fridges",
+            "medical blood refrigerators",
+            "Cold boxes",
+            "Vaccine carriers",
+            "freezer packs",
+            "cooling packs"
+          ],
+          "Refrigerators and Freezers": [
+            "Renewable energy refrigerator",
+            "solar powered refrigerator",
+            "Lab fridge",
+            "medical fridge",
+            "sample fridge",
+            "Vaccine refrigerator",
+            "immunization fridge",
+            "refrigerated transport unit",
+            "Transport refrigerator",
+            "portable refrigerator",
+            "Ultra low-temperature freezer",
+            "deep freezer",
+            "cryogenic freezer"
+          ],
+          "Temperature Monitoring Devices": [
+            "Thermometers",
+            "digital temperature monitors",
+            "data loggers",
+            "thermal sensors"
+          ]
+        }
+      },
+      "Water, Sanitation, and Hygiene (WASH)": {
+        "Water Storage": [
+          "Jerry cans",
+          "water cans",
+          "portable water containers",
+          "plastic water carriers",
+          "Buckets",
+          "water buckets",
+          "plastic buckets",
+          "pails",
+          "Household storages",
+          "domestic storage tanks",
+          "water reservoirs",
+          "Tanks",
+          "onion tanks",
+          "bladder tanks",
+          "steel tanks",
+          "bulk water tanks",
+          "collapsible water tanks",
+          "pillow tanks",
+          "industrial water tanks",
+          "high-capacity storage tanks",
+          "Water bottles"
+        ],
+        "Borehole Construction and Pumping": {
+          "Casing": [
+            "borehole filling",
+            "well casing"
+          ],
+          "Screen": [],
+          "Drilling consumables": [],
+          "Water level indicators": [],
+          "Water depth gauges": [],
+          "level sensors": [],
+          "water monitoring devices": []
+        },
+        "Pumps": [
+          "Electric submersible pumps",
+          "deep well pumps",
+          "Geophysical equipment",
+          "Hand pumps",
+          "manual pumps",
+          "village-level water pumps",
+          "Motorized pumps",
+          "diesel pumps",
+          "electric water pumps",
+          "Solar pumps"
+        ],
+        "Water Distribution": {
+          "PVC fittings": [],
+          "plastic connectors": [],
+          "polyvinyl chloride joints": [],
+          "Taps": [
+            "faucets",
+            "water spouts",
+            "outlet valves"
+          ],
+          "Valves": [
+            "control valves",
+            "shutoff valves",
+            "gate valves"
+          ],
+          "Water meters": [],
+          "HDPE fittings": [],
+          "GI pipes": [],
+          "HDPE pipes": [],
+          "Hose lay-flat": [
+            "collapsible hoses",
+            "irrigation hoses"
+          ],
+          "UPVC pipes": [
+            "unplasticized pvc pipes",
+            "rigid pvc pipes"
+          ],
+          "Riser pipes": [
+            "vertical pipes",
+            "water risers"
+          ]
+        },
+        "Water Testing": [
+          "Chlorine tests",
+          "Arsenic tests",
+          "MICs and chemical tests",
+          "Portable laboratorium"
+        ],
+        "Water Treatment": {
+          "Water purification kits": [],
+          "Water treatment units": [],
+          "Batch treatment": [],
+          "Water filters": [],
+          "Household water treatment": [],
+          "Calcium hypochlorite disinfectant": [
+            "water disinfectant powder"
+          ],
+          "chlorine tablets": []
+        },
+        "Sanitation Facilities": {
+          "Toilets": [
+            "portable",
+            "squat",
+            "vacuum-based"
+          ],
+          "latrine pans": [],
+          "mobile toilets": [],
+          "eco-toilets": [],
+          "Pasteurization units": [
+            "heat treatment",
+            "sanitation pasteurizers"
+          ],
+          "Shower units": [
+            "mobile showers",
+            "portable bathing units"
+          ],
+          "Hygiene kits": [
+            "personal care kits",
+            "dignity kits",
+            "wash kits"
+          ],
+          "Waste disposal bins": [
+            "trash cans",
+            "garbage bins"
+          ],
+          "Handwashing stations": []
+        },
+        "Personal Hygiene": {
+          "Soap": [
+            "bar soap",
+            "liquid soap",
+            "shampoo",
+            "shower gel"
+          ],
+          "Dignity kit": [],
+          "Hand sanitizer": [],
+          "Toothpaste": [],
+          "Toothbrushes": [],
+          "Combs": [],
+          "Deodorants": [],
+          "Towels": [],
+          "Wet wipes": [],
+          "Baby powder": [],
+          "Feminine hygiene supplies": [
+            "sanitary pads",
+            "tampons",
+            "menstrual cups"
+          ],
+          "Diapers": [],
+          "Rubber gloves": [
+            "latex gloves",
+            "nitrile gloves",
+            "disposable gloves"
+          ],
+          "Razor": [],
+          "Shaving cream": [],
+          "Lip balm": [
+            "lip moisturizer",
+            "chapstick"
+          ]
+        },
+        "Cleaning Supplies": [
+          "Trash bags",
+          "Disinfectants",
+          "cleaning agents",
+          "surface sanitizers",
+          "Alcohol-based cleaners"
+        ]
+      },
+      "Shelter and Housing": {
+        "Shelter Structures": {
+          "Tents": [
+            "family tents",
+            "school tents",
+            "hospital tents",
+            "inflatable tents",
+            "tube tents"
+          ],
+          "Refugee housing units": [
+            "RHUs",
+            "temporary housing units"
+          ]
+        },
+        "Covers and Linings": {
+          "Reinforced plastic tarpaulins": [
+            "heavy-duty",
+            "waterproof"
+          ],
+          "Canvas rolls/sheets": [],
+          "Multi-weather tarpaulins": [],
+          "Thermal liners": []
+        },
+        "Accessories": {
+          "Desks": [],
+          "Chairs": [],
+          "Beds": [],
+          "Bednets": [
+            "mosquito nets",
+            "dual AI nets",
+            "PBO nets",
+            "standard pyrethroid nets"
+          ],
+          "Mattresses": [
+            "sleeping pads",
+            "foam pads"
+          ],
+          "Privacy partitions": [
+            "room dividers",
+            "privacy screens"
+          ],
+          "Filing cabinets": [
+            "storage units",
+            "document cabinets"
+          ],
+          "Wardrobes": [
+            "clothing cabinets",
+            "storage units"
+          ],
+          "Shelter repair kits": [],
+          "Sanitary cloth": []
+        }
+      },
+      "Equipment and Tools": {
+        "IT and Office Supplies": {
+          "Computers": [
+            "laptops",
+            "desktops",
+            "monitors",
+            "keyboards",
+            "mouse",
+            "cables"
+          ],
+          "External storage": [],
+          "Printers": [
+            "3D printers",
+            "thermal printers",
+            "inkjet printers"
+          ],
+          "Servers": [
+            "rack servers",
+            "blade servers",
+            "tower servers"
+          ],
+          "UPS": [
+            "uninterruptible power supply"
+          ],
+          "Office equipment": []
+        },
+        "Emergency Tools": {
+          "Matches": [],
+          "Flares": [
+            "road flares",
+            "marine flares",
+            "aerial flares",
+            "handheld flares"
+          ],
+          "Fire extinguishers": [
+            "water-based extinguishers",
+            "foam-based extinguishers",
+            "CO2 fire extinguisher"
+          ],
+          "Fire blankets": [],
+          "Signaling devices": [
+            "horns",
+            "emergency lights",
+            "whistles"
+          ],
+          "Life jackets": []
+        },
+        "Basic Tools": {
+          "Plastic sheeting": [],
+          "Duct tape": [],
+          "Measuring tape": [],
+          "Wire cutters": [],
+          "Fasteners and adhesives": [
+            "screws",
+            "nails",
+            "bolts",
+            "glue",
+            "staplers"
+          ],
+          "Voltage tester": [],
+          "Electric tape": [],
+          "Wrenches": [],
+          "Pliers": [],
+          "Hammers": [],
+          "Saws": [],
+          "Axes": [],
+          "Compasses": [],
+          "Ropes": [],
+          "Multi-purpose knives": [],
+          "Needle and thread": [],
+          "Alarm clocks": [],
+          "Paper": [],
+          "pens": [],
+          "pencils": [],
+          "Work gloves": [],
+          "Decals": [],
+          "Flags": []
+        },
+        "Material Handling Equipment": [
+          "Gantry cranes",
+          "Hand trucks",
+          "Dollies",
+          "Forklifts",
+          "Chain pulley blocks",
+          "Ball-bearing trolleys",
+          "Tugger carts",
+          "Cargo nets",
+          "Load binders"
+        ],
+        "Kitchen Items": {
+          "Utensils": {
+            "Can opener": [
+              "manual",
+              "multi-purpose"
+            ],
+            "Bottle opener": [],
+            "Disposable utensils": [
+              "plastic forks",
+              "knives",
+              "spoons",
+              "sporks",
+              "chopsticks"
+            ],
+            "Tableware": [
+              "plates",
+              "bowls",
+              "cups",
+              "serving dishes"
+            ]
+          },
+          "Cooking": {
+            "Stoves": [
+              "gas stoves",
+              "wood stoves",
+              "multi-fuel stoves",
+              "butane stoves",
+              "propane stoves",
+              "camping stoves"
+            ],
+            "Portable campfire kits": [],
+            "Fire starting kits": [],
+            "Cookware": [
+              "pans",
+              "pots",
+              "skillet",
+              "griddle"
+            ]
+          },
+          "Storage": {
+            "Aluminum foil": [],
+            "Plastic wrap": [],
+            "Resealable plastic bags": [],
+            "Kitchen sets": [],
+            "Containers": [
+              "plastic containers",
+              "glass containers",
+              "jars",
+              "mason jars"
+            ],
+            "Vacuum sealer": [],
+            "vacuum sealed bags": []
+          }
+        }
+      },
+      "Food and Nutrition": {
+        "Staples": {
+          "Canned goods": [
+            "fruits",
+            "vegetables",
+            "preserves"
+          ],
+          "Cereal": [],
+          "Wheat": [
+            "whole wheat",
+            "wheat grain"
+          ],
+          "Rice": [
+            "white rice",
+            "brown rice",
+            "long-grain"
+          ],
+          "Millet": [],
+          "Maize": [],
+          "Flour": [
+            "wheat flour",
+            "corn flour",
+            "rice flour",
+            "all-purpose flour"
+          ],
+          "Pasta": [
+            "macaroni",
+            "spaghetti",
+            "noodles"
+          ],
+          "Grains": [
+            "barley",
+            "quinoa",
+            "oats"
+          ]
+        },
+        "Proteins": {
+          "Beans": [
+            "kidney beans",
+            "chickpeas",
+            "pinto beans",
+            "black beans"
+          ],
+          "Lentils": [
+            "red lentils",
+            "green lentils",
+            "yellow lentils"
+          ],
+          "Soybeans": [
+            "edamame",
+            "soy protein"
+          ],
+          "Chicken": [],
+          "Turkey": [],
+          "Meat": [
+            "beef",
+            "lamb",
+            "goat",
+            "pork"
+          ],
+          "Fish": [],
+          "Eggs": [],
+          "Corn-soya blend": [],
+          "Protein bars": [],
+          "Jerky": [],
+          "Tuna": []
+        },
+        "Cooking Essentials": {
+          "Spices": [
+            "salt",
+            "pepper"
+          ],
+          "Fats": [
+            "oil",
+            "butter"
+          ],
+          "Sweeteners": [
+            "honey",
+            "sugar",
+            "stevia"
+          ]
+        },
+        "High-Energy Foods": [
+          "Peanut butter",
+          "Granola bars",
+          "Cookies",
+          "Hard candy"
+        ],
+        "Ready-to-Eat Foods": {
+          "Instant soups":[],
+          "Noodles":[],
+          "High-energy bars":[],
+          "MREs": [
+            "Meals Ready-to-Eat",
+            "military rations",
+            "emergency meals",
+            "field rations"
+          ]
+        },
+        "Beverages": {
+          "Tea":[],
+          "Milk": [
+            "powdered",
+            "evaporated",
+            "long-lasting",
+            "canned"
+          ],
+          "Coffee":[]
+        },
+        "Other Essentials": {
+          "Infant foods": [
+            "baby formula",
+            "pureed food"
+          ],
+          "Dates": [],
+          "nuts": [],
+          "dried fruits": [],
+          "Dehydrated food": [
+            "dry",
+            "freeze-dried"
+          ],
+          "Fortified blended foods": [
+            "vitamin-fortified",
+            "FBF"
+          ],
+          "Corn-soya milk": [],
+          "Therapeutic food": [
+            "RUTF",
+            "emergency supplements"
+          ],
+          "Salt iodization": [],
+          "Nutrition kits": []
+        }
+      },
+      "Clothing and Warmth": {
+        "Clothing": {
+          "Underwear": [
+            "men underwear",
+            "women underwear",
+            "thermal underwear",
+            "vests",
+            "boxers"
+          ],
+          "Footwear": [
+            "shoes",
+            "boots",
+            "work boots",
+            "hiking boots",
+            "winter boots"
+          ],
+          "Hats": [
+            "beanies",
+            "caps"
+          ],
+          "Gloves": [
+            "work gloves",
+            "insulated gloves"
+          ],
+          "Waterproof clothing": [],
+          "Scarves": [
+            "shawls",
+            "neck warmers"
+          ],
+          "Socks": [
+            "thermal socks",
+            "wool socks",
+            "compression socks"
+          ],
+          "Pants": [
+            "waterproof pants",
+            "insulated pants",
+            "cargo pants"
+          ],
+          "Jackets": [
+            "rain jackets",
+            "raincoats",
+            "windbreakers",
+            "puffer jackets",
+            "down coats"
+          ],
+          "Layering clothes": [
+            "sweatshirts",
+            "hoodies",
+            "cardigans"
+          ]
+        },
+        "Warmth Items": {
+          "Blankets": [
+            "wool blankets",
+            "emergency blankets",
+            "fleece blankets"
+          ],
+          "Sleeping bags": [
+            "mummy bags",
+            "compact sleeping bags"
+          ],
+          "Thermal mats": [
+            "ground pads",
+            "insulation mats",
+            "foam mats"
+          ],
+          "Heated blankets": [],
+          "Heat packs": [],
+          "Emergency heating supplies": [
+            "portable heaters",
+            "fuel-powered heaters"
+          ]
+        },
+        "Other Clothing": {
+          "Toddler clothes":[],
+          "Elderly friendly clothes":[],
+          "Cultural clothes": [
+            "hijab",
+            "saris",
+            "abayas"
+          ],
+          "Reflective gear": [],
+          "Fluorescent clothes": [],
+          "UV-protective clothing": []
+        }
+      },
+      "Communication and Power": {
+        "Communication Tools": {
+          "GPS": [
+            "GNSS"
+          ],
+          "Satellite Phones": [],
+          "Radio equipment": [
+            "VHF",
+            "UHF",
+            "HF",
+            "walkie-talkies",
+            "marine radios",
+            "aviation radios",
+            "base station radios",
+            "digital radios"
+          ],
+          "Megaphones": [],
+          "VSAT Systems": [],
+          "Broadband Systems": [
+            "fixed broadband",
+            "mobile broadband",
+            "satellite internet broadband"
+          ],
+          "Weather Radios": [
+            "NOAA weather radios",
+            "AM/FM weather radios",
+            "emergency weather alert radios",
+            "crank-powered weather radios"
+          ],
+          "ICT Technical Toolkits": [
+            "network setup kits",
+            "device repair kits",
+            "diagnostic tools",
+            "software tools"
+          ],
+          "Public address systems": [],
+          "Mesh networks": [],
+          "Public warning sirens": [],
+          "Smartphones": [],
+          "Communication wires": []
+        },
+        "Power Supply": {
+          "Solar Power Kits": [
+            "solar panels"
+          ],
+          "Wind turbines": [],
+          "Generators": [
+            "diesel generators",
+            "propane generators",
+            "gasoline generators"
+          ],
+          "Rechargeable Battery Packs": [],
+          "hand crank power generators": [],
+          "Power Banks": [],
+          "Chargers": [
+            "solar powered chargers",
+            "wireless chargers",
+            "standard wall chargers"
+          ],
+          "Extension Cords": [
+            "standard extension cords",
+            "heavy-duty outdoor extension cords",
+            "retractable extension cords"
+          ],
+          "Fuel": [
+            "petrol",
+            "gas",
+            "diesel"
+          ]
+        },
+        "Lighting": [
+          "Emergency Lighting",
+          "LED Flashlights",
+          "Crank-Powered Flashlights",
+          "Solar Lanterns",
+          "Candles",
+          "Lamps"
+        ]
+      },
+      "Education and Recreation": {
+        "Educational Supplies": [
+          "School Kits",
+          "Notebooks",
+          "Pens",
+          "Pencils",
+          "Erasers",
+          "Sharpeners",
+          "Language learning aids",
+          "Portable Blackboards",
+          "Child-Friendly Tablets",
+          "Stationery Kits",
+          "Classroom student supplies",
+          "Educational kits",
+          "Handicraft supplies",
+          "Physical education"
+        ],
+        "Recreational Items": {
+          "Games": [
+            "board games",
+            "card games",
+            "strategy games"
+          ],
+          "Lego sets": [],
+          "Magnetic tiles": [],
+          "Dolls": [],
+          "RC cars": [],
+          "Train sets": [],
+          "Kites": [],
+          "Skipping ropes": [],
+          "Puppets": [],
+          "Costumes": [],
+          "Puzzles": [
+            "jigsaw puzzles",
+            "brain teasers"
+          ],
+          "Books": [],
+          "Art Supplies": [
+            "paints",
+            "brushes",
+            "crayons",
+            "markers",
+            "sketchpads"
+          ],
+          "Sports": [
+            "footballs",
+            "soccer balls",
+            "frisbees",
+            "volleyballs",
+            "badminton",
+            "children bikes",
+            "scooters"
+          ],
+          "Music supplies": [
+            "recorders",
+            "instruments"
+          ]
+        }
+      },
+      "Money": [
+        "Cash and Coins",
+        "Credit Cards",
+        "Gift Cards",
+        "Donating Through Donation Links",
+        "Online Money Transfer"
+      ],
+      "Infant Care": [
+        "Comfort Packs for Children",
+        "Pacifiers",
+        "Baby Carriers",
+        "Trolleys"
+      ]
+    },
+    "Emergency Personnel": {
+      "Search and Rescue Teams": {
+        "Urban Search and Rescue (USAR) teams":[],
+        "Wilderness Search and Rescue (WSAR)":[],
+        "Water Rescue Teams": [
+          "swiftwater",
+          "flood rescue",
+          "rescue divers"
+        ],
+        "K9 Search Teams":[],
+        "Mountain/High Angle Rescue":[],
+        "Cave Rescue Teams":[],
+        "Specialized Medical Rescuers":[]
+    },
+      "Medical and Health Teams": [
+        "Emergency Medical Technicians (EMTs)",
+        "Paramedics",
+        "Doctors",
+        "Surgeons",
+        "Nurses",
+        "Psychosocial Support Teams",
+        "Mental Health Professionals",
+        "Infection Control Experts",
+        "Public Health Teams",
+        "Pharmacists",
+        "Laboratory Technicians",
+        "Mobile Clinic Staff",
+        "Vaccination Teams"
+      ],
+      "Fire and Hazard Control": [
+        {
+          "Firefighting Teams": [
+            "urban",
+            "rural",
+            "wildfire"
+          ]
+        },
+        "Hazardous Materials (HAZMAT) Teams",
+        "Fire Safety Inspectors",
+        "Fire Investigators",
+        "Industrial Fire Control Units"
+      ],
+      "Law Enforcement and Security": [
+        "Police Officers",
+        "Military Police",
+        "Community Liaison Officers",
+        "Forensic Teams",
+        "Evacuation Personnel",
+        "Riot Control Units",
+        "Border Security Teams"
+      ],
+      "Logistics and Coordination Teams": [
+        "Disaster Coordination Officers",
+        "Relief Operations Coordinators",
+        "Transport and Supply Chain Teams",
+        "Warehouse Managers",
+        "Volunteers",
+        "Procurement Officers",
+        "Customs and Border Processing Teams"
+      ],
+      "Communication and IT Teams": [
+        "Emergency Communications Specialists",
+        "Satellite Communications Technicians",
+        "Public Information Officers (PIOs)",
+        "Media Liaison Officers",
+        "ICT Specialists",
+        "Radio Operators",
+        "Network Engineers",
+        "Telecommunications Repair Teams"
+      ],
+      "Shelter and Housing Teams": [
+        "Shelter Managers",
+        "Emergency Housing Specialists",
+        "Construction Teams",
+        "Structural Engineers",
+        "Site Planners"
+      ],
+      "Community and Social Support Teams": [
+        "Child Protection Teams",
+        "Gender-Based Violence (GBV) Specialists",
+        "Elderly Care Specialists",
+        "Community Outreach Workers",
+        "Social Workers",
+        "Translators and Interpreters",
+        "Religious and Spiritual Support Volunteers"
+      ],
+      "Energy and Infrastructure Repair Teams": [
+        "Electricians",
+        "Water and Sanitation Technicians",
+        "Road Construction Crews",
+        "Power Line Technicians",
+        "Telecom Infrastructure Repair Crews"
+      ],
+      "Recovery and Rehabilitation Teams": [
+        "Reconstruction Teams",
+        "Economic Recovery Teams",
+        "Education Support Teams",
+        "Local Governance Support Teams",
+        "Agricultural Recovery Specialists"
+      ],
+      "Legal and Advocacy Teams": [
+        "Legal Aid Teams",
+        "Advocacy Teams",
+        "Human Rights Observers",
+        "Policy and Legislative Advisors"
+      ]
+    },
+    "Actions": {
+      "Search and Rescue": {
+        "Missing Person Operations": [
+          "Coordinating search parties (ground or aerial)",
+          "Setting up incident command posts",
+          "Using tracking techniques (K9 units, drones, thermal imaging)"
+        ],
+        "Evacuation Support": [
+          "Organizing mass evacuations",
+          "Planning escape routes",
+          "Coordinating transport (buses, boats, helicopters)"
+        ],
+        "Water Rescue": [
+          "Flood evacuation",
+          "Swift water rescue",
+          "Boat-based rescue operations",
+          "Rescue diving for submerged victims"
+        ],
+        "Structural Collapse Rescue": {
+          "Actions": [
+            "Locating survivors in collapsed buildings",
+            "Shoring and stabilization of structures",
+            "Use of specialized equipment (listening devices, fiber-optic cameras)"
+          ]
+        },
+        "High-Angle or Mountain Rescue": {
+          "Actions": [
+            "Rope rescue operations",
+            "Helicopter hoist extractions",
+            "Cliffside or steep terrain navigation"
+          ]
+        },
+        "K9-Assisted Search": {
+          "Actions": [
+            "Canine-based scent tracking",
+            "Cadaver detection",
+            "Disaster search dogs for rubble and debris"
+          ]
+        },
+        "Mass Casualty Incident Response": {
+          "Actions": [
+            "Triage and tagging of multiple casualties",
+            "Coordination with EMS and hospitals",
+            "Temporary morgue setup"
+          ]
+        }
+      },
+      "Medical Assistance": {
+        "First Aid and Triage": [
+          "On-site wound treatment",
+          "Stabilizing injured persons",
+          "Field triage tagging"
+        ],
+        "Hospitalization and Treatment": [
+          "Transport to hospitals",
+          "Emergency surgeries",
+          "Specialized care (e.g., burn units, ICU)"
+        ],
+        "Psychosocial and Mental Health": [
+          "Psychological first aid",
+          "Counseling sessions",
+          "Trauma intervention",
+          "Grief support"
+        ],
+        "Mobile Clinics and Vaccination Campaigns": [
+          "Setting up temporary field clinics",
+          "Door-to-door vaccination drives",
+          "Health education and outreach",
+          "Basic diagnostic services"
+        ],
+        "Disease Outbreak Control": [
+          "Contact tracing",
+          "Isolation measures",
+          "Mass testing",
+          "Disinfection protocols"
+        ],
+        "Telemedicine Support": [
+          "Remote consultations via satellite or phone",
+          "Coordination with remote specialists",
+          "Digital record keeping"
+        ]
+      },
+      "Shelter and Housing Support": {
+        "Setting Up Temporary Shelters": [
+          "Erecting tents or makeshift structures",
+          "Allocating safe zones for families",
+          "Coordinating basic amenities (lighting, sanitation)"
+        ],
+        "Repair and Retrofitting": [
+          "House repair assistance",
+          "Structural assessments",
+          "Reinforcing damaged buildings"
+        ],
+        "Shelter Allocation and Management": [
+          "Registration of displaced individuals",
+          "Distribution of bedding and supplies",
+          "Monitoring capacity and overcrowding risks"
+        ],
+        "Long-Term Housing Solutions": [
+          "Temporary to permanent housing transition",
+          "Collaboration with urban planners",
+          "Reconstruction financing"
+        ]
+      },
+      "Food and Water Distribution": {
+        "Food Aid": [
+          "Meal distribution (hot or packaged meals)",
+          "Bulk food supply chain",
+          "Special dietary needs (allergies, cultural restrictions)",
+          "Establishing community kitchens"
+        ],
+        "Water Supply": [
+          "Bulk water delivery (trucked water)",
+          "Water purification services",
+          "Bottled water distribution",
+          "Well or borehole setup and maintenance"
+        ],
+        "Nutritional Assessment": [
+          "Screening for malnutrition",
+          "Micronutrient deficiency checks",
+          "Therapeutic feeding programs",
+          "Monitoring and evaluation of nutrition status"
+        ],
+        "Mobile Kitchens": [
+          "Establishing traveling canteens",
+          "Deploying field kitchens for communal feeding",
+          "Cooked meal distribution in remote areas"
+        ]
+      },
+      "Infrastructure Repair and Debris Clearance": {
+        "Road and Bridge Clearing": [
+          "Clearing fallen trees and large debris",
+          "Temporary road repairs",
+          "Bridge restoration or temporary bridging"
+        ],
+        "Utility Restoration": [
+          "Power line repair",
+          "Water pipe restoration",
+          "Telecommunications fixes",
+          "Sewage system repairs"
+        ],
+        "Debris Removal": [
+          "Hazardous materials containment",
+          "Rubble clearing",
+          "Equipment operation (excavators, bulldozers)"
+        ],
+        "Demolition of Unsafe Structures": [
+          "Identifying structurally unsound buildings",
+          "Controlled demolitions",
+          "Waste management and disposal"
+        ],
+        "Engineering Assessments": [
+          "Evaluating structural integrity",
+          "Soil stability checks",
+          "Coordinating with civil engineers and architects"
+        ]
+      },
+      "Transportation Services": {
+        "Evacuation Transport": [
+          "Bus shuttles",
+          "Volunteer driver pool",
+          "Airlift evacuation (helicopter/plane)",
+          "Evacuation route mapping"
+        ],
+        "Ambulance and Medical Transport": [
+          "On-call ambulance fleets",
+          "Coordinating with hospital ERs",
+          "Air ambulance support (helicopters, planes)"
+        ],
+        "Supply and Personnel Transport": [
+          "Logistics for relief goods",
+          "4x4 vehicles for remote terrain",
+          "Boat transport in flooded areas",
+          "Coordinating driver rosters and scheduling"
+        ],
+        "Air Transport Support": [
+          "Cargo airlifts",
+          "Airstrip coordination",
+          "Helicopter landing site management"
+        ]
+      },
+      "Security and Crowd Control": {
+        "Patrol and Perimeter Security": [
+          "Establishing secured zones",
+          "Night patrols in high-risk areas",
+          "Checkpoint controls"
+        ],
+        "Traffic and Crowd Management": [
+          "Road closures and detours",
+          "Managing crowds at distribution points",
+          "Queue control and ticketing systems"
+        ],
+        "Incident Control Points": [
+          "Coordinating multi-agency response",
+          "On-site command centers",
+          "Real-time situation monitoring"
+        ],
+        "Civil Unrest Management": [
+          "De-escalation techniques",
+          "Buffer zones for protests",
+          "Riot control strategies"
+        ]
+      },
+      "Information and Communication": {
+        "Public Announcements and Alerts": [
+          "Using megaphones and PA systems",
+          "Broadcasting via radio, TV, and social media",
+          "Issuing emergency bulletins and instructions"
+        ],
+        "Misinformation Management": [
+          "Identifying and correcting false rumors",
+          "Coordinating with local media outlets",
+          "Publishing verified updates"
+        ],
+        "Hotline or Helpline Operation": [
+          "24/7 phone lines for emergency information",
+          "Dispatching calls to relevant authorities",
+          "Gathering feedback or requests for assistance"
+        ],
+        "Translation and Interpretation Services": [
+          "Language translation for key announcements",
+          "Sign language interpreters",
+          "Cultural liaison roles"
+        ],
+        "Data Analysis and Reporting": [
+          "GIS mapping of affected areas",
+          "Collecting field data for situational updates",
+          "Real-time reporting to coordination centers"
+        ]
+      },
+      "Resource Coordination and Supply Management": {
+        "Warehouse and Inventory Control": [
+          "Storage and stock management",
+          "Receiving and cataloging donated items",
+          "Organizing secure warehousing"
+        ],
+        "Last-Mile Distribution": [
+          "Coordinating local transport to remote areas",
+          "Setting up distribution points",
+          "Tracking deliveries and ensuring accountability"
+        ],
+        "Volunteer and Donations Management": [
+          "Recruitment and training of volunteers",
+          "Managing donated goods and funds",
+          "Donor communication and transparency"
+        ],
+        "Logistics Tracking and Reporting": [
+          "Maintaining database of supplies",
+          "Communicating real-time stock levels",
+          "Reporting for funding and auditing purposes"
+        ]
+      },
+      "Community and Social Support": {
+        "Child-Friendly Spaces": [
+          "Child protection activities",
+          "Early childhood education",
+          "Recreational play and psychosocial support"
+        ],
+        "Gender-Based Violence (GBV) Response": [
+          "Safe spaces for survivors",
+          "Legal and counseling support",
+          "Emergency referral pathways"
+        ],
+        "Elderly and Special Needs Support": [
+          "Home visits and mobility assistance",
+          "Provision of caregivers or specialized equipment",
+          "Coordination with specialized care facilities"
+        ],
+        "Family Reunification": [
+          "Maintaining missing persons registries",
+          "Working with local authorities and NGOs",
+          "Arranging safe meeting points"
+        ],
+        "Community Engagement and Cultural Services": [
+          "Town hall meetings",
+          "Language and cultural mediation",
+          "Support for cultural or religious practices"
+        ]
+      },
+      "Recovery and Rehabilitation": {
+        "Livelihood Recovery": [
+          "Economic assistance programs",
+          "Cash-for-work initiatives",
+          "Microfinance and small business support",
+          "Skill training for job recovery"
+        ],
+        "Education Continuity": [
+          "Temporary learning centers",
+          "Distance/Online learning solutions",
+          "Support for teachers and educational staff"
+        ],
+        "Community Rehabilitation": [
+          "Community-building activities",
+          "Skill training and capacity building",
+          "Vocational programs for youth and adults"
+        ],
+        "Reconstruction Planning": [
+          "Mapping damaged areas",
+          "Urban planning and zoning",
+          "Working with local governments on rebuilding codes"
+        ],
+        "Mental Health Reintegration": [
+          "Long-term counseling or therapy groups",
+          "Support groups for trauma survivors",
+          "Community mental health outreach"
+        ],
+        "Housing Reconstruction": [
+          "Designing permanent housing solutions",
+          "Organizing building materials",
+          "Ensuring safe construction standards"
+        ]
+      }
+    }
+  }
+  

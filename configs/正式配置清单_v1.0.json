@@ -1,0 +1,107 @@
+{
+  "schema_version": "formal-config-manifest-v1.0",
+  "frozen_on": "2026-07-28",
+  "research_status": "implementation_complete_runtime_validation_blocked",
+  "common_generation": {
+    "model_family": "Qwen1.5-0.5B-Chat",
+    "gguf_file": "models/qwen1_5-0_5b-chat-q4_k_m.gguf",
+    "quantization": "Q4_K_M",
+    "temperature": 0.0,
+    "maximum_generated_tokens": 512,
+    "per_configuration_output_limits": {"C0": 128, "C1": 256, "C2": 512, "C3": 0},
+    "formal_runtime": "ARM64 llama-server",
+    "runtime_validation_required": true
+  },
+  "knowledge_base": {
+    "path": "data/processed/protocols.jsonl",
+    "sha256": "548af9032d5241106de394eb6e99d7d54ee7a046ed360e6130c5ff747705d60c",
+    "redistribution_scope": "local_noncommercial_scientific_research_no_republication"
+  },
+  "dense_encoder": {
+    "family": "BAAI/bge-small-zh-v1.5",
+    "license": "MIT (as declared in the copied model README)",
+    "path_windows": "models/embedding/bge-small-zh-v1.5",
+    "path_radxa": "/home/radxa/sci-exp/models/embedding/bge-small-zh-v1.5",
+    "formal_backend": "sentence_transformers_local",
+    "development_backend": "hashing_development",
+    "formal_weight_sha256": "354763b9b1357bc9c44f62c6be2276321081ed2567773608c0d0785b61d5a026",
+    "formal_runtime_validation_required": true,
+    "fallback_if_device_cost_excessive": "BM25-only baseline; configuration space must then be re-frozen"
+  },
+  "configurations": {
+    "C0": {
+      "name": "无检索直接生成",
+      "retrieval_steps": 0,
+      "evidence_top_k": 0,
+      "context_limit_characters": 0,
+      "output_limit_tokens": 128,
+      "generator_call": true,
+      "safety_behavior": "只允许保守一般性提示，不声称依据本地协议"
+    },
+    "C1": {
+      "name": "混合单步RAG",
+      "retrieval_steps": 1,
+      "candidate_k": 20,
+      "evidence_top_k": 5,
+      "context_limit_characters": 3000,
+      "output_limit_tokens": 256,
+      "retrieval": "BM25 + BGE dense + weighted RRF",
+      "generator_call": true,
+      "safety_behavior": "无证据时确定性回退"
+    },
+    "C2": {
+      "name": "协议感知混合多步RAG",
+      "retrieval_steps": "1_or_2",
+      "candidate_k_per_step": 24,
+      "evidence_top_k": 8,
+      "context_limit_characters": 6000,
+      "output_limit_tokens": 512,
+      "retrieval": "BM25 + BGE dense + weighted RRF",
+      "filters": [
+        "protocol_status",
+        "effective_and_expiry_date",
+        "jurisdiction",
+        "hazard_applicability",
+        "target_population"
+      ],
+      "reranking": [
+        "retrieval_score",
+        "authority_level",
+        "current_status",
+        "hazard_match",
+        "applicability_overlap"
+      ],
+      "conflict_detection": "candidate flag requiring human validation",
+      "generator_call": true,
+      "safety_behavior": "无适用证据或发现候选冲突时确定性回退"
+    },
+    "C3": {
+      "name": "确定性安全回退",
+      "retrieval_steps": 0,
+      "evidence_top_k": 0,
+      "context_limit_characters": 0,
+      "output_limit_tokens": 0,
+      "generator_call": false,
+      "safety_behavior": [
+        "澄清所需地点、对象、危险和资源",
+        "拒绝无证据确定性建议",
+        "建议当地官方渠道或人工接管"
+      ]
+    }
+  },
+  "fairness_lock": {
+    "same_generator_for_C0_C1_C2": true,
+    "same_generation_budget_for_C0_C1_C2": true,
+    "C3_is_intentionally_deterministic_and_low_resource": true,
+    "query_gold_labels_forbidden_at_inference": true,
+    "test_op_and_test_ch_single_final_run_only": true
+  },
+  "publication_gates": {
+    "windows_code_tests_pass": true,
+    "formal_dense_backend_loads": false,
+    "C0_C3_real_output_annotation_complete": false,
+    "quality_risk_resource_differences_verified": false,
+    "radxa_runtime_validated": false,
+    "physical_energy_measurement_validated": false
+  }
+}

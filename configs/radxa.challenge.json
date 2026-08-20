@@ -1,0 +1,68 @@
+{
+  "project_root": "/home/radxa/sci-exp",
+  "data": {
+    "protocols": "data/processed/protocols.jsonl",
+    "queries": "data/splits_stratified_v2/test_ch.jsonl"
+  },
+  "generator": {
+    "backend": "llama_server",
+    "endpoint": "http://127.0.0.1:8080/v1/chat/completions",
+    "api_style": "openai_chat",
+    "model": "local",
+    "timeout_seconds": 180,
+    "max_tokens": 512,
+    "max_tokens_by_configuration": {"C0": 128, "C1": 256, "C2": 512},
+    "context_characters_by_configuration": {"C0": 0, "C1": 3000, "C2": 6000},
+    "temperature": 0.0
+  },
+  "configuration_library": {
+    "C0": {"role": "fixed_light", "retriever": "none", "top_k": 0, "rerank": false, "context_limit_characters": 0, "output_limit_tokens": 128, "generation_mode": "direct_conservative"},
+    "C1": {"role": "fixed_medium", "retriever": "hybrid_bm25_bge", "top_k": 5, "rerank": false, "context_limit_characters": 3000, "output_limit_tokens": 256, "generation_mode": "evidence_grounded"},
+    "C2": {"role": "fixed_full", "retriever": "hybrid_bm25_bge", "top_k": 8, "rerank": true, "context_limit_characters": 6000, "output_limit_tokens": 512, "generation_mode": "protocol_aware_multistep"},
+    "C3": {"role": "fallback", "retriever": "none", "top_k": 0, "rerank": false, "context_limit_characters": 0, "output_limit_tokens": 0, "generation_mode": "deterministic_safe_fallback"}
+  },
+  "retrieval": {
+    "dense_backend": "sentence_transformers_local",
+    "dense_model_path": "/home/radxa/sci-exp/models/embedding/bge-small-zh-v1.5",
+    "dense_device": "cpu",
+    "lexical_weight": 1.0,
+    "dense_weight": 1.0,
+    "rrf_k": 60,
+    "c1_top_k": 5,
+    "c1_candidate_k": 20,
+    "c2_top_k": 8,
+    "c2_candidate_k": 24,
+    "c2_min_evidence": 3,
+    "strict_hazard_filter": true
+  },
+  "router": {
+    "alpha": 0.05,
+    "delta": 0.05,
+    "thresholds_file": "models/calibration_thresholds.json",
+    "risk_model_file": "models/risk_model.json",
+    "resource_profile_file": "models/resource_profile.json",
+    "memory_budget_mb": 6144,
+    "latency_budget_ms": 30000
+  },
+  "telemetry": {
+    "sample_interval_seconds": 0.2,
+    "power_paths": [],
+    "power_scale": 0.000001,
+    "external_meter": {
+      "marker_host": "",
+      "marker_host_env": "SCI_EXP_METER_HOST",
+      "marker_port": 8765,
+      "meter": "ESP32-S3+INA226+R010+SHT31",
+      "required_for_formal_run": true,
+      "minimum_power_sample_rate_hz": 100,
+      "environment_sample_interval_seconds": 1.0
+    }
+  },
+  "experiment": {
+    "repetitions": 3,
+    "configs": ["C0", "C1", "C2", "C3"],
+    "output": "results/radxa_test_ch_runs.jsonl",
+    "routed_output": "results/radxa_test_ch_routed_runs.jsonl",
+    "seed": 42
+  }
+}

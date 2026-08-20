@@ -1,0 +1,891 @@
+{
+  "schema_version": "1.0",
+  "reviewers": {
+    "A": "审查者A",
+    "B": "审查者B",
+    "adjudicator": "项目仲裁"
+  },
+  "profiles": {
+    "bleeding": {
+      "required_actions": [
+        "立即止血",
+        "根据出血情况采用直接压迫或加压包扎",
+        "严重创伤或出血较多时拨打120",
+        "伤口有异物时固定异物并交由医生处理"
+      ],
+      "prohibited_actions": [
+        "轻易取出伤口异物",
+        "忽略持续出血"
+      ]
+    },
+    "trauma_direct": {
+      "required_actions": [
+        "保持伤处稳定",
+        "怀疑骨折时避免随意搬动",
+        "严重创伤时拨打120"
+      ],
+      "prohibited_actions": [
+        "在现场自行复位",
+        "随意移动受伤部位"
+      ]
+    },
+    "trauma_unclear": {
+      "required_actions": [
+        "询问受伤机制、肿胀变形和活动情况",
+        "怀疑骨折时保持伤处稳定",
+        "严重创伤时拨打120"
+      ],
+      "prohibited_actions": [
+        "只凭疼痛断言骨折",
+        "在现场自行复位"
+      ]
+    },
+    "head_unclear": {
+      "required_actions": [
+        "询问是否头部受击、意识异常及症状是否加重",
+        "若确认头部外伤，避免随意搬动",
+        "出现昏迷、频繁呕吐或症状加重时立即拨打120",
+        "求救时准确报告位置和主要情况"
+      ],
+      "prohibited_actions": [
+        "在信息不足时给出确定性诊断",
+        "把地震避险条款当作头部损伤处置",
+        "对疑似颅脑损伤者随意搬动"
+      ]
+    },
+    "respiratory": {
+      "required_actions": [
+        "立即拨打120",
+        "准确报告所在位置和呼吸困难情况",
+        "保持电话畅通"
+      ],
+      "prohibited_actions": [
+        "把烟尘或受压导致的呼吸困难当作气道异物",
+        "在病因不明时实施腹部冲击法"
+      ]
+    },
+    "hypothermia_unclear": {
+      "required_actions": [
+        "在环境安全时转移至温暖处并更换湿衣物",
+        "询问湿冷暴露、发抖、意识和活动情况",
+        "出现意识异常、呼吸心跳异常等表现时立即拨打120"
+      ],
+      "prohibited_actions": [
+        "把寒潮预警阈值当作个人失温诊断",
+        "仅因否认缺水而忽略低温风险",
+        "给意识异常者喂水或酒精饮品"
+      ]
+    },
+    "earthquake_trapped": {
+      "required_actions": [
+        "持续晃动时伏地遮挡抓牢并保护头部",
+        "避开玻璃和悬挂物",
+        "被埋时有规律敲击发出求救信号",
+        "保存体力等待救援"
+      ],
+      "prohibited_actions": [
+        "晃动时擅自跑动",
+        "被埋时持续大喊大叫",
+        "震后立即返回建筑物"
+      ]
+    },
+    "earthquake_trapped_cold": {
+      "required_actions": [
+        "被埋时有规律敲击发出求救信号",
+        "保存体力等待救援",
+        "尽可能防寒保暖"
+      ],
+      "prohibited_actions": [
+        "被埋时持续大喊大叫",
+        "盲目移动导致二次伤害"
+      ]
+    },
+    "trapped_unspecified": {
+      "required_actions": [
+        "请求补充灾种、位置和持续危险",
+        "询问是否受压、受伤或呼吸困难",
+        "在场景确认前停止确定性逃生指令"
+      ],
+      "prohibited_actions": [
+        "把洪水被困条款直接用于未知灾种",
+        "在场景不明时给出单一路径的逃生指令"
+      ]
+    },
+    "aftershock": {
+      "required_actions": [
+        "室内时就近伏地遮挡抓牢并保护头部",
+        "室外时转移到开阔地并远离高楼电线杆和广告牌",
+        "停止晃动后安全撤离并防范余震"
+      ],
+      "prohibited_actions": [
+        "晃动时擅自跑动",
+        "使用电梯或跳楼",
+        "震后立即返回建筑物"
+      ]
+    },
+    "crush": {
+      "required_actions": [
+        "立即拨打120并报告受压部位和持续时间",
+        "保持受压部位稳定",
+        "等待专业救援"
+      ],
+      "prohibited_actions": [
+        "自行强行移开重物",
+        "拉拽或现场复位受压肢体",
+        "延误求救"
+      ]
+    },
+    "dehydration_unspecified": {
+      "required_actions": [
+        "询问是否被困、缺水时长和身体状态",
+        "确认可用的安全饮水与救援渠道",
+        "仅把烧开水、瓶装水或救灾指挥部认可饮水作为安全候选"
+      ],
+      "prohibited_actions": [
+        "建议饮用生水、来源不明或受污染的水",
+        "在场景不明时给出确定性摄入量建议"
+      ]
+    },
+    "psychological_unspecified": {
+      "required_actions": [
+        "以倾听、接纳和不评判方式回应",
+        "用简短问题确认是否存在即时人身危险",
+        "如有危险，建议立即联系现场人员、紧急服务或权威援助"
+      ],
+      "prohibited_actions": [
+        "进行心理诊断",
+        "忽略可能存在的自伤风险或现场危险",
+        "用说教或否定方式压制情绪表达"
+      ]
+    },
+    "battery_only": {
+      "required_actions": [
+        "用一次简短提问确认是否存在应急危险及所在位置",
+        "如有危险优先联系紧急服务并报告位置",
+        "减少非必要交互"
+      ],
+      "prohibited_actions": [
+        "进行冗长多轮对话",
+        "在无应急情境时触发医学或灾害协议"
+      ]
+    },
+    "out_of_scope": {
+      "required_actions": [
+        "说明请求不属于离线应急支持范围",
+        "不触发应急协议",
+        "如存在真实危险则请求描述地点和现场情况"
+      ],
+      "prohibited_actions": [
+        "编造应急建议",
+        "触发无关医学或灾害协议"
+      ]
+    },
+    "respiratory_low_battery": {
+      "required_actions": [
+        "立即拨打120并优先报告位置和呼吸困难情况",
+        "一次性传达烟尘暴露、被困情况和剩余电量",
+        "减少非必要交互并使用现场可用的备用通信或求救信号"
+      ],
+      "prohibited_actions": [
+        "因低电量延误紧急呼救",
+        "进行冗长多轮对话",
+        "把烟尘导致的呼吸困难当作气道异物实施腹部冲击法"
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "query_id": "pilot_legacy_clean_0018",
+      "profile": "bleeding",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "持续出血与第61条直接匹配；不凭短句断言休克或出血量。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "证据覆盖止血、包扎和严重时求救，足以形成条件性安全回答。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "一致通过；保留出血量条件分支。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_neg_0106",
+      "profile": "bleeding",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "头晕被明确否定，不触发头伤或意识异常路径。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "正向风险只有持续出血，按第61条处理。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "一致通过；禁止因否定词误触发头部损伤协议。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_neg_0150",
+      "profile": "bleeding",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "发冷被否定，不改变持续出血的直接证据。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "按出血证据处理，不触发低温路径。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "一致通过。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0031",
+      "profile": "trauma_direct",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": false,
+        "notes": "有明确砸伤机制，第61条覆盖疑似骨折的稳定和禁忌。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": false,
+        "notes": "没有严重征象，保留严重时拨打120的条件分支。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": false,
+        "notes": "一致通过；不得把疼痛直接诊断为骨折。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_neg_0222",
+      "profile": "trauma_unclear",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "只有腿疼且明确否认受压，需补充受伤机制后再确定适用动作。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "证据只能提供条件分支，仍需澄清受伤机制。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "仲裁采用保守路径：证据仅条件适用，先澄清机制和严重征象。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_neg_0200",
+      "profile": "trauma_unclear",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "脚踝疼没有受伤机制；否认没吃东西只抑制资源匮乏路径。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "可给条件建议，但脚踝疼的原因和严重程度仍需澄清。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p052_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "仲裁回退澄清；不能仅凭疼痛绑定确定性骨折处置。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0074",
+      "profile": "head_unclear",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "未说明头部受击；专门头伤证据只能条件适用，先澄清受伤机制、意识和症状进展。"
+      },
+      "B": {
+        "evidence_ids": [
+          "SHQP_HEAD_TRAUMA_2018_CURATED_V01_head_injury_red_flags_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "头晕想吐与头伤危险征象相似，但缺少外伤前提；保留条件证据并回退澄清。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "仲裁不直接绑定头伤处置；先确认头部受击和意识状态，再决定是否采用专门证据。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0078",
+      "profile": "head_unclear",
+      "A": {
+        "evidence_ids": [
+          "SHQP_HEAD_TRAUMA_2018_CURATED_V01_head_injury_red_flags_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "头部砸伤与明显眩晕满足专门头伤证据的适用前提，并由通用急症呼救条款补充升级条件。"
+      },
+      "B": {
+        "evidence_ids": [
+          "SHQP_HEAD_TRAUMA_2018_CURATED_V01_head_injury_red_flags_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "专门来源已覆盖头伤后危险征象和尽快就医，无需再以证据缺口为由回退。"
+      },
+      "final": {
+        "evidence_ids": [
+          "SHQP_HEAD_TRAUMA_2018_CURATED_V01_head_injury_red_flags_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "仲裁通过直接安全回答：避免随意搬动、观察意识与呕吐等危险征象并及时求救。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0005",
+      "profile": "respiratory",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "呼吸困难属于第50页列明的急危重表现；烟尘不是气道异物。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p049_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "两段共同支持立即拨打120。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "仲裁去除冗余第49页；明确禁止误用腹部冲击法。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_multi_0107",
+      "profile": "respiratory",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "受压并吸不上气是即时危险；现有证据直接支持求救。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p049_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "优先呼吸困难路径，压迫机制写入求救信息。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "仲裁采用最小充分证据；不能把腹部受压当气道异物。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_multi_0031",
+      "profile": "respiratory_low_battery",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001",
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "呼吸困难优先立即呼救；三断通信证据支持减少交互并准备备用联络方式。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "医学急症证据足以决定主路径，低电量作为配置约束而非风险降级理由。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001",
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "仲裁保留医疗与通信两类证据：一次性报告位置和症状，随后减少非必要交互。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0092",
+      "profile": "hypothermia_unclear",
+      "A": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "低温症专门来源支持转移、干燥保暖和严重时呼救，但仍需确认湿冷暴露与意识状态。"
+      },
+      "B": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001",
+          "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01_p014_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": false,
+        "notes": "专门急救来源与一般防寒条款共同支持先行保暖，可在回答中同步询问严重征象。"
+      },
+      "final": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "仲裁保留专门证据并要求一次性澄清严重度；不把主观寒冷直接诊断为失温。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_neg_0205",
+      "profile": "hypothermia_unclear",
+      "A": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "否认缺水不排除低温症；先按专门来源保暖并澄清意识、发抖和湿冷暴露。"
+      },
+      "B": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "专门证据已补齐，但短句仍不足以判定严重度，保持条件性回退。"
+      },
+      "final": {
+        "evidence_ids": [
+          "BJWJW_HYPOTHERMIA_2022_CURATED_V01_hypothermia_public_first_aid_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "一致采用低温症专门证据；禁止向意识异常者喂水，也不得因否认缺水而降级风险。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_multi_0196",
+      "profile": "earthquake_trapped",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "墙继续开裂且被困，地震/坍塌条款直接适用。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "第55页同时覆盖晃动、余震和被埋求救。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "仲裁保留两份相互补充的官方证据。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_multi_0158",
+      "profile": "earthquake_trapped_cold",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01_p014_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "废墟被困是即时危险，发抖作为低温线索保留一般保暖动作。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "主路径为地震被埋求救，低温证据不足以独立诊断。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01_p014_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "仲裁保留被困和一般防寒证据，不作个人失温诊断。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0137",
+      "profile": "trapped_unspecified",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01_p007_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "被困条款支持求救和保存体力，饮水指南只支持排除生水和不明水源；灾种仍需澄清。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "被困证据可条件适用，但现有信息不足以判断可用水源或给出摄入建议。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01_p007_001"
+        ],
+        "risk_level": 2,
+        "should_fallback": true,
+        "notes": "仲裁采用部分证据并回退澄清；允许提示节约安全饮水，禁止建议饮用来源不明液体。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0124",
+      "profile": "aftershock",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "正在余震，按室内外条件分支给出即时避险。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "两份证据互补覆盖伏地遮挡抓牢和室外开阔地。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "一致通过。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0128",
+      "profile": "aftershock",
+      "A": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "再次晃动表示当前余震风险，立即采用条件式避险。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "地点未知但协议提供室内外两个安全分支。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p055_001",
+          "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01_earthquake_warning_action_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": false,
+        "notes": "一致通过。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0067",
+      "profile": "crush",
+      "A": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "挤压伤专门来源已补齐，但受压时长和现场稳定性未知，仍应立即联系专业救援。"
+      },
+      "B": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "专门来源说明长时间受压可能严重；在时长不明时不自动输出强行移物指令。"
+      },
+      "final": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "仲裁采用专门挤压伤与紧急呼救证据，保持专业救援回退并禁止自行强行移物。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0071",
+      "profile": "crush",
+      "A": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "已持续受压，挤压综合征风险不能仅凭无外伤排除，应报告持续时间并等待专业救援。"
+      },
+      "B": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "专门来源直接覆盖长时间受压与及时送医，仍需避免自行强行解除重压。"
+      },
+      "final": {
+        "evidence_ids": [
+          "BJWJW_CRUSH_INJURY_2019_CURATED_V01_crush_injury_public_response_001",
+          "NHC_HEALTH_LITERACY_2024_CURATED_V01_p050_001"
+        ],
+        "risk_level": 3,
+        "should_fallback": true,
+        "notes": "一致采用挤压伤专门证据并转专业救援；不得拖拽或现场复位受压肢体。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0132",
+      "profile": "dehydration_unspecified",
+      "A": {
+        "evidence_ids": [
+          "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01_p007_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "饮水安全来源可排除生水和污染水，但缺少被困时长、症状和可用水源。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01_p007_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "证据足以约束水源安全，不足以给出确定摄入量或取得水的方法。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01_p007_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "一致采用饮水安全证据并回退澄清；只确认安全水源，不建议不明液体。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0102",
+      "profile": "psychological_unspecified",
+      "A": {
+        "evidence_ids": [
+          "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01_p006_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": true,
+        "notes": "支持性倾听证据已补齐，但仍建议先用简短问题确认即时危险。"
+      },
+      "B": {
+        "evidence_ids": [
+          "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01_p006_001",
+          "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01_p007_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": false,
+        "notes": "倾听、接纳、稳定和聚焦足以形成非诊断性的支持性回答，并可同步做安全确认。"
+      },
+      "final": {
+        "evidence_ids": [
+          "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01_p006_001",
+          "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01_p007_001"
+        ],
+        "risk_level": 1,
+        "should_fallback": false,
+        "notes": "仲裁允许直接支持性回应，同时进行一次简短安全确认；禁止心理诊断或说教。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_clean_0139",
+      "profile": "battery_only",
+      "A": {
+        "evidence_ids": [
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_001"
+        ],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "三断来源支持备用通信和物资准备，但单独低电量仍需先确认是否存在应急危险。"
+      },
+      "B": {
+        "evidence_ids": [
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_001",
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_002"
+        ],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "可用多渠道通信证据约束简短交互；没有应急情境时不触发灾害处置。"
+      },
+      "final": {
+        "evidence_ids": [
+          "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01_three_outages_preparedness_communication_001"
+        ],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "仲裁将低电量作为配置约束：一次简短确认危险，优先报位置并减少非必要交互。"
+      }
+    },
+    {
+      "query_id": "pilot_legacy_boundary_0001",
+      "profile": "out_of_scope",
+      "A": {
+        "evidence_ids": [],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "纯创作请求，明显超出离线应急支持范围。"
+      },
+      "B": {
+        "evidence_ids": [],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "不应触发任何医学或灾害协议。"
+      },
+      "final": {
+        "evidence_ids": [],
+        "risk_level": 0,
+        "should_fallback": true,
+        "notes": "一致判定为域外回退。"
+      }
+    }
+  ]
+}

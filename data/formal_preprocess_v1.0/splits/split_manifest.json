@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "cal_ch": 41,
+    "cal_op": 53,
+    "test_ch": 25,
+    "test_op": 75,
+    "train": 155,
+    "valid": 51
+  },
+  "input_sha256": "051c13a6006489ed5932213d2b1298c8dd4cc54f5ef34b11cdb7d71dcc3ae85d",
+  "schema_version": "1.0",
+  "seed": 42,
+  "split_sha256": {
+    "cal_ch": "93f51ea182d1896540ba00187041a76ad2935811f41dfb6702250622e3380ca5",
+    "cal_op": "d69809de3b816dc0e52a6741dccd5e997776717b8801de81b47aa82fcec6aaeb",
+    "test_ch": "caeb02730c8ca200490abcbea3dddb14293a7292240d5880dcf8417167d95dbd",
+    "test_op": "3764989e8506ef53b1db50052f6e2371f094cf150ebf7719973399c1c6d08c5b",
+    "train": "a383e985d5711a20fd9ec4576641704693edd5b5a2722a88746dc6a0feeff240",
+    "valid": "25bd22626ac03745542e21096b0c79e89a620c0347a89c8b37f752f6c4395994"
+  }
+}

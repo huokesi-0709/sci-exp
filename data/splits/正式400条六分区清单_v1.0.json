@@ -1,0 +1,115 @@
+{
+  "manifest_version": "v1.0",
+  "created_at_utc": "2026-07-28T08:56:55.533760+00:00",
+  "seed": 42,
+  "method": "sha256_source_group_assignment",
+  "proportions": {
+    "train": 0.4,
+    "valid": 0.1,
+    "cal_op": 0.1333333333,
+    "cal_ch": 0.0666666667,
+    "test_op": 0.2,
+    "test_ch": 0.1
+  },
+  "input": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\processed\\正式400条查询集_v1.0.jsonl",
+    "sha256": "10dc1580d69d00e41fb1f8b3a67fb7fd7eefe417314ceae8050269afb56a18aa",
+    "protocols_sha256": "94ebd4b2129cc34ec1fde7f8a303987bc3139e5cb4b228e473ededc02a83a7c5"
+  },
+  "split_summary": {
+    "train": {
+      "n": 155,
+      "source_groups": 24,
+      "l3": 48,
+      "c3_fallback": 51,
+      "out_of_scope": 11,
+      "risk_distribution": {
+        "L0": 17,
+        "L1": 25,
+        "L2": 65,
+        "L3": 48
+      }
+    },
+    "valid": {
+      "n": 51,
+      "source_groups": 9,
+      "l3": 18,
+      "c3_fallback": 17,
+      "out_of_scope": 6,
+      "risk_distribution": {
+        "L0": 6,
+        "L1": 11,
+        "L2": 16,
+        "L3": 18
+      }
+    },
+    "cal_op": {
+      "n": 53,
+      "source_groups": 8,
+      "l3": 6,
+      "c3_fallback": 13,
+      "out_of_scope": 0,
+      "risk_distribution": {
+        "L1": 13,
+        "L2": 34,
+        "L3": 6
+      }
+    },
+    "cal_ch": {
+      "n": 41,
+      "source_groups": 7,
+      "l3": 6,
+      "c3_fallback": 10,
+      "out_of_scope": 10,
+      "risk_distribution": {
+        "L0": 10,
+        "L2": 25,
+        "L3": 6
+      }
+    },
+    "test_op": {
+      "n": 75,
+      "source_groups": 12,
+      "l3": 18,
+      "c3_fallback": 11,
+      "out_of_scope": 0,
+      "risk_distribution": {
+        "L1": 18,
+        "L2": 39,
+        "L3": 18
+      }
+    },
+    "test_ch": {
+      "n": 25,
+      "source_groups": 5,
+      "l3": 6,
+      "c3_fallback": 3,
+      "out_of_scope": 3,
+      "risk_distribution": {
+        "L0": 3,
+        "L1": 14,
+        "L2": 2,
+        "L3": 6
+      }
+    }
+  },
+  "split_sha256": {
+    "train": "15923b5ba942a88bf22493f9822720d99f481205574cdaa00f469e747a90739d",
+    "valid": "ca309c81c7ee9abaf17b2e4d91569f234acb0d647dfa9bb5117e888c6ece2b4c",
+    "cal_op": "26ca18cd4dec4d672c308465f8590fa3307ec1f9d135cd0f92711350dab328bd",
+    "cal_ch": "d4222fd4453f0c38fc5ec58ec2dddd4994c39039f1b452a409a43be78a07de4b",
+    "test_op": "2cd7012fc8937ef53a056c1e5a4602f4531ecd30a46e9c64af83af1efbcb81c3",
+    "test_ch": "91ffa1ccd6fd23debfc47a4cd342e424cf7d649bb9a49e78478afc5a79f91e97"
+  },
+  "combined_output_sha256": "10dc1580d69d00e41fb1f8b3a67fb7fd7eefe417314ceae8050269afb56a18aa",
+  "quality_gates": {
+    "exactly_400_rows": true,
+    "all_six_splits_nonempty": true,
+    "source_groups_pairwise_disjoint": true,
+    "challenge_calibration_and_test_cover_l3_c3_out_of_scope": true,
+    "all_evidence_ids_exist": true,
+    "all_adjudicated": true,
+    "development_gold_not_final": true
+  },
+  "interpretation": "按source_group_id整体分配；实际行数允许偏离名义比例，以避免同源场景跨分区泄漏。"
+}

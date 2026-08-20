@@ -1,0 +1,16 @@
+{
+  "manifest_version": "0.1.0",
+  "datasets": [
+    {
+      "dataset_id": "example",
+      "name": "Replace with the real dataset",
+      "source_url": "",
+      "license": "",
+      "retrieved_at": "",
+      "sha256": "",
+      "local_path": "data/raw/public_datasets/",
+      "status": "not_downloaded"
+    }
+  ]
+}
+

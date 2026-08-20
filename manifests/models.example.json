@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "file": "models/model-name.Q4_K_M.gguf",
+      "source": "REPLACE_WITH_MODEL_REPOSITORY_AND_REVISION",
+      "license": "REPLACE_WITH_LICENSE",
+      "sha256": "REPLACE_WITH_SHA256",
+      "quantization": "Q4_K_M",
+      "status": "not_downloaded"
+    }
+  ]
+}

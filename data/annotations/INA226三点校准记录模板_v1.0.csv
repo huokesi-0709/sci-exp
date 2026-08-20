@@ -1,0 +1,5 @@
+point_id,reference_voltage_v,reference_current_a,measured_bus_v,measured_current_a,duration_s,environment_temperature_c,reference_instrument_id,notes
+P05,5.000,0.500,,,,,,
+P10,5.000,1.000,,,,,,
+P20,5.000,2.000,,,,,,
+

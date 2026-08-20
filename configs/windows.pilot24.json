@@ -1,0 +1,66 @@
+{
+  "project_root": "D:/projects/RAG-sci/docs/sci-exp",
+  "data": {
+    "protocols": "data/processed/精选候选协议切块_v0.1.jsonl",
+    "queries": "data/pilot_preprocess_v0.1/processed/queries.cleaned.jsonl"
+  },
+  "generator": {
+    "backend": "extractive",
+    "endpoint": "",
+    "timeout_seconds": 120,
+    "max_tokens": 256,
+    "temperature": 0.0
+  },
+  "retrieval": {
+    "dense_backend": "hashing_development",
+    "hashing_dimensions": 384,
+    "lexical_weight": 1.0,
+    "dense_weight": 1.0,
+    "rrf_k": 60,
+    "c1_top_k": 2,
+    "c1_candidate_k": 8,
+    "c2_top_k": 4,
+    "c2_candidate_k": 12,
+    "c2_min_evidence": 2,
+    "strict_hazard_filter": true
+  },
+  "router": {
+    "alpha": 0.05,
+    "delta": 0.05,
+    "thresholds": {
+      "C0": 0.10,
+      "C1": 0.10,
+      "C2": 0.10
+    },
+    "predicted_energy_j": {
+      "C0": 1.0,
+      "C1": 2.0,
+      "C2": 4.0,
+      "C3": 0.2
+    },
+    "predicted_latency_ms": {
+      "C0": 100,
+      "C1": 180,
+      "C2": 350,
+      "C3": 20
+    },
+    "memory_budget_mb": 4096,
+    "latency_budget_ms": 5000
+  },
+  "telemetry": {
+    "sample_interval_seconds": 0.1,
+    "power_paths": [],
+    "power_scale": 0.000001
+  },
+  "experiment": {
+    "repetitions": 1,
+    "configs": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "output": "results/pilot24_extract_runs_v0.1.jsonl",
+    "seed": 42
+  }
+}

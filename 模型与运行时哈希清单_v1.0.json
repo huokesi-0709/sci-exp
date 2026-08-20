@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "status": "candidate_staged_pending_E1_probe",
+  "formal_lock": false,
+  "gguf_candidate": {
+    "file": "models/qwen1_5-0_5b-chat-q4_k_m.gguf",
+    "size_bytes": 407155552,
+    "sha256": "92916B71D32F5AFEA48FB7383E3B48C5B1C111F5A59F0B83C764EA1D07FE1A3A",
+    "gguf_version": 3,
+    "architecture": "qwen2",
+    "metadata_name": "Qwen1.5-0.5B-Chat-AWQ-fp16",
+    "context_length_declared": 32768,
+    "quantization": "Q4_K_M",
+    "quantization_evidence": {
+      "general_file_type": 15,
+      "llama_header_reference": "third_party/llama.cpp-b9627/include/llama.h:132"
+    },
+    "base_model_source": "https://huggingface.co/Qwen/Qwen1.5-0.5B-Chat",
+    "base_model_license": "Tongyi Qianwen Research License Agreement; non-commercial research/evaluation",
+    "local_asset_source": "D:/代码项目/MoniBox-KB/models/llm/qwen1_5-0_5b-chat-q4_k_m.gguf",
+    "derivative_quantizer_source": null,
+    "redistribution_allowed": false,
+    "selection_state": "pending_E1_RAM_load_and_stability_test"
+  },
+  "llama_cpp_source": {
+    "directory": "third_party/llama.cpp-b9627",
+    "repository": "https://github.com/ggml-org/llama.cpp.git",
+    "tag": "b9627",
+    "commit": "53bd47ea5b46335cf6125a674af378ac422fc392",
+    "license": "MIT",
+    "license_sha256": "BCD8EC749126D45CB06737D0690295D73DF4B6E7E194205BCF91190368F27285",
+    "target_architecture": "aarch64",
+    "build_script": "scripts/构建并锁定ARM64_llama_server.sh",
+    "build_state": "pending_E1_probe"
+  },
+  "llama_server": {
+    "file": "bin/llama-server",
+    "sha256": null,
+    "build_flags": [
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DGGML_NATIVE=ON",
+      "-DGGML_OPENMP=ON",
+      "-DLLAMA_CURL=OFF",
+      "-DLLAMA_BUILD_TESTS=OFF"
+    ],
+    "lock_state": "not_built"
+  },
+  "blocking_conditions": [
+    "E1当前未在线，尚未取得设备型号、ARM64架构和RAM实测记录",
+    "候选GGUF尚未在E1完成加载、生成、峰值内存和热稳定性测试",
+    "ARM64 llama-server尚未在E1本机编译，因而没有目标二进制SHA-256",
+    "功率候选路径的单位和板级供电轨覆盖范围尚未核验"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "details": {
+    "C0": {
+      "energy_j_median": null,
+      "energy_samples": 0,
+      "latency_ms_median": 0.21289999858709052,
+      "latency_ms_p95": 0.21730999942519702,
+      "memory_mb_median": null,
+      "n_runs": 3
+    },
+    "C1": {
+      "energy_j_median": null,
+      "energy_samples": 0,
+      "latency_ms_median": 0.22139999782666564,
+      "latency_ms_p95": 0.41445000097155565,
+      "memory_mb_median": null,
+      "n_runs": 3
+    },
+    "C2": {
+      "energy_j_median": null,
+      "energy_samples": 0,
+      "latency_ms_median": 0.2932999996119179,
+      "latency_ms_p95": 0.31445000022358727,
+      "memory_mb_median": null,
+      "n_runs": 3
+    },
+    "C3": {
+      "energy_j_median": null,
+      "energy_samples": 0,
+      "latency_ms_median": 0.2542000001994893,
+      "latency_ms_p95": 0.9463899994443635,
+      "memory_mb_median": null,
+      "n_runs": 3
+    }
+  },
+  "predicted_energy_j": {},
+  "predicted_latency_ms": {
+    "C0": 0.21289999858709052,
+    "C1": 0.22139999782666564,
+    "C2": 0.2932999996119179,
+    "C3": 0.2542000001994893
+  },
+  "predicted_memory_mb": {
+    "C0": 0.0,
+    "C1": 0.0,
+    "C2": 0.0,
+    "C3": 0.0
+  },
+  "schema_version": "1.0",
+  "source": "measured_on_target_device"
+}

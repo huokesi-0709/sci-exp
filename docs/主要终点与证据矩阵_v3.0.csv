@@ -1,0 +1,10 @@
+编号,研究问题,主要比较或证据,核心指标,数据角色,不支持条件
+RQ1,固定配置是否存在输入条件化异质性,"各配置的安全Oracle最低能耗分布；分层选择矩阵","各配置Oracle最优比例；配置支配率",Profiling与Gold Test,"单一配置在约90%以上输入占优"
+RQ2,三层标签是否可靠,"双人盲审与仲裁；Silver-Gold对照","三状态标签F1；Cohen/Fleiss一致性；动作向量一致率",Human-Verified Dev与Gold,"严重错误标签一致性不足或Silver严重错误Recall不足"
+RQ3,配置条件化风险头是否可用,"结构化配置特征模型 vs Config-ID/query-only消融","各头AUPRC/AUROC/ECE/Brier；严重错误Recall",Dev-Select与Gold Calibration,"误触发/遗漏/充分性失败不可校准"
+RQ4,预测安全集合是否接近专家集合,"SC-EA-RAG接受集合 vs Gold安全集合","UAR；SER；Set-F1；Jaccard；Exact Match；空集合率",Gold Test,"危险配置放行率高或安全配置大量误排除"
+RQ5,硬约束是否必要,"Energy-Only；完整权重搜索Soft Weighting；Hard Constraint；Oracle Mask","安全-能耗Pareto；UAR/SER；净能耗",Gold Test,"软加权在同等安全下取得同等或更优Pareto"
+RQ6,路由是否接近Oracle,"SC-EA-RAG vs Full Oracle","ε-Optimal Route Rate；Energy/Safety Regret；Under/Over-routing",Gold Test,"选择误差或安全regret不可接受"
+RQ7,是否优于固定中等配置,"SC-EA-RAG vs Fixed-Medium，按Easy/Moderate/Hard和高危/否定/约束分层","危险输出率；高风险动作Recall；协议充分性；净能耗；P95时延",Gold Test,"Fixed-Medium同等安全且更省电"
+RQ8,真实硬件是否节能,"SC-EA-RAG vs Fixed-Full及匹配安全基线","净能耗J；平均/峰值功率；P95时延；峰值内存；温度；95%CI",Radxa随机化重复实测,"计入路由开销后无稳定净收益"
+RQ9,趋势是否可迁移,"未见事件；受控噪声；可选第二平台成本排序","性能退化；Spearman成本排序；Pareto结构一致性",Challenge与探索性外部测试,"跨事件或跨设备排序失效"

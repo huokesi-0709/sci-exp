@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Offline emergency RAG query",
+  "type": "object",
+  "required": [
+    "query_id",
+    "text",
+    "disaster_type",
+    "query_type",
+    "risk_level",
+    "language",
+    "should_fallback",
+    "gold_evidence_ids",
+    "required_actions",
+    "prohibited_actions",
+    "source_group_id"
+  ],
+  "properties": {
+    "query_id": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "disaster_type": {"type": "string"},
+    "query_type": {"type": "string"},
+    "disaster_type_label": {
+      "type": ["string", "null"],
+      "enum": ["地震", "洪水", "火灾", "极端低温", "综合/不明", "域外", null]
+    },
+    "query_type_label": {
+      "type": ["string", "null"],
+      "enum": [
+        "出血/休克",
+        "创伤/骨折",
+        "头部或意识",
+        "呼吸困难",
+        "低温",
+        "被困",
+        "余震/坍塌",
+        "挤压",
+        "缺水",
+        "心理支持",
+        "低电量",
+        "域外",
+        "综合/不明",
+        null
+      ]
+    },
+    "risk_level": {
+      "description": "Canonical labels are L0-L3. Integers 0-3 remain accepted for backward-compatible internal routing.",
+      "oneOf": [
+        {"type": "string", "enum": ["L0", "L1", "L2", "L3"]},
+        {"type": "integer", "minimum": 0, "maximum": 3}
+      ]
+    },
+    "risk_level_label": {
+      "type": ["string", "null"],
+      "enum": ["L0", "L1", "L2", "L3", null]
+    },
+    "language": {"type": "string"},
+    "should_fallback": {"type": "boolean"},
+    "gold_evidence_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "prohibited_actions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "evidence_gap_flag": {"type": "boolean"},
+    "annotation_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "double_reviewed",
+        "adjudicated",
+        "quality_checked",
+        "frozen"
+      ]
+    },
+    "annotation_version": {"type": "string", "minLength": 1},
+    "data_status": {
+      "type": "string",
+      "enum": [
+        "candidate_pending_reannotation",
+        "pilot_only_not_formal_dataset",
+        "development_gold",
+        "confirmatory_gold"
+      ]
+    },
+    "formal_training_eligible": {
+      "type": "boolean",
+      "description": "Whether this record may be used for formal model training. Must be false for development_gold."
+    },
+    "final_evaluation_eligible": {"type": "boolean"},
+    "source_group_id": {"type": "string", "minLength": 1},
+    "split": {"type": "string"},
+    "split_scope": {
+      "type": "string",
+      "enum": ["development", "confirmatory", "pilot", "unassigned"]
+    },
+    "development_split": {
+      "type": "string",
+      "enum": ["train", "valid", "cal_op", "cal_ch", "test_op", "test_ch", ""]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"data_status": {"const": "development_gold"}},
+        "required": ["data_status"]
+      },
+      "then": {
+        "required": [
+          "formal_training_eligible",
+          "final_evaluation_eligible",
+          "split_scope"
+        ],
+        "properties": {
+          "formal_training_eligible": {"const": false},
+          "final_evaluation_eligible": {"const": false},
+          "split_scope": {"const": "development"}
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

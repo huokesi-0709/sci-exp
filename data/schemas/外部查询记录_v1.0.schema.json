@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "外部查询记录_v1.0",
+  "title": "离线应急RAG外部效度查询记录",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "external_query_id",
+    "source_dataset",
+    "source_record_id",
+    "text",
+    "language",
+    "naturalness_class",
+    "event_id",
+    "disaster_type",
+    "split_role",
+    "license_id",
+    "redistribution_scope",
+    "noise_flags",
+    "ambiguity_flags",
+    "vulnerability_flags"
+  ],
+  "properties": {
+    "schema_version": {"const": "external-query-v1.0"},
+    "external_query_id": {"type": "string", "minLength": 1},
+    "source_dataset": {
+      "enum": ["HUMAID_V1", "HUMSET_1_0_0", "TREC_IS", "CRISIS_REQUESTS_OFFERS"]
+    },
+    "source_record_id": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 2},
+    "source_modality": {
+      "enum": ["social_media_post", "humanitarian_report_excerpt", "derived_query"]
+    },
+    "naturalness_class": {
+      "enum": [
+        "natural_public_post",
+        "quasi_natural_report",
+        "researcher_reframed",
+        "synthetic"
+      ]
+    },
+    "event_id": {"type": "string", "minLength": 1},
+    "event_date": {"type": ["string", "null"]},
+    "jurisdiction": {"type": "string"},
+    "disaster_type": {"type": "string", "minLength": 1},
+    "need_type": {"type": "string"},
+    "original_label": {},
+    "split_role": {
+      "enum": ["external_adaptation", "external_sealed_test", "audit_only"]
+    },
+    "seal_status": {
+      "enum": ["open_development", "sealed_no_model_access", "not_applicable"]
+    },
+    "license_id": {"type": "string", "minLength": 1},
+    "redistribution_scope": {
+      "enum": ["public_text_allowed", "id_only", "internal_only", "unknown_blocked"]
+    },
+    "contains_personal_data": {"type": "boolean"},
+    "privacy_action": {
+      "enum": ["none", "redact_before_use", "id_only_no_text_export", "exclude"]
+    },
+    "noise_flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "ambiguity_flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "vulnerability_flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "perturbation_parent_id": {"type": ["string", "null"]},
+    "perturbation_type": {"type": ["string", "null"]},
+    "template_id": {"type": ["string", "null"]},
+    "protocol_answer_annotation_status": {
+      "enum": ["not_started", "double_reviewed", "adjudicated", "not_applicable"]
+    }
+  }
+}

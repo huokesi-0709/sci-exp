@@ -1,0 +1,12 @@
+{"configuration": "C3", "failure": false, "query_id": "demo_q002", "risk_score": 0.125, "source_group_id": "demo_flood", "split": "smoke"}
+{"configuration": "C1", "failure": false, "query_id": "demo_q002", "risk_score": 0.035023229857744025, "source_group_id": "demo_flood", "split": "smoke"}
+{"configuration": "C2", "failure": false, "query_id": "demo_q001", "risk_score": 0.06509357675398394, "source_group_id": "demo_fire", "split": "smoke"}
+{"configuration": "C0", "failure": true, "query_id": "demo_q003", "risk_score": 0.9737669048186428, "source_group_id": "demo_unknown", "split": "smoke"}
+{"configuration": "C1", "failure": true, "query_id": "demo_q003", "risk_score": 0.9737669048186428, "source_group_id": "demo_unknown", "split": "smoke"}
+{"configuration": "C2", "failure": false, "query_id": "demo_q002", "risk_score": 0.03502322985774403, "source_group_id": "demo_flood", "split": "smoke"}
+{"configuration": "C3", "failure": false, "query_id": "demo_q003", "risk_score": 0.125, "source_group_id": "demo_unknown", "split": "smoke"}
+{"configuration": "C3", "failure": false, "query_id": "demo_q001", "risk_score": 0.125, "source_group_id": "demo_fire", "split": "smoke"}
+{"configuration": "C0", "failure": false, "query_id": "demo_q002", "risk_score": 0.035023229857744025, "source_group_id": "demo_flood", "split": "smoke"}
+{"configuration": "C0", "failure": false, "query_id": "demo_q001", "risk_score": 0.06509357675398393, "source_group_id": "demo_fire", "split": "smoke"}
+{"configuration": "C1", "failure": false, "query_id": "demo_q001", "risk_score": 0.06509357675398393, "source_group_id": "demo_fire", "split": "smoke"}
+{"configuration": "C2", "failure": true, "query_id": "demo_q003", "risk_score": 0.9737669048186428, "source_group_id": "demo_unknown", "split": "smoke"}

@@ -1,0 +1,564 @@
+<Instruction>
+You are an advanced AI trained to label social media posts related to crisis situations, specifically natural disasters. Your goal is to label the given posts. You make use of the vast knowledge that you have about natural disasters, your knowledge of social media posts of people during those disasters, the provided taxonomy and information mentioned below to label the data.
+</Instruction>
+
+<Context>
+Natural disasters, such as hurricanes, wildfires, earthquakes, floods, tornadoes, landslides, etc. have significant impacts on communities. During these events, Social media platforms (such as twitter, facebook and instagram, etc.) become primary channels of sharing and receiving information. This information can be broadly categorized into **Request**, **Offer**, or **Other**. Note that some posts are both **Request** and **Offer** at the same time.
+
+**Request** : posts of type **Request** are posts where individuals or organizations ask for help, information, resources, or support. Examples include, but are not limited to the following:
+    - Requesting Emergency assistance (action) such as rescue
+    - Requesting specific supplies, such as food, water, clothing
+    - Requesting information or updates, such as updates on road closures
+    - Requesting monetary donations through links
+
+
+**Offer** : posts of type **Offer** are posts where individuals or organizations provide assistance, resources, support, or information. Examples include, but are not limited to the following:
+    - Offering Emergency assitance (action) such as search and rescue
+    - Offering information or updates related to the disaster
+    - Offering specific supplies, or donations, such as clean water, food, medicine, etc.
+
+
+**Other** : posts of type **Other** include everything that is considered neither a request or an offer. This includes but is not limited to the following:
+    - prayers
+    - emotional support messages
+    - general updates
+    - personal experiences
+    - expression of sentiments
+    - general information 
+
+**Request** and **Offer**: Some posts can contain both requests and offers. Such posts are categorized both as **Request** and **Offer**
+
+The social media posts can also be categorized based on their "actionability". We define "actionability" as messages that are urgent, contain specific details (such as time, location, quantities, detailed information, etc.) and that require a response or action. If a message is highly urgent, mentions a precise location, includes a call (or offer) to action, specifies a time, and provides other critical details, then it is highly **actionable**. However, if the message is either not urgent, lacks a specific location, does not mention time, or is vague with little to no details, and no actionable information, then it is not **actionable**. It's important to note that even if a message is urgent, it may stil be considered not that **actionable** if critical details such as precise location or time are missing. **actionability** is a really important term, and it helps filter out the most important messages to focus on during a disaster.
+
+Each social media post of type **Offer** or **Request** can be represented as a triplet of themes: supplies, personnel, actions. The following is a taxonomy that contains these themes as separate branches:
+<Taxonomy>
+{
+  "Supplies": [
+    "Transport",
+    "Medical",
+    "Water, Sanitation, and Hygiene (WASH)",
+    "Shelter and Housing",
+    "Equipment and Tools",
+    "Food and Nutrition",
+    "Clothing and Warmth",
+    "Communication and Power",
+    "Education and Recreation",
+    "Money",
+    "Infant Care"
+  ],
+  "Emergency Personnel": [
+    "Search and Rescue Teams",
+    "Medical and Health Teams",
+    "Fire and Hazard Control",
+    "Law Enforcement and Security",
+    "Logistics and Coordination Teams",
+    "Communication and IT Teams",
+    "Shelter and Housing Teams",
+    "Community and Social Support Teams",
+    "Energy and Infrastructure Repair Teams",
+    "Recovery and Rehabilitation Teams",
+    "Legal and Advocacy Teams"
+  ],
+  "Actions": [
+    "Search and Rescue",
+    "Medical Assistance",
+    "Shelter and Housing Support",
+    "Food and Water Distribution",
+    "Infrastructure Repair and Debris Clearance",
+    "Transportation Services",
+    "Security and Crowd Control",
+    "Information and Communication",
+    "Resource Coordination and Supply Management",
+    "Community and Social Support",
+    "Recovery and Rehabilitation"
+  ]
+}
+</Taxonomy>
+
+this is a more detailed version of the taxonomy to understand the components of the classes, do not use these as the target labels, but as a way to understand the taxonomy:
+<Full Taxonomy>
+{
+    "Taxonomy": {
+      "Supplies": {
+        "Transport": [
+          "Spare Parts",
+          "Vehicles"
+        ],
+        "Medical": [
+          "Wound Care and First Aid Supplies",
+          "Tools, Accessories, and Protective Gear",
+          "Medications and Treatment Supplies",
+          "Diagnostic",
+          "Respiratory Equipment",
+          "Mobility Aids",
+          "Laboratory Equipment",
+          "Cold Chain and Temperature-Controlled Storage"
+        ],
+        "Water, Sanitation, and Hygiene (WASH)": [
+          "Water Storage",
+          "Borehole Construction",
+          "Pumps",
+          "Water Distribution",
+          "Water Testing",
+          "Water Treatment",
+          "Sanitation Facilities",
+          "Personal Hygiene",
+          "Cleaning Supplies"
+        ],
+        "Shelter and Housing": [
+          "Shelter",
+          "Covers and Linings",
+          "Accessories"
+        ],
+        "Equipment and Tools": [
+          "IT and Office Supplies",
+          "Emergency Tools",
+          "Basic Tools",
+          "Material Handling Equipment",
+          "Kitchen Items"
+        ],
+        "Food and Nutrition": [
+          "Staples",
+          "Proteins",
+          "Cooking Essentials",
+          "High-Energy Foods",
+          "Ready-to-Eat Foods",
+          "Beverages",
+          "Other Essentials"
+        ],
+        "Clothing and Warmth": [
+          "Clothing",
+          "Warmth Items",
+          "Other Clothing"
+        ],
+        "Communication and Power": [
+          "Communication Tools",
+          "Power Supply",
+          "Lighting"
+        ],
+        "Education and Recreation": [
+          "Educational Supplies",
+          "Recreational Items"
+        ],
+        "Money": [
+        ],
+        "Infant Care": [
+          "Comfort Packs for Children",
+          "Pacifiers",
+          "Baby Carriers",
+          "Trolleys"
+        ]
+      },
+      "Emergency Personnel": {
+        "Search and Rescue Teams": [
+          "Urban Search and Rescue (USAR) teams",
+          "Water Rescue Teams",
+          "K9 Search Teams",
+          "Mountain/High Angle Rescue",
+          "Specialized Medical Rescuers"
+        ],
+        "Medical and Health Teams": [
+          "Emergency Medical Technicians (EMTs)",
+          "Paramedics",
+          "Doctors",
+          "Surgeons",
+          "Psychosocial Support Teams",
+          "Mental Health Professionals",
+          "Infection Control Experts",
+          "Public Health Teams"
+        ],
+        "Fire and Hazard Control": [
+          "Firefighting Teams",
+          "Hazardous Materials (HAZMAT) Teams",
+          "Fire Safety Inspectors"
+        ],
+        "Law Enforcement and Security": [
+          "Police Officers",
+          "Military Police",
+          "Community Liaison Officers",
+          "Forensic Teams",
+          "Evacuation Personnel"
+        ],
+        "Logistics and Coordination Teams": [
+          "Disaster Coordination Officers",
+          "Relief Operations Coordinators",
+          "Transport and Supply Chain Teams",
+          "Volunteers"
+        ],
+        "Communication and IT Teams": [
+          "Emergency Communications Specialists",
+          "Satellite Communications Technicians",
+          "Public Information Officers",
+          "Media Liaison Officers",
+          "ICT Specialists"
+        ],
+        "Shelter and Housing Teams": [
+          "Shelter Managers",
+          "Emergency Housing Specialists",
+          "Construction Teams"
+        ],
+        "Community and Social Support Teams": [
+          "Child Protection Teams",
+          "Gender-Based Violence (GBV) Specialists",
+          "Elderly Care Specialists",
+          "Community Outreach Workers"
+        ],
+        "Energy and Infrastructure Repair Teams": [
+          "Electricians",
+          "Water and Sanitation Technicians",
+          "Road Construction Crews"
+        ],
+        "Recovery and Rehabilitation Teams": [
+          "Reconstruction Teams",
+          "Economic Recovery Teams",
+          "Education Support Teams"
+        ],
+        "Legal and Advocacy Teams": [
+          "Legal Aid Teams",
+          "Advocacy Teams"
+        ]
+      },
+      "Actions": {
+        "Search and Rescue": [
+          "Search for Missing Persons",
+          "Evacuation Support",
+          "Water Rescue"
+        ],
+        "Medical Assistance": [
+          "First Aid and Triage",
+          "Hospitalization and Treatment",
+          "Psychosocial and Mental Health"
+        ],
+        "Shelter and Housing Support": [
+          "Setting Up Temporary Shelters",
+          "Repair and Retrofitting"
+        ],
+        "Food and Water Distribution": [
+          "Food Aid",
+          "Water Supply"
+        ],
+        "Infrastructure Repair and Debris Clearance": [
+          "Road and Bridge Clearing",
+          "Utility Restoration",
+          "Debris Removal"
+        ],
+        "Transportation Services": [
+          "Evacuation Transport",
+          "Ambulance and Medical Transport",
+          "Supply and Personnel Transport"
+        ],
+        "Security and Crowd Control": [
+          "Patrol and Perimeter Security",
+          "Traffic and Crowd Management",
+          "Incident Control Points"
+        ],
+        "Information and Communication": [
+          "Public Announcements and Alerts",
+          "Misinformation Management",
+          "Hotline or Helpline Operation",
+          "Translation and Interpretation Services"
+        ],
+        "Resource Coordination and Supply Management": [
+          "Warehouse and Inventory Control",
+          "Last-Mile Distribution",
+          "Volunteer and Donations Management"
+        ],
+        "Community and Social Support": [
+          "Child-Friendly Spaces",
+          "Gender-Based Violence (GBV) Response",
+          "Elderly and Special Needs Support",
+          "Family Reunification"
+        ],
+        "Recovery and Rehabilitation": [
+          "Livelihood Recovery",
+          "Education Continuity",
+          "Community Rehabilitation"
+        ]
+      }
+    }
+  }
+</Full Taxonomy>
+
+The social media data should be categorized into it's specific type (**Request**, **Offer**, **Other**) and should be labeled based on supplies, action, emergency personnel. The labels should come from the taxonomy provided above.
+
+To be precise, the classification should  happen on the following fields:
+    - Type: determine if the post is **Request**, **Offer**, **Request** and **Offer**, or **Other**
+    - Action: Select the most appropriate actions from the actions list in the taxonomy
+    - Emergency Personnel: Identify the relevant Emergency Personnel mentioned in the text from the emergency personnel list in the taxonomy
+    - Supplies: specify any supplies mentioned from the supplies list in the taxonomy
+
+Furthermore, you need to determine if the social media post is **actionable** or not
+    - actionability: specify if the social media post is actionable based on the definition provided above. be conservative with saying that posts are actionable, only classify them as actionable if it is fully justified based on the definition.
+
+Handle Non-applicable categories: if a classification category does not apply, assign empty list for it.
+If the type is other, then there is no need to continue labeling other categories.
+</Context>
+
+<Output formats>
+this is the output format when the type is either **Request** or **Offer** or both:
+{
+    "text": "The social media post text here",
+    "type": [list of types, either "Request"| "Offer"| "Offer", "Request"],
+    "action_request": [list of all selected actions from actions list of the taxonommy, this is specifically for requested actions (only in case type list includes request and these actions are requested)],
+    "personnel_request": [list of all Selected personnel from emergency personnel list of the taxonommy, this is specifically for requested personnel (only in case type list includes request and these personnel are requested)],
+    "supplies_request": [list of all Selected supplies from supplies list of the taxonommy, this is specifically for requested supplies (only in case type list includes request and these supplies are requested)],
+    "action_offer": [list of all Selected actions from actions list of the taxonommy, this is specifically for offered actions (only in case type list includes offer and these actions are offered)],
+    "personnel_offer": [list of all Selected personnel from emergency personnel list of the taxonommy, this is specifically for offered personnel (only in case type list includes offer and these personnel are offered)],
+    "supplies_offer": [list of all Selected supplies from supplies list of the taxonommy, this is specifically for offered supplies (only in case type list includes offer and these supplies are offered)],
+    "actionability": true | false
+}
+
+this is the output format when the type is **Other**:
+{
+    "text": "The social media post text here",
+    "type": ["Other"]
+}
+</Output formats>
+
+<Examples>
+here are some examples of the classification that you should follow:
+[
+    {
+        "text": "HELP! Landslide blocked the main road to our village. We’re running out of medical supplies. Send assistance ASAP! #LandslideCrisis",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Infrastructure Repair and Debris Clearance", "Medical Assistance"],
+            "personnel_request": ["Logistics and Coordination Teams", "Medical and Health Teams"],
+            "supplies_request": ["Medical"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "Seeking volunteers for distributing hygiene kits in the flood-hit areas. Training provided at 8 AM tomorrow. #ReliefWork",
+        "classification": {
+            "type": ["Request", "Offer"],
+            "action_request": [],
+            "personnel_request": ["Logistics and Coordination Teams"],
+            "supplies_request": [],
+            "action_offer": ["Resource Coordination and Supply Management"],
+            "personnel_offer": [],
+            "supplies_offer": ["Water, Sanitation, and Hygiene (WASH)"]
+        }
+    },
+    {
+        "text": "Red Cross is distributing supplies at City Hall. Don’t forget your ID to pick up. #HurricaneRelief",
+        "classification": {
+            "type": ["Offer"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": [],
+            "action_offer": ["Resource Coordination and Supply Management"],
+            "personnel_offer": ["Logistics and Coordination Teams"],
+            "supplies_offer": ["Water, Sanitation, and Hygiene (WASH)", "Food and Nutrition"]
+        }
+    },
+    {
+        "text": "SOS. Stuck in an apartment in downtown Anchorage after the earthquake. DM me if you can help. #HelpNeeded",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Search and Rescue"],
+            "personnel_request": ["Search and Rescue Teams"],
+            "supplies_request": [],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "This landslide wiped out an entire village. Heartbreaking. Please donate: https://donatecharity.org/landslide-relief #DonateNow",
+        "classification": {
+            "type": ["Request"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": ["Money"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "Urgent: Shelter needed for a family of 5 in Eastwood. We’ve lost our home to the earthquake. Please help! #EarthquakeRelief",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Shelter and Housing Support"],
+            "personnel_request": [],
+            "supplies_request": ["Shelter and Housing"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "For anyone in the flood zone, there’s a sandbag station at the fairgrounds. #FloodPrep",
+        "classification": {
+            "type": ["Offer"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": [],
+            "action_offer": ["Resource Coordination and Supply Management"],
+            "personnel_offer": [],
+            "supplies_offer": ["Equipment and Tools"]
+        }
+    },
+    {
+        "text": "We have free meals available for anyone displaced by the earthquake. Visit the community hall at 32 River Road. #FoodAid",
+        "classification": {
+            "type": ["Offer"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": [],
+            "action_offer": ["Food and Water Distribution"],
+            "personnel_offer": [],
+            "supplies_offer": ["Food and Nutrition"]
+        }
+    },
+    {
+        "text": "We need blankets, warm clothes, and sleeping bags for displaced families. Drop-off location: Community Hall, Maple Street. #WarmthForAll",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Community and Social Support", "Resource Coordination and Supply Management"],
+            "personnel_request": [],
+            "supplies_request": ["Clothing and Warmth"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "Requesting solar lanterns for a shelter in San Germán. Contact us at shelterpr@gmail.com if you can donate.",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Resource Coordination and Supply Management"],
+            "personnel_request": [],
+            "supplies_request": ["Communication and Power"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "We’re setting up a temporary learning center for children displaced by the landslides. Donations of notebooks and pencils are welcome. #EducationSupport",
+        "classification": {
+            "type": ["Request", "Offer"],
+            "action_request": ["Community and Social Support", "Resource Coordination and Supply Management"],
+            "personnel_request": [],
+            "supplies_request": ["Education and Recreation"],
+            "action_offer": ["Recovery and Rehabilitation"],
+            "personnel_offer": ["Recovery and Rehabilitation Teams"],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "My heart breaks seeing children wading through chest-high water. Please donate whatever you can to help. Link: www.floodrelief.pk/donate #PakistanFloods",
+        "classification": {
+            "type": ["Request"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": ["Money"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "Please donate to the wildfire relief fund to support families who’ve lost everything. #DonateNow",
+        "classification": {
+            "type": ["Request"],
+            "action_request": [],
+            "personnel_request": [],
+            "supplies_request": ["Money"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "URGENT: Baby formula needed at the church shelter. Contact 555-432-9876 if you can help. #InfantCare",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Community and Social Support"],
+            "personnel_request": [],
+            "supplies_request": ["Infant Care"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "URGENT: People trapped under rubble in Antakya, coordinates: 36.2061, 36.1572. Need rescue teams ASAP! #TurkeySyriaEarthquake",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Search and Rescue"],
+            "personnel_request": ["Search and Rescue Teams"],
+            "supplies_request": [],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "People in Adıyaman need emergency medical supplies and shelter. Contact +90 555 123 4567 if you can help. #CrisisResponse",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Medical Assistance", "Shelter and Housing Support"],
+            "personnel_request": ["Medical and Health Teams", "Shelter and Housing Teams"],
+            "supplies_request": ["Medical", "Shelter and Housing"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "We are organizing a shelter in Aleppo for displaced families. Volunteers welcome! DM for location details. #SyriaEarthquake",
+        "classification": {
+            "type": ["Offer", "Request"],
+            "action_request": ["Shelter and Housing Support"],
+            "personnel_request": ["Shelter and Housing Teams"],
+            "supplies_request": [],
+            "action_offer": ["Shelter and Housing Support"],
+            "personnel_offer": [],
+            "supplies_offer": ["Shelter and Housing"]
+        }
+    },
+    {
+        "text": "Volunteers needed to rebuild houses in Larkana. Message us if you’re interested. #FloodRelief",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Recovery and Rehabilitation"],
+            "personnel_request": ["Recovery and Rehabilitation Teams"],
+            "supplies_request": ["Shelter and Housing"],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    },
+    {
+        "text": "To the people of Sindh: you’re not alone. We’re standing with you in these difficult times. #PakistanFloods",
+        "classification": {
+            "type": ["Other"]
+        }
+    },
+    {
+        "text": "Does anyone know if there’s a way to contact loved ones without cell service? Really worried. 😔",
+        "classification": {
+            "type": ["Request"],
+            "action_request": ["Information and Communication"],
+            "personnel_request": [],
+            "supplies_request": [],
+            "action_offer": [],
+            "personnel_offer": [],
+            "supplies_offer": []
+        }
+    }
+]
+</Examples>
+
+<Task>
+Your task is to label the following social media post based on the taxonomy and rules mentioned above. only output the json dictionary and nothing else
+</Task>
+
+
+
+The social media post to be labeled is the following:

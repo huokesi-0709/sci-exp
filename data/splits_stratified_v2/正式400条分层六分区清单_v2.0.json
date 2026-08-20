@@ -1,0 +1,320 @@
+{
+  "manifest_version": "v2.0",
+  "created_at_utc": "2026-07-28T10:42:24.737285+00:00",
+  "dataset_role": "development_gold_not_confirmatory_3600",
+  "method": "explicit_scenario_stratification_without_hash_assignment",
+  "input": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\processed\\queries.cleaned.jsonl",
+    "sha256": "6c30096ab3e92c93160fcc3cdf18c9a8bd078596e3504d5f4cc07505e8208554",
+    "protocols_path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\processed\\protocols.jsonl",
+    "protocols_sha256": "94ebd4b2129cc34ec1fde7f8a303987bc3139e5cb4b228e473ededc02a83a7c5"
+  },
+  "policy": {
+    "method": "explicit_scenario_track_then_groupwise_multistratum_balancing",
+    "time_cutoff_exclusive": "2026-04-01",
+    "temporal_holdout_family": "MEM_FLOOD_PREPAREDNESS_2026",
+    "regional_holdout": "CN-SX-JC",
+    "regional_holdout_family": "JINCHENG_HIGHRISE_FIRE_2026",
+    "near_duplicate_review_threshold": 0.88,
+    "near_duplicate_block_threshold": 0.94,
+    "hash_used_for_assignment": false
+  },
+  "split_summary": {
+    "train": {
+      "n": 133,
+      "partition_units": 23,
+      "source_groups": 23,
+      "l3": 42,
+      "c3_fallback": 11,
+      "out_of_scope": 0,
+      "temporal_ood": 0,
+      "regional_ood": 0,
+      "negation_conflict": 7,
+      "risk_distribution": {
+        "L1": 28,
+        "L2": 63,
+        "L3": 42
+      },
+      "disaster_distribution": {
+        "cold_wave": 6,
+        "earthquake": 28,
+        "earthquake_building_safety": 19,
+        "electrical_injury": 6,
+        "fire": 8,
+        "flood": 8,
+        "injury": 12,
+        "injury_first_aid": 10,
+        "poisoning": 14,
+        "psychological": 7,
+        "rainstorm": 7,
+        "road_icing": 8
+      },
+      "query_type_distribution": {
+        "clean_control": 7,
+        "multi_intent": 59,
+        "negation_conflict": 7,
+        "single_intent": 60
+      },
+      "evidence_source_distribution": {
+        "BJWJW_CRUSH_INJURY_2019_CURATED_V01": 8,
+        "BJWJW_HYPOTHERMIA_2022_CURATED_V01": 6,
+        "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01": 15,
+        "MEM_EARTHQUAKE_FIRST_AID_2019_CURATED_V01": 25,
+        "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01": 17,
+        "MEM_FLOOD_SAFETY_2025_CURATED_V01": 15,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 88,
+        "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01": 13,
+        "SHQP_HEAD_TRAUMA_2018_CURATED_V01": 12
+      }
+    },
+    "valid": {
+      "n": 35,
+      "partition_units": 5,
+      "source_groups": 5,
+      "l3": 12,
+      "c3_fallback": 8,
+      "out_of_scope": 0,
+      "temporal_ood": 0,
+      "regional_ood": 0,
+      "negation_conflict": 3,
+      "risk_distribution": {
+        "L1": 8,
+        "L2": 15,
+        "L3": 12
+      },
+      "disaster_distribution": {
+        "earthquake": 8,
+        "extreme_weather_exposure": 7,
+        "fire": 6,
+        "medical": 6,
+        "psychological": 8
+      },
+      "query_type_distribution": {
+        "clean_control": 2,
+        "multi_intent": 16,
+        "negation_conflict": 3,
+        "single_intent": 14
+      },
+      "evidence_source_distribution": {
+        "BJWJW_HYPOTHERMIA_2022_CURATED_V01": 7,
+        "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01": 8,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 12,
+        "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01": 8
+      }
+    },
+    "cal_op": {
+      "n": 51,
+      "partition_units": 7,
+      "source_groups": 7,
+      "l3": 12,
+      "c3_fallback": 8,
+      "out_of_scope": 0,
+      "temporal_ood": 0,
+      "regional_ood": 0,
+      "negation_conflict": 4,
+      "risk_distribution": {
+        "L1": 8,
+        "L2": 31,
+        "L3": 12
+      },
+      "disaster_distribution": {
+        "earthquake": 14,
+        "earthquake_building_safety": 1,
+        "flood": 6,
+        "heat": 8,
+        "injury_first_aid": 6,
+        "landslide": 8,
+        "lightning": 8
+      },
+      "query_type_distribution": {
+        "clean_control": 2,
+        "multi_intent": 21,
+        "negation_conflict": 4,
+        "single_intent": 24
+      },
+      "evidence_source_distribution": {
+        "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01": 16,
+        "MEM_EARTHQUAKE_SAFETY_2025_CURATED_V01": 14,
+        "MEM_FLOOD_SAFETY_2025_CURATED_V01": 8,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 27,
+        "SHQP_HEAD_TRAUMA_2018_CURATED_V01": 7
+      }
+    },
+    "cal_ch": {
+      "n": 28,
+      "partition_units": 7,
+      "source_groups": 7,
+      "l3": 2,
+      "c3_fallback": 24,
+      "out_of_scope": 24,
+      "temporal_ood": 0,
+      "regional_ood": 0,
+      "negation_conflict": 1,
+      "risk_distribution": {
+        "L0": 24,
+        "L2": 2,
+        "L3": 2
+      },
+      "disaster_distribution": {
+        "general": 24,
+        "injury_first_aid": 4
+      },
+      "query_type_distribution": {
+        "clean_control": 1,
+        "multi_intent": 2,
+        "negation_conflict": 1,
+        "out_of_scope": 24
+      },
+      "evidence_source_distribution": {
+        "MEM_EARTHQUAKE_FIRST_AID_2019_CURATED_V01": 4,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 4,
+        "SHQP_HEAD_TRAUMA_2018_CURATED_V01": 2
+      }
+    },
+    "test_op": {
+      "n": 82,
+      "partition_units": 11,
+      "source_groups": 11,
+      "l3": 22,
+      "c3_fallback": 10,
+      "out_of_scope": 0,
+      "temporal_ood": 0,
+      "regional_ood": 0,
+      "negation_conflict": 7,
+      "risk_distribution": {
+        "L1": 9,
+        "L2": 51,
+        "L3": 22
+      },
+      "disaster_distribution": {
+        "cold_wave": 8,
+        "cross_disaster_health": 4,
+        "cross_disaster_support": 8,
+        "earthquake": 6,
+        "earthquake_building_safety": 10,
+        "electrical_injury": 8,
+        "flood": 16,
+        "injury": 14,
+        "injury_first_aid": 2,
+        "medical": 6
+      },
+      "query_type_distribution": {
+        "clean_control": 6,
+        "multi_intent": 23,
+        "negation_conflict": 7,
+        "single_intent": 46
+      },
+      "evidence_source_distribution": {
+        "BJWJW_CRUSH_INJURY_2019_CURATED_V01": 16,
+        "BJWJW_HYPOTHERMIA_2022_CURATED_V01": 8,
+        "CMA_WARNING_SIGNALS_ORDER16_CURATED_V01": 8,
+        "MEM_EARTHQUAKE_FIRST_AID_2019_CURATED_V01": 10,
+        "MEM_FLOOD_SAFETY_2025_CURATED_V01": 8,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 38,
+        "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01": 10,
+        "SHQP_HEAD_TRAUMA_2018_CURATED_V01": 14
+      }
+    },
+    "test_ch": {
+      "n": 71,
+      "partition_units": 12,
+      "source_groups": 12,
+      "l3": 12,
+      "c3_fallback": 44,
+      "out_of_scope": 6,
+      "temporal_ood": 37,
+      "regional_ood": 28,
+      "negation_conflict": 8,
+      "risk_distribution": {
+        "L0": 12,
+        "L1": 28,
+        "L2": 19,
+        "L3": 12
+      },
+      "disaster_distribution": {
+        "extreme_weather_exposure": 15,
+        "fire": 28,
+        "flood": 8,
+        "general": 6,
+        "injury_first_aid": 1,
+        "operational_constraint": 13
+      },
+      "query_type_distribution": {
+        "clean_control": 4,
+        "multi_intent": 38,
+        "negation_conflict": 8,
+        "out_of_scope": 6,
+        "single_intent": 15
+      },
+      "evidence_source_distribution": {
+        "BJWJW_HYPOTHERMIA_2022_CURATED_V01": 3,
+        "JINCHENG_HIGHRISE_FIRE_2026_CURATED_V01": 28,
+        "MEM_FLOOD_PREPAREDNESS_2026_CURATED_V01": 37,
+        "NHC_DISASTER_ENV_HEALTH_2019_CURATED_V01": 24,
+        "NHC_HEALTH_LITERACY_2024_CURATED_V01": 12,
+        "NHC_PSYCHOLOGICAL_HOTLINE_2021_CURATED_V01": 2
+      }
+    }
+  },
+  "split_sha256": {
+    "train": "db6699a0abe9fc1c7ca358cddd4f4ef9be7dc0f08f6d8bfa4b9cb9722ed0ca44",
+    "valid": "0ed9d02d5f70b7fa24514a14a36f10fdfc51b877a4676c3cbc2c725e5bcee699",
+    "cal_op": "2e80a9f8635c8d76d13a0fcd687957923bb07003dfc2daaac3cbe0c02c1682e6",
+    "cal_ch": "c6703fd40da5898d7273ad534219cde39dbfd3f8bd621ee38b0d5f740eefbfe9",
+    "test_op": "0915392dd6af656a4ad774fc8396528d0b6d34fe6e05e1414d623c7d075a0059",
+    "test_ch": "cb8a8c34b5fe3df3879ed581daf8f3a41ece5cfec06977587b5736419f68051e"
+  },
+  "combined_output": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\processed\\正式400条分层冻结_v2.0.jsonl",
+    "sha256": "94f0db092cd37d839f0b4d9c89cc3c630ae7bb4eff715906b06c075d9df2b239"
+  },
+  "holdouts": {
+    "temporal": {
+      "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\splits_stratified_v2\\外部偏移子集\\时间外测试_v2.0.jsonl",
+      "n": 37,
+      "sha256": "25c58d5f78255a2d8bd612b8654d9c8f3b7a1baf422319e9334735d248549ba7"
+    },
+    "regional": {
+      "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\splits_stratified_v2\\外部偏移子集\\地区外测试_v2.0.jsonl",
+      "n": 28,
+      "sha256": "3ceb897018ec584a09fb898687ffcb0c40557dcc529491fe6d0f425bee199c07"
+    },
+    "version": {
+      "constructible": false,
+      "reason": "当前13个协议家族各只有一个纳入版本，无法构造同家族版本链外推测试；需要补入同一协议家族的前版或后续修订版。"
+    }
+  },
+  "near_duplicate_report": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\annotations\\正式400条近重复复核_v2.0.csv",
+    "sha256": "e117cce7ea22bde041c4bdf81593111fb7c9a2efce28c42deb8a7098b6ca7123",
+    "review_pairs": 0,
+    "blocking_cross_group_pairs": 0
+  },
+  "quality_report": {
+    "path": "D:\\projects\\RAG-sci\\docs\\sci-exp\\data\\logs\\正式400条分层冻结质量审计_v2.0.json",
+    "sha256": "e99788592a6f5c3da37387a71cc6877cdb2f252294d057f01404d506cf94a325"
+  },
+  "quality_gates": {
+    "exactly_400_rows": true,
+    "all_normalized_query_texts_unique": true,
+    "at_least_40_independent_source_groups": true,
+    "global_L3_C3_and_out_of_scope_quotas": true,
+    "all_six_splits_nonempty": true,
+    "source_group_no_leakage": true,
+    "near_duplicate_partition_unit_no_leakage": true,
+    "all_evidence_ids_exist": true,
+    "protocol_dates_parse_and_not_future": true,
+    "protocol_jurisdictions_present": true,
+    "protocol_family_and_version_chain_consistent": true,
+    "no_strict_required_prohibited_action_conflicts": true,
+    "operational_eval_excludes_explicit_shift_controls": true,
+    "operational_splits_each_cover_L3_and_C3": true,
+    "cal_ch_has_L3_C3_out_of_scope_and_negation": true,
+    "test_ch_has_L3_C3_out_of_scope_time_and_region_shift": true,
+    "temporal_holdout_only_in_test_ch": true,
+    "regional_holdout_only_in_test_ch": true,
+    "augmentation_absent_outside_train": true,
+    "all_adjudicated": true,
+    "development_gold_not_final": true
+  }
+}

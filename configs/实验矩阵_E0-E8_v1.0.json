@@ -1,0 +1,44 @@
+{
+  "schema_version": "sc-ea-rag-experiment-matrix-v1.0",
+  "seed": 42,
+  "configurations": ["C0", "C1", "C2", "C3"],
+  "configuration_aliases": {"C0": "Light", "C1": "Medium", "C2": "Full", "C3": "SafeFallback"},
+  "data_roles": {
+    "dev_train": "fit risk and energy models only",
+    "dev_temp": "debug, feature and implementation selection only",
+    "gold_calibration": "threshold calibration only",
+    "gold_test_op": "single final operational test",
+    "gold_test_ch": "single final challenge/shift test"
+  },
+  "energy_policies": [
+    "static_mean",
+    "no_state",
+    "state_aware"
+  ],
+  "available_energy_budgets_j": [10.0, 5.0, 3.0],
+  "measurement_gates": {
+    "maximum_relative_calibration_error": 0.02,
+    "minimum_effective_power_sample_rate_hz": 99.0,
+    "maximum_power_sample_gap_ms": 30.0,
+    "maximum_dropout_fraction": 0.001,
+    "minimum_idle_intervals": 3,
+    "minimum_sync_samples": 10,
+    "minimum_query_marker_rtt_samples": 100,
+    "stability_duration_minutes": 60
+  },
+  "execution": {
+    "warmup_runs_per_configuration": 3,
+    "measured_repetitions": 3,
+    "randomize_order": true,
+    "bootstrap_iterations": 10000,
+    "retain_failures_timeouts_and_oom": true
+  },
+  "publication_stop_rules": [
+    "E0 measurement gate fails",
+    "source_group leakage across train/calibration/test",
+    "Gold Test is development_gold or final_evaluation_eligible is not true",
+    "missing blind adjudication for any successful output",
+    "external_meter_valid is not true for an energy claim",
+    "test_op or test_ch was used for model or threshold selection"
+  ]
+}

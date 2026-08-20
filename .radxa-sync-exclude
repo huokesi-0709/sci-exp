@@ -1,0 +1,14 @@
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+.pio/
+.vscode/
+.npm-cache*/
+.playwright-cli/
+results/
+data/raw/runs/
+third_party/llama.cpp-b9627/build*/
+bin/llama-server
+bin/*.so*

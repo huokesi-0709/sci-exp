@@ -1,0 +1,80 @@
+schema_version: "1.0"
+protocol_version: "2.0.0"
+status: "blocked_pending_radxa_probe"
+freeze_rule: "以下required字段全部填写并核验SHA-256前，禁止正式主实验"
+
+device_scope:
+  primary_device_id: "E1"
+  primary_device_count: 1
+  target_class: "researcher-owned Radxa edge device"
+  windows_staging_path: "D:/projects/RAG-sci/docs/sci-exp"
+  radxa_home: "/home/radxa"
+  radxa_project_path: "/home/radxa/sci-exp"
+  second_device_in_confirmatory_study: false
+  second_device_role_if_added: "exploratory_replication_only"
+
+hardware_required:
+  radxa_model: "Radxa ZERO 3W"
+  soc: null
+  cpu_architecture: null
+  ram_bytes: null
+  ram_nominal_bytes: 8589934592
+  ram_nominal_label: "8 GB"
+  storage_type: null
+  storage_capacity_bytes: null
+  power_supply: "USB-C 5 V"
+  heatsink: null
+  fan: null
+  enclosure: null
+  ambient_temperature_c: null
+  anonymous_device_instance_id: null
+
+software_required:
+  operating_system: null
+  kernel: null
+  python_version: null
+  llama_cpp_commit: null
+  llama_server_path: "/home/radxa/sci-exp/bin/llama-server"
+  llama_server_sha256: null
+  llama_cpp_build_flags: null
+  performance_governor: null
+  background_process_policy: null
+
+model_required:
+  model_name: null
+  model_source: null
+  model_license: null
+  gguf_filename: null
+  gguf_quantization: null
+  gguf_sha256: null
+  context_length: null
+  generation_max_tokens: 512
+  temperature: 0.0
+  generation_seeds: [101, 103, 107]
+
+retrieval_frozen_after_implementation:
+  sparse: "BM25"
+  dense_model: "candidate=BAAI/bge-small-zh-v1.5; not yet locked"
+  c1_top_k: 5
+  c2_candidate_top_k: 12
+  reranker: null
+  chunking_version: "protocols-v1.0"
+
+telemetry_required:
+  power_source_type: "external inline input-rail measurement candidate"
+  power_paths: []
+  power_unit: null
+  power_scale: null
+  sampling_interval_seconds: 0.1
+  temperature_paths: []
+  physical_energy_validation: "pending INA226 calibration and query-boundary time synchronization"
+  external_meter_model: "INA226 module + R010 0.01-ohm shunt + ESP32-S3 sampler"
+  synchronization_method: null
+
+required_preflight_outputs:
+  - "results/radxa_device_info_formal_v1.0.json"
+  - "data/logs/Radxa正式实验就绪检查_v1.0.json"
+  - "模型与运行时哈希清单_v1.0.json"
+  - "功率路径与单位核验_v1.0.json"
+
+confirmatory_execution_allowed: false

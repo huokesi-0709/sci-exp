@@ -1,0 +1,48 @@
+{
+  "alpha": 0.8,
+  "delta": 0.05,
+  "details": {
+    "C0": {
+      "accepted": 3,
+      "bound_method": "wilson",
+      "coverage": 1.0,
+      "empirical_risk": 0.3333333333333333,
+      "failures": 1,
+      "threshold": 0.9737669048186428,
+      "upper_risk": 0.7464661314219244
+    },
+    "C1": {
+      "accepted": 3,
+      "bound_method": "wilson",
+      "coverage": 1.0,
+      "empirical_risk": 0.3333333333333333,
+      "failures": 1,
+      "threshold": 0.9737669048186428,
+      "upper_risk": 0.7464661314219244
+    },
+    "C2": {
+      "accepted": 3,
+      "bound_method": "wilson",
+      "coverage": 1.0,
+      "empirical_risk": 0.3333333333333333,
+      "failures": 1,
+      "threshold": 0.9737669048186428,
+      "upper_risk": 0.7464661314219244
+    },
+    "C3": {
+      "accepted": 3,
+      "bound_method": "wilson",
+      "coverage": 1.0,
+      "empirical_risk": 0.0,
+      "failures": 0,
+      "threshold": 0.125,
+      "upper_risk": 0.4741955736064207
+    }
+  },
+  "thresholds": {
+    "C0": 0.9737669048186428,
+    "C1": 0.9737669048186428,
+    "C2": 0.9737669048186428,
+    "C3": 0.125
+  }
+}

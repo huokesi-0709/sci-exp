@@ -1,0 +1,54 @@
+{
+  "disaster_type": {
+    "cold_wave": 14,
+    "cross_disaster_health": 4,
+    "cross_disaster_support": 8,
+    "earthquake": 56,
+    "earthquake_building_safety": 30,
+    "electrical_injury": 14,
+    "extreme_weather_exposure": 22,
+    "fire": 42,
+    "flood": 38,
+    "general": 30,
+    "heat": 8,
+    "injury": 26,
+    "injury_first_aid": 23,
+    "landslide": 8,
+    "lightning": 8,
+    "medical": 12,
+    "operational_constraint": 13,
+    "poisoning": 14,
+    "psychological": 15,
+    "rainstorm": 7,
+    "road_icing": 8
+  },
+  "language": {
+    "zh-CN": 400
+  },
+  "n_queries": 400,
+  "query_type": {
+    "clean_control": 22,
+    "multi_intent": 159,
+    "negation_conflict": 30,
+    "out_of_scope": 30,
+    "single_intent": 159
+  },
+  "risk_level": {
+    "0": 36,
+    "1": 81,
+    "2": 181,
+    "3": 102
+  },
+  "should_fallback": {
+    "False": 295,
+    "True": 105
+  },
+  "split": {
+    "cal_ch": 41,
+    "cal_op": 53,
+    "test_ch": 25,
+    "test_op": 75,
+    "train": 155,
+    "valid": 51
+  }
+}

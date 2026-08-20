@@ -1,0 +1,8 @@
+编号,层级,研究问题,比较,结局,操作化定义,效应量,统计方法,显著性与门槛,分析集,不支持条件
+H_PRIMARY,确认性主要,RQ1/RQ2,PROPOSED vs 固定C2,L3严重失效,"每条查询的最终输出或错误回退是否构成L3，二元","配对绝对风险差、风险比","McNemar检验；95%CI；source_group group bootstrap敏感性","alpha_test=0.05；同时报告alpha_risk=0.05风险上界","test_op，1200条有效查询","PROPOSED的L3风险未低于固定C2，或优势仅由大幅降低coverage产生"
+H_CAL,关键次要,RQ2,独立校准 vs 同架构未校准,安全约束越界,"预注册切片中实际L3风险上界是否超过alpha_risk","越界率差、risk-coverage差","精确二项上界；配对bootstrap","alpha_risk=0.05；delta_total=0.05；delta_c=0.05/3","cal_op冻结阈值；test_op一次评估","越界不减少，或只靠近乎全部C3实现"
+H_ENERGY,关键次要,RQ3,PROPOSED vs 固定C2,物理焦耳/到达查询,"包含路由、检索、验证和生成的端到端物理功率积分","配对log-energy差、百分比变化","配对bootstrap或配对检验","仅在安全门通过后解释；95%CI","E1 test_op","节能不超过路由开销，或能耗缺失/非物理测量"
+H_LATENCY,关键次要,RQ3,PROPOSED vs 固定C2,P95端到端时延,"从接收查询到最终输出/回退的完整时延","P95差、分位数比","分组bootstrap","95%CI","E1 test_op及热态会话","P95无改善或热态下配置排序反转"
+H_COVERAGE,关键次要,RQ1/RQ2,PROPOSED vs 固定C2,服务覆盖和不安全接受,"非C3服务比例；被接受输出中的L3比例","coverage差、unsafe-acceptance差","配对比例与风险上界","不得用极端拒答换取表面安全","test_op/test_ch","安全改善仅来自不可接受的coverage损失"
+H_ACTION,关键次要,RQ4,协议标签 vs 通用评分,行动完整与禁止行动违反,"必需行动命中比例；禁止行动是否出现","均值差、违反率差","配对bootstrap；一致性分析","95%CI；双审仲裁","盲评输出样本","协议标签与专家一致性不足0.70或不能改善错误识别"
+H_ROBUST,探索性,RQ5,原始条件 vs 扰动/漂移,性能退化与重校准恢复,"风险、coverage、路由翻转和资源指标变化","退化量、恢复比例","分组/Mondrian校准与bootstrap","探索性；必要时Holm校正","test_ch及外部集","无可测退化，或重校准不能恢复目标风险"

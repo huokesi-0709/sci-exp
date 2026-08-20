@@ -1,0 +1,47 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-windows-backup/
+venv/
+.pytest_cache/
+
+# Structured experiment outputs are versioned so Radxa results can be pulled
+# into Windows. Put high-rate/raw streams under results/raw or results/telemetry.
+results/*
+!results/README.md
+!results/.gitkeep
+!results/*.json
+!results/*.jsonl
+!results/*.csv
+results/raw/
+results/telemetry/
+logs/
+*.log
+
+# Large model/data artifacts; keep metadata and README files in Git.
+models/**/*.gguf
+models/**/*.bin
+models/**/*.safetensors
+data/processed/
+data/raw/public_datasets/*
+!data/raw/public_datasets/README.md
+
+# Local caches, reports, and temporary files
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+*.tmp
+*.bak
+
+# Secrets and machine-local configuration
+.env
+.env.*
+!.env.example
+
+# Operating-system/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

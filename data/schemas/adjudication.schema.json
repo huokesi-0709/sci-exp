@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Blinded expert adjudication",
+  "type": "object",
+  "required": [
+    "query_id",
+    "configuration",
+    "repetition",
+    "severe_failure",
+    "action_completeness",
+    "evidence_correct",
+    "prohibited_action_violation",
+    "fallback_correct",
+    "protocol_conflict",
+    "scope_violation",
+    "notes",
+    "adjudicator_id"
+  ],
+  "properties": {
+    "query_id": {"type": "string", "minLength": 1},
+    "configuration": {"type": "string", "enum": ["C0", "C1", "C2", "C3"]},
+    "repetition": {"type": "integer", "minimum": 0},
+    "severe_failure": {"type": "boolean"},
+    "action_completeness": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "evidence_correct": {"type": ["boolean", "null"]},
+    "prohibited_action_violation": {"type": ["boolean", "null"]},
+    "fallback_correct": {"type": ["boolean", "null"]},
+    "protocol_conflict": {"type": ["boolean", "null"]},
+    "scope_violation": {"type": ["boolean", "null"]},
+    "notes": {"type": "string"},
+    "adjudicator_id": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

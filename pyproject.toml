@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sci-exp"
+version = "0.1.0"
+description = "Offline emergency RAG experiments for a resource-constrained Radxa device"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+research = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "scikit-learn>=1.3",
+  "pandas>=2.0",
+  "psutil>=5.9",
+  "pypdf>=4.0"
+]
+dense = [
+  "sentence-transformers>=3.0,<4",
+  "torch>=2.2"
+]
+hardware = [
+  "pyserial>=3.5"
+]
+
+[project.scripts]
+sci-exp = "sci_exp.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
