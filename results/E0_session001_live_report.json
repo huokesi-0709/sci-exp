@@ -1,0 +1,91 @@
+{
+  "schema_version": "e0-power-chain-v1.0",
+  "meter_log": "data\\raw\\runs\\INA226_E0_session001.jsonl",
+  "calibration_report": null,
+  "sample_quality": {
+    "timing_source": "device_us",
+    "sample_count": 269320,
+    "duration_s": 2712.062096,
+    "effective_sample_rate_hz": 99.30414218657329,
+    "dropout_fraction": 0.0,
+    "dropout_source": "sequence",
+    "gap_ms_p50": 10.0,
+    "gap_ms_p95": 10.0,
+    "gap_ms_p99": 11.650400000003284,
+    "gap_ms_max": 17.025,
+    "sequence_missing_samples": 0,
+    "sequence_regressions": 0,
+    "quality_flag_counts": {
+      "current_saturated": 0,
+      "shunt_near_limit": 0,
+      "undervoltage": 0,
+      "integration_gap": 0
+    }
+  },
+  "idle": {
+    "intervals": [
+      {
+        "run_key": "E0_idle_001",
+        "sample_count": 920,
+        "duration_s": 9.25,
+        "mean_power_w": 1.2865395717391304,
+        "sd_power_w": 0.11646806971165224
+      },
+      {
+        "run_key": "E0_idle_101",
+        "sample_count": 6494,
+        "duration_s": 65.375,
+        "mean_power_w": 1.286011811210348,
+        "sd_power_w": 0.11134240085670195
+      },
+      {
+        "run_key": "E0_idle_102",
+        "sample_count": 6487,
+        "duration_s": 65.313,
+        "mean_power_w": 1.2781363921689533,
+        "sd_power_w": 0.10446501876620551
+      },
+      {
+        "run_key": "E0_idle_103",
+        "sample_count": 6506,
+        "duration_s": 65.5,
+        "mean_power_w": 1.2774819612665231,
+        "sd_power_w": 0.10517143050522919
+      }
+    ],
+    "interval_count": 4,
+    "minimum_interval_duration_s": 60.0,
+    "qualifying_interval_count": 3,
+    "idle_power_w_mean": 1.2805423676297019,
+    "idle_power_w_sd": 0.10710197412652794,
+    "between_interval_sd_w": 0.004747084104089376
+  },
+  "synchronization": {
+    "sync_count": 272,
+    "rtt_ms_p50": 3.5046,
+    "rtt_ms_p95": 4.445315,
+    "rtt_ms_p99": 6.29366500000002,
+    "rtt_ms_max": 9.0045,
+    "note": "旧采集日志若缺sync_request_epoch_ns，无法回算同步RTT"
+  },
+  "query_marker_rtt": {
+    "marker_rtt_count": 100,
+    "marker_rtt_ms_p50": 8.601809999618126,
+    "marker_rtt_ms_p95": 12.35430674928466,
+    "marker_rtt_ms_p99": 14.912314169869237,
+    "marker_rtt_ms_max": 21.245955000267713
+  },
+  "calibration": null,
+  "gates": {
+    "calibration_pass": false,
+    "effective_rate_pass": true,
+    "maximum_gap_pass": true,
+    "dropout_pass": true,
+    "sequence_pass": true,
+    "quality_flags_pass": true,
+    "idle_baseline_present": true,
+    "sync_samples_present": true,
+    "marker_rtt_samples_present": true
+  },
+  "e0_pass": false
+}

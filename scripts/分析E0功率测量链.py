@@ -35,35 +35,55 @@ def percentile(values: list[float], q: float) -> float | None:
 
 
 def sample_quality(samples: list[dict[str, Any]], expected_hz: float) -> dict[str, Any]:
-    ordered = sorted(samples, key=lambda row: int(row["host_monotonic_ns"]))
+    use_device_clock = bool(samples) and all(
+        row.get("device_us") is not None for row in samples
+    )
+    timing_field = "device_us" if use_device_clock else "host_monotonic_ns"
+    timing_units_per_second = 1_000_000.0 if use_device_clock else 1_000_000_000.0
+    timing_units_per_millisecond = (
+        1_000.0 if use_device_clock else 1_000_000.0
+    )
+    ordered = sorted(samples, key=lambda row: int(row[timing_field]))
     gaps_ms = [
-        (int(right["host_monotonic_ns"]) - int(left["host_monotonic_ns"]))
-        / 1_000_000.0
+        (int(right[timing_field]) - int(left[timing_field]))
+        / timing_units_per_millisecond
         for left, right in zip(ordered, ordered[1:])
     ]
     duration_s = (
-        (int(ordered[-1]["host_monotonic_ns"]) - int(ordered[0]["host_monotonic_ns"]))
-        / 1_000_000_000.0
+        (int(ordered[-1][timing_field]) - int(ordered[0][timing_field]))
+        / timing_units_per_second
         if len(ordered) >= 2
         else 0.0
     )
     effective_hz = (len(ordered) - 1) / duration_s if duration_s > 0 else None
-    expected_count = duration_s * expected_hz + 1.0
-    dropout_fraction = (
-        max(0.0, expected_count - len(ordered)) / expected_count
-        if expected_count > 0
-        else None
-    )
     sequence_gaps = 0
     sequence_regressions = 0
+    sequence_pairs = 0
     for left, right in zip(ordered, ordered[1:]):
         if left.get("seq") is None or right.get("seq") is None:
             continue
+        sequence_pairs += 1
         delta = int(right["seq"]) - int(left["seq"])
         if delta < 1:
             sequence_regressions += 1
         elif delta > 1:
             sequence_gaps += delta - 1
+    if sequence_pairs == max(0, len(ordered) - 1):
+        expected_sequence_count = len(ordered) + sequence_gaps
+        dropout_fraction = (
+            sequence_gaps / expected_sequence_count
+            if expected_sequence_count > 0
+            else None
+        )
+        dropout_source = "sequence"
+    else:
+        expected_count = duration_s * expected_hz + 1.0
+        dropout_fraction = (
+            max(0.0, expected_count - len(ordered)) / expected_count
+            if expected_count > 0
+            else None
+        )
+        dropout_source = "expected_rate"
     flags = {
         name: sum(bool(row.get(name)) for row in ordered)
         for name in (
@@ -74,10 +94,12 @@ def sample_quality(samples: list[dict[str, Any]], expected_hz: float) -> dict[st
         )
     }
     return {
+        "timing_source": timing_field,
         "sample_count": len(ordered),
         "duration_s": duration_s,
         "effective_sample_rate_hz": effective_hz,
         "dropout_fraction": dropout_fraction,
+        "dropout_source": dropout_source,
         "gap_ms_p50": percentile(gaps_ms, 0.50),
         "gap_ms_p95": percentile(gaps_ms, 0.95),
         "gap_ms_p99": percentile(gaps_ms, 0.99),
@@ -89,7 +111,9 @@ def sample_quality(samples: list[dict[str, Any]], expected_hz: float) -> dict[st
 
 
 def idle_quality(
-    samples: list[dict[str, Any]], markers: list[dict[str, Any]]
+    samples: list[dict[str, Any]],
+    markers: list[dict[str, Any]],
+    minimum_duration_s: float = 60.0,
 ) -> dict[str, Any]:
     pairs: dict[str, dict[str, dict[str, Any]]] = {}
     for marker in markers:
@@ -119,9 +143,12 @@ def idle_quality(
                 "sd_power_w": statistics.stdev(powers),
             }
         )
-    means = [float(item["mean_power_w"]) for item in intervals]
+    qualifying_intervals = [
+        item for item in intervals if float(item["duration_s"]) >= minimum_duration_s
+    ]
+    means = [float(item["mean_power_w"]) for item in qualifying_intervals]
     all_idle_powers = []
-    for item in intervals:
+    for item in qualifying_intervals:
         key = str(item["run_key"])
         pair = pairs[key]
         start = int(pair["idle_start"]["host_monotonic_ns"])
@@ -134,6 +161,8 @@ def idle_quality(
     return {
         "intervals": intervals,
         "interval_count": len(intervals),
+        "minimum_interval_duration_s": minimum_duration_s,
+        "qualifying_interval_count": len(qualifying_intervals),
         "idle_power_w_mean": statistics.mean(all_idle_powers) if all_idle_powers else None,
         "idle_power_w_sd": statistics.stdev(all_idle_powers) if len(all_idle_powers) > 1 else None,
         "between_interval_sd_w": statistics.stdev(means) if len(means) > 1 else None,
@@ -190,6 +219,7 @@ def main() -> int:
     parser.add_argument("--minimum-hz", type=float, default=99.0)
     parser.add_argument("--maximum-gap-ms", type=float, default=30.0)
     parser.add_argument("--maximum-dropout-fraction", type=float, default=0.001)
+    parser.add_argument("--minimum-idle-duration-s", type=float, default=60.0)
     args = parser.parse_args()
 
     rows = read_jsonl(args.meter_log)
@@ -202,7 +232,7 @@ def main() -> int:
     ]
     markers = [row for row in rows if row.get("type") == "marker"]
     quality = sample_quality(samples, args.expected_hz)
-    idle = idle_quality(samples, markers)
+    idle = idle_quality(samples, markers, args.minimum_idle_duration_s)
     sync = sync_quality(rows)
     marker_rtt = marker_rtt_quality(read_jsonl(args.run_log)) if args.run_log else marker_rtt_quality([])
     calibration = None
@@ -224,7 +254,7 @@ def main() -> int:
         ),
         "sequence_pass": quality["sequence_regressions"] == 0,
         "quality_flags_pass": not any(quality["quality_flag_counts"].values()),
-        "idle_baseline_present": idle["interval_count"] >= 3,
+        "idle_baseline_present": idle["qualifying_interval_count"] >= 3,
         "sync_samples_present": sync["sync_count"] >= 10,
         "marker_rtt_samples_present": marker_rtt["marker_rtt_count"] >= 100,
     }

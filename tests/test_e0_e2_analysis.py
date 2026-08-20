@@ -36,6 +36,73 @@ class ExperimentAnalysisTests(unittest.TestCase):
         self.assertEqual(quality["sequence_missing_samples"], 0)
         self.assertEqual(quality["gap_ms_max"], 10.0)
         self.assertEqual(quality["dropout_fraction"], 0.0)
+        self.assertEqual(quality["dropout_source"], "sequence")
+        self.assertEqual(quality["timing_source"], "host_monotonic_ns")
+
+    def test_e0_prefers_device_clock_over_quantized_host_clock(self):
+        module = load_script("e0_device_clock", "分析E0功率测量链.py")
+        samples = [
+            {
+                "device_us": index * 10_000,
+                "host_monotonic_ns": (index // 2) * 20_000_000,
+                "power_w": 2.0,
+                "seq": index,
+                "current_saturated": False,
+                "shunt_near_limit": False,
+                "undervoltage": False,
+                "integration_gap": False,
+            }
+            for index in range(101)
+        ]
+        quality = module.sample_quality(samples, 100.0)
+        self.assertEqual(quality["timing_source"], "device_us")
+        self.assertAlmostEqual(quality["effective_sample_rate_hz"], 100.0)
+        self.assertEqual(quality["gap_ms_max"], 10.0)
+        self.assertEqual(quality["dropout_fraction"], 0.0)
+
+    def test_e0_dropout_uses_missing_sequence_numbers(self):
+        module = load_script("e0_sequence_dropout", "分析E0功率测量链.py")
+        samples = [
+            {
+                "device_us": device_us,
+                "host_monotonic_ns": device_us * 1_000,
+                "power_w": 2.0,
+                "seq": seq,
+                "current_saturated": False,
+                "shunt_near_limit": False,
+                "undervoltage": False,
+                "integration_gap": False,
+            }
+            for seq, device_us in ((0, 0), (1, 10_000), (3, 30_000))
+        ]
+        quality = module.sample_quality(samples, 100.0)
+        self.assertEqual(quality["sequence_missing_samples"], 1)
+        self.assertEqual(quality["dropout_source"], "sequence")
+        self.assertAlmostEqual(quality["dropout_fraction"], 0.25)
+
+    def test_e0_idle_gate_counts_only_intervals_at_least_60_seconds(self):
+        module = load_script("e0_idle_duration", "分析E0功率测量链.py")
+        markers = []
+        samples = []
+        for index, duration_s in enumerate((9.0, 60.0, 61.0, 65.0), 1):
+            key = f"idle_{index}"
+            start_ns = index * 100_000_000_000
+            end_ns = start_ns + int(duration_s * 1_000_000_000)
+            markers.extend(
+                [
+                    {"event": "idle_start", "run_key": key, "host_monotonic_ns": start_ns},
+                    {"event": "idle_end", "run_key": key, "host_monotonic_ns": end_ns},
+                ]
+            )
+            samples.extend(
+                [
+                    {"host_monotonic_ns": start_ns, "power_w": 1.0},
+                    {"host_monotonic_ns": end_ns, "power_w": 1.0},
+                ]
+            )
+        idle = module.idle_quality(samples, markers, 60.0)
+        self.assertEqual(idle["interval_count"], 4)
+        self.assertEqual(idle["qualifying_interval_count"], 3)
 
     def test_sync_request_timestamp_is_preserved(self):
         module = load_script("collector", "采集INA226串口功率.py")
