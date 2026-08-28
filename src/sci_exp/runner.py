@@ -19,7 +19,7 @@ from .pipelines import ConfigurationPipeline
 from .retrieval import BM25Index, HybridIndex, make_dense_encoder
 from .risk_model import LogisticRiskPredictor
 from .router import SafetyConstrainedRouter, SoftWeightingRouter
-from .schemas import ProtocolChunk, QueryRecord
+from .schemas import InferenceQuery, ProtocolChunk, QueryRecord
 from .telemetry import TelemetrySampler, read_sample
 
 
@@ -45,7 +45,6 @@ def build_pipeline(
         c2_top_k=int(retrieval.get("c2_top_k", 8)),
         c2_candidate_k=int(retrieval.get("c2_candidate_k", 24)),
         c2_min_evidence=int(retrieval.get("c2_min_evidence", 3)),
-        strict_hazard_filter=bool(retrieval.get("strict_hazard_filter", True)),
         configuration_library={
             str(key): dict(value)
             for key, value in config.get("configuration_library", {}).items()
@@ -56,7 +55,7 @@ def build_pipeline(
 def run_exhaustive(
     config: dict[str, Any],
     protocols: list[ProtocolChunk],
-    queries: Iterable[QueryRecord],
+    queries: Iterable[QueryRecord | InferenceQuery],
     *,
     output_path: str | Path | None = None,
 ) -> list[dict[str, Any]]:
@@ -92,7 +91,7 @@ def run_exhaustive(
 def run_routed(
     config: dict[str, Any],
     protocols: list[ProtocolChunk],
-    queries: Iterable[QueryRecord],
+    queries: Iterable[QueryRecord | InferenceQuery],
     *,
     output_path: str | Path | None = None,
 ) -> list[dict[str, Any]]:
@@ -224,7 +223,7 @@ def _resolved_telemetry_config(value: dict[str, Any]) -> dict[str, Any]:
 
 def _run_one(
     pipeline: ConfigurationPipeline,
-    query: QueryRecord,
+    query: QueryRecord | InferenceQuery,
     configuration: str | None,
     repetition: int,
     telemetry_config: dict[str, Any],
@@ -232,6 +231,12 @@ def _run_one(
     run_order: int,
     router: SafetyConstrainedRouter | None = None,
 ) -> dict[str, Any]:
+    annotated_query = query if isinstance(query, QueryRecord) else None
+    inference_query = (
+        query.to_inference_query()
+        if isinstance(query, QueryRecord)
+        else query
+    )
     sampler = TelemetrySampler(
         interval_seconds=float(telemetry_config.get("sample_interval_seconds", 0.1)),
         power_paths=[str(item) for item in telemetry_config.get("power_paths", [])],
@@ -245,10 +250,10 @@ def _run_one(
     )
     started_at = datetime.now(timezone.utc).isoformat()
     requested_configuration = configuration or "ROUTED"
-    run_key = f"{query.query_id}:{requested_configuration}:{repetition}"
+    run_key = f"{inference_query.query_id}:{requested_configuration}:{repetition}"
     marker_payload = {
         "run_key": run_key,
-        "query_id": query.query_id,
+        "query_id": inference_query.query_id,
         "configuration": requested_configuration,
         "repetition": repetition,
         "run_order": run_order,
@@ -262,14 +267,14 @@ def _run_one(
         if router is not None:
             routing_state = _routing_state()
             routing_started = time.perf_counter()
-            decision = router.select(query, routing_state)
+            decision = router.select(inference_query, routing_state)
             routing_overhead_ms = (time.perf_counter() - routing_started) * 1000.0
             routing = decision.to_dict()
             routing["state_at_decision"] = routing_state
             configuration = decision.configuration
         if configuration is None:
             raise RuntimeError("configuration was not selected")
-        result = pipeline.run(configuration, query)
+        result = pipeline.run(configuration, inference_query)
         latency_ms = (time.perf_counter() - start) * 1000.0
         sampler.mark("query_end", marker_payload)
         telemetry = sampler.stop()
@@ -279,19 +284,23 @@ def _run_one(
             "started_at_utc": started_at,
             "host": platform.node(),
             "platform": platform.platform(),
-            "query_id": query.query_id,
+            "query_id": inference_query.query_id,
             "run_key": run_key,
             "run_order": run_order,
-            "source_group_id": query.source_group_id,
-            "split": query.split,
+            "source_group_id": inference_query.source_group_id,
+            "split": inference_query.split,
             "repetition": repetition,
             "latency_ms": latency_ms,
             "routing_overhead_ms": routing_overhead_ms,
-            "query_features": query_features(query),
+            "query_features": query_features(inference_query),
             **result.to_dict(),
-            "metrics": evaluate_result(query, result),
             "telemetry": telemetry,
         }
+        if annotated_query is not None:
+            row["metrics"] = evaluate_result(annotated_query, result)
+            row["evaluation_status"] = "development_inline_gold_after_inference"
+        else:
+            row["evaluation_status"] = "gold_not_present_in_inference_runtime"
         if routing is not None:
             row["routing"] = routing
     except Exception as exc:
@@ -304,11 +313,11 @@ def _run_one(
             "started_at_utc": started_at,
             "host": platform.node(),
             "platform": platform.platform(),
-            "query_id": query.query_id,
+            "query_id": inference_query.query_id,
             "run_key": run_key,
             "run_order": run_order,
-            "source_group_id": query.source_group_id,
-            "split": query.split,
+            "source_group_id": inference_query.source_group_id,
+            "split": inference_query.split,
             "configuration": configuration,
             "repetition": repetition,
             "latency_ms": latency_ms,

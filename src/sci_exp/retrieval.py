@@ -233,13 +233,18 @@ def make_dense_encoder(config: dict[str, object]) -> DenseEncoder:
 def filter_applicable_protocols(
     candidates: list[RetrievedChunk],
     *,
-    disaster_type: str,
+    predicted_hazard_types: Sequence[str] = (),
     jurisdiction: str = "",
     as_of_date: str = "",
     target_population: str = "",
     strict_hazard: bool = True,
 ) -> tuple[list[RetrievedChunk], dict[str, int]]:
-    """Apply inference-time protocol status, date, area and population gates."""
+    """Apply inference-time protocol gates using deployable information only.
+
+    ``predicted_hazard_types`` must come from an inference-time classifier or
+    another genuinely observable source.  An empty value disables hazard
+    filtering rather than consulting an annotated Gold disaster label.
+    """
 
     kept: list[RetrievedChunk] = []
     rejected: Counter[str] = Counter()
@@ -253,10 +258,10 @@ def filter_applicable_protocols(
         ):
             rejected["status"] += 1
             continue
-        if strict_hazard and chunk.hazard_types:
+        if strict_hazard and predicted_hazard_types and chunk.hazard_types:
             allowed_hazards = set(chunk.hazard_types)
             if (
-                disaster_type not in allowed_hazards
+                not (set(predicted_hazard_types) & allowed_hazards)
                 and "all_hazards" not in allowed_hazards
                 and "general_emergency" not in allowed_hazards
             ):
@@ -301,16 +306,10 @@ def merge_ranked_results(
     return [replace(item, rank=rank) for rank, item in enumerate(ordered, start=1)]
 
 
-def build_second_step_query(query: str, disaster_type: str) -> str:
-    hints = {
-        "flood": "洪水 内涝 溺水 避险 救援",
-        "fire": "火灾 烟雾 撤离 灭火 报警",
-        "earthquake": "地震 余震 避险 撤离",
-        "typhoon": "台风 暴雨 大风 避险",
-        "poisoning": "中毒 急救 现场安全",
-        "heatwave": "高温 中暑 急救",
-    }
-    return f"{query} {hints.get(disaster_type, disaster_type)}"
+def build_second_step_query(query: str) -> str:
+    """Build a Gold-free recall query from the user's text alone."""
+
+    return f"{query} 应急 现场安全 撤离 急救 官方指引"
 
 
 def detect_evidence_conflicts(
@@ -356,7 +355,6 @@ def detect_evidence_conflicts(
 
 def protocol_aware_rerank(
     query: str,
-    disaster_type: str,
     candidates: list[RetrievedChunk],
 ) -> list[RetrievedChunk]:
     """Re-rank by lexical score plus protocol validity and applicability metadata."""
@@ -366,7 +364,6 @@ def protocol_aware_rerank(
         chunk = candidate.chunk
         status_bonus = 0.35 if chunk.status in {"current", "demo"} else -1.0
         authority_bonus = min(max(chunk.authority_level, 0), 5) * 0.08
-        hazard_bonus = 0.45 if disaster_type in chunk.hazard_types else 0.0
         applicability_tokens = set(
             token
             for value in chunk.applicability
@@ -377,7 +374,6 @@ def protocol_aware_rerank(
             candidate.score
             + status_bonus
             + authority_bonus
-            + hazard_bonus
             + applicability_bonus
         )
         rescored.append((score, chunk.evidence_id, candidate))

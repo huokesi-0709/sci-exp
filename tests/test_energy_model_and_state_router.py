@@ -6,10 +6,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sci_exp.energy_model import EnergyPredictor, build_static_energy_table
 from sci_exp.router import SafetyConstrainedRouter, SoftWeightingRouter
-from sci_exp.schemas import QueryRecord
+from sci_exp.schemas import InferenceQuery, QueryRecord
 
 
-def query() -> QueryRecord:
+def query() -> InferenceQuery:
     return QueryRecord(
         query_id="q1",
         text="发生地震后应该怎么办？",
@@ -19,7 +19,7 @@ def query() -> QueryRecord:
         language="zh",
         should_fallback=False,
         source_group_id="g1",
-    )
+    ).to_inference_query()
 
 
 class AlwaysSafe:

@@ -1,0 +1,41 @@
+{
+  "schema_version": "input-gold-training-pilot-selection-audit-v1.1",
+  "generated_at": "2026-08-21T20:45:42+08:00",
+  "source": "data/processed/正式400条分层冻结_v2.0.jsonl",
+  "source_data_status": "development_gold",
+  "formal_evidence": false,
+  "selection": {
+    "training_items": 25,
+    "pilot_items": 25,
+    "query_overlap_count": 0,
+    "source_group_overlap_count": 0,
+    "maximum_items_per_source_group_per_set": 1,
+    "permanently_excluded_from_future_gold_calibration_and_test": true
+  },
+  "protocol_packet": {
+    "source": "data/processed/protocols.jsonl",
+    "protocol_corpus_version": "protocols-v1.0",
+    "chunk_count": 64,
+    "source_count": 13
+  },
+  "ontology_audit_candidates": {
+    "risk_concepts": 56,
+    "legacy_action_phrases": 88,
+    "constraint_candidates": 20,
+    "status": "BLOCKED_PENDING_DOMAIN_REVIEW"
+  },
+  "blindness_checks": {
+    "reviewer_A_contains_original_query_ids": false,
+    "reviewer_B_contains_original_query_ids": false,
+    "reviewer_A_contains_legacy_risk_stratum_columns": false,
+    "reviewer_B_contains_legacy_risk_stratum_columns": false,
+    "reviewer_order_is_different": true
+  },
+  "workbook_sha256": {
+    "00_主持人总控_输入级Gold_v1.1.xlsx": "7F85F4CB0193ECF6DB82372D99B35F7A4FC5A4903A44229BF12653403C98D992",
+    "01_发给C_领域审核与培训答案_v1.1.xlsx": "FAA18F490463A5A9C42FEC9C36423CFF43E6099A75C4A43BB85AF5DA1F11AF19",
+    "02_发给A_待C冻结后再发_v1.1.xlsx": "6FC753A692E4276CC3F6268A603D5DEF15FB1A14663FE952688528DD1964AE10",
+    "03_发给B_待C冻结后再发_v1.1.xlsx": "9BB44F44CC7366B9ADEB213CBE7F632580FAAB8F0F84CCE8EFB602B66AF56AF8"
+  },
+  "interpretation_boundary": "The selected items are questions only. Legacy development labels are not reference answers and are not distributed to raters."
+}

@@ -33,7 +33,9 @@ class GenerationChatApiTests(unittest.TestCase):
             api_style="openai_chat",
             max_tokens_by_configuration={"C0": 128},
         )
-        query = QueryRecord("q", "怎么办", "fire", "single", 3, "zh", False)
+        query = QueryRecord(
+            "q", "怎么办", "fire", "single", 3, "zh", False
+        ).to_inference_query()
         with patch("urllib.request.urlopen", return_value=_Response()) as mocked:
             result = generator.generate(query, [], configuration="C0")
         request = mocked.call_args.args[0]

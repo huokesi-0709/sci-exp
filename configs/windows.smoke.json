@@ -21,8 +21,7 @@
     "c1_candidate_k": 8,
     "c2_top_k": 4,
     "c2_candidate_k": 12,
-    "c2_min_evidence": 2,
-    "strict_hazard_filter": true
+    "c2_min_evidence": 2
   },
   "router": {
     "alpha": 0.05,

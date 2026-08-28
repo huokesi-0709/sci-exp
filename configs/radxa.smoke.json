@@ -2,7 +2,8 @@
   "project_root": "/home/radxa/sci-exp",
   "data": {
     "protocols": "data/processed/sample_protocols.jsonl",
-    "queries": "data/processed/sample_queries.jsonl"
+    "queries": "data/inference_splits_stratified_v2/sample_queries.jsonl",
+    "query_role": "inference"
   },
   "generator": {
     "backend": "extractive",
@@ -21,8 +22,7 @@
     "c1_candidate_k": 8,
     "c2_top_k": 4,
     "c2_candidate_k": 12,
-    "c2_min_evidence": 2,
-    "strict_hazard_filter": true
+    "c2_min_evidence": 2
   },
   "router": {
     "alpha": 0.05,

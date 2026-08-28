@@ -1,0 +1,3 @@
+{"language": "zh", "query_id": "demo_q001", "source_group_id": "demo_fire", "split": "smoke", "text": "房间里有烟，我现在应该怎么撤离？"}
+{"language": "zh", "query_id": "demo_q002", "source_group_id": "demo_flood", "split": "smoke", "text": "路面积水很深但我不知道水流速度，可以直接开车过去吗？"}
+{"language": "zh", "query_id": "demo_q003", "source_group_id": "demo_unknown", "split": "smoke", "text": "我这里发生了事故，应该怎么办？"}

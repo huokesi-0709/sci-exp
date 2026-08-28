@@ -4,6 +4,37 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
+GOLD_ONLY_FIELDS = frozenset(
+    {
+        "disaster_type",
+        "disaster_type_label",
+        "query_type",
+        "query_type_label",
+        "risk_level",
+        "risk_level_label",
+        "should_fallback",
+        "gold_evidence_ids",
+        "required_actions",
+        "prohibited_actions",
+        "evidence_gap_flag",
+        "expected_gap_control",
+        "reviewer_A",
+        "reviewer_B",
+        "adjudicator",
+        "adjudication_notes",
+    }
+)
+
+INFERENCE_METADATA_FIELDS = frozenset(
+    {
+        "jurisdiction",
+        "as_of_date",
+        "query_date",
+        "target_population",
+    }
+)
+
+
 @dataclass(frozen=True)
 class ProtocolChunk:
     evidence_id: str
@@ -82,6 +113,61 @@ class ProtocolChunk:
 
 
 @dataclass(frozen=True)
+class InferenceQuery:
+    """Query fields that are genuinely available before inference.
+
+    Gold labels are intentionally absent.  Retrieval, routing and generation
+    accept this type rather than ``QueryRecord`` so an annotated dataset cannot
+    silently leak labels into the deployed pipeline.
+    """
+
+    query_id: str
+    text: str
+    language: str = "unknown"
+    source_group_id: str = ""
+    split: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, value: dict[str, Any]) -> "InferenceQuery":
+        leaked = sorted(GOLD_ONLY_FIELDS & value.keys())
+        if leaked:
+            raise ValueError(
+                "inference query contains gold-only fields: " + ", ".join(leaked)
+            )
+        known = {"query_id", "text", "language", "source_group_id", "split"}
+        unknown = sorted(set(value) - known - INFERENCE_METADATA_FIELDS)
+        if unknown:
+            raise ValueError(
+                "inference query contains non-allowlisted fields: "
+                + ", ".join(unknown)
+            )
+        return cls(
+            query_id=str(value["query_id"]).strip(),
+            text=str(value["text"]).strip(),
+            language=str(value.get("language", "unknown")).strip(),
+            source_group_id=str(value.get("source_group_id", "")).strip(),
+            split=str(value.get("split", "")).strip(),
+            metadata={
+                key: value[key]
+                for key in INFERENCE_METADATA_FIELDS
+                if key in value
+            },
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        value = {
+            "query_id": self.query_id,
+            "text": self.text,
+            "language": self.language,
+            "source_group_id": self.source_group_id,
+            "split": self.split,
+        }
+        value.update(self.metadata)
+        return value
+
+
+@dataclass(frozen=True)
 class QueryRecord:
     query_id: str
     text: str
@@ -146,6 +232,22 @@ class QueryRecord:
         }
         value.update(self.metadata)
         return value
+
+    def to_inference_query(self) -> InferenceQuery:
+        """Return an allowlisted deployment view with all Gold fields removed."""
+
+        return InferenceQuery(
+            query_id=self.query_id,
+            text=self.text,
+            language=self.language,
+            source_group_id=self.source_group_id,
+            split=self.split,
+            metadata={
+                key: self.metadata[key]
+                for key in INFERENCE_METADATA_FIELDS
+                if key in self.metadata
+            },
+        )
 
 
 def _risk_level_to_int(value: Any) -> int:

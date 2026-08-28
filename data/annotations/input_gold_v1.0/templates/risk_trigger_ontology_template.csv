@@ -1,0 +1,2 @@
+trigger_id,canonical_name,definition,inclusion_criteria,exclusion_criteria,negation_rule,default_severity_range,protocol_evidence_ids,confusable_trigger_ids,status,domain_reviewer_id,reviewed_at,notes
+TRIGGER_OTHER_REVIEW,待本体审核的其他触发,仅用于发现正式本体缺项，不得作为冻结Gold标签,,,,,,,REVIEW_REQUIRED,,,

@@ -1,0 +1,110 @@
+{
+  "version": "input_gold_v1.3_scoped",
+  "status": "FORMALLY_FROZEN_SCOPED_AFTER_HOST_S_T_APPROVAL",
+  "created_at": "2026-08-24",
+  "source_host_acceptance": "D:/desktop/AAAAA标注/C/C_独立试标仲裁_v1.3_机构审核_HOST验收版.xlsx",
+  "source_host_acceptance_sha256": "913768450D77B069CBF1252418A33F29CD8FC17B84EB835008C70E907A80FA5E",
+  "source_formal_workbook": "D:/projects/RAG-sci/outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_v1.3.xlsx",
+  "source_formal_workbook_sha256": "4CCA0696DF75DC193615229A3FC0A5FE840DA6736F70C7F622820B04EA530EB7",
+  "formal_test_query_ids": [
+    "PIL-001",
+    "PIL-002",
+    "PIL-003",
+    "PIL-004",
+    "PIL-005",
+    "PIL-006",
+    "PIL-007",
+    "PIL-008",
+    "PIL-010",
+    "PIL-011",
+    "PIL-014",
+    "PIL-015"
+  ],
+  "uncertainty_challenge_query_ids": [
+    "PIL-009",
+    "PIL-012",
+    "PIL-016",
+    "PIL-017",
+    "PIL-018"
+  ],
+  "excluded_pending_query_ids": [
+    "PIL-013",
+    "PIL-019",
+    "PIL-020",
+    "PIL-021",
+    "PIL-022",
+    "PIL-023",
+    "PIL-024",
+    "PIL-025"
+  ],
+  "all_pilot_query_ids": [
+    "PIL-001",
+    "PIL-002",
+    "PIL-003",
+    "PIL-004",
+    "PIL-005",
+    "PIL-006",
+    "PIL-007",
+    "PIL-008",
+    "PIL-009",
+    "PIL-010",
+    "PIL-011",
+    "PIL-012",
+    "PIL-013",
+    "PIL-014",
+    "PIL-015",
+    "PIL-016",
+    "PIL-017",
+    "PIL-018",
+    "PIL-019",
+    "PIL-020",
+    "PIL-021",
+    "PIL-022",
+    "PIL-023",
+    "PIL-024",
+    "PIL-025"
+  ],
+  "field_boundary": {
+    "hazard_family_id": "NOT_A_DETERMINED_SUPERVISION_TARGET",
+    "query_intent_ids": "NOT_A_DETERMINED_SUPERVISION_TARGET"
+  },
+  "approvals": {
+    "HOST_P": "APPROVED",
+    "SUP_S": "APPROVED",
+    "STAT_T": "APPROVED"
+  },
+  "files": {
+    "full_archive_csv": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_full_archive_v1.3.csv",
+      "sha256": "51FF2E2B37928153D17164D37CAC66171EB8E0105EBD5CEB0C3D68D62EE051C9"
+    },
+    "formal_test_csv": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_test_v1.3.csv",
+      "sha256": "3D37D2F4AE302EDF938D551B8217715C0F64EA2966722C72B933BE7825DACA6E"
+    },
+    "challenge_csv": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_uncertainty_challenge_v1.3.csv",
+      "sha256": "8C752E549B88029AC139E0713D109C8AF66F009582E8ACE19890D0D59429AAA3"
+    },
+    "excluded_csv": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_excluded_pending_v1.3.csv",
+      "sha256": "AC9196C2B2F568AA6E5A5B1DB2A1A848BB4589C7A320DE5777656A4DC6AB833A"
+    },
+    "archive_xlsx": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_full_archive_v1.3.xlsx",
+      "sha256": "4CCA0696DF75DC193615229A3FC0A5FE840DA6736F70C7F622820B04EA530EB7"
+    },
+    "test_ids": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_test_query_ids_v1.3.txt",
+      "sha256": "83D8952960C7D9DED0FE5AC7F2A44967B6306B7379B2560521959932DFD62452"
+    },
+    "nontraining_ids": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_nontraining_ids_v1.3.txt",
+      "sha256": "2089FD3ECD49D280FB1B26A55FB6A72A7A9AC013F8531D270391B0CEC3853449"
+    },
+    "readme": {
+      "path": "D:/projects/RAG-sci/docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/README.md",
+      "sha256": "6D7B13F8BADD4E5D4C8645BF00E1B22EC8D9842530BC94D92DA8AE37DC75E987"
+    }
+  }
+}

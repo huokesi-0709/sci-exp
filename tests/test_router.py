@@ -6,10 +6,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sci_exp.router import SafetyConstrainedRouter
 from sci_exp.features import query_features
-from sci_exp.schemas import QueryRecord
+from sci_exp.schemas import InferenceQuery, QueryRecord
 
 
-def query(text: str, query_type: str, risk: int, disaster: str) -> QueryRecord:
+def query(
+    text: str, query_type: str, risk: int, disaster: str
+) -> InferenceQuery:
     return QueryRecord(
         query_id="q",
         text=text,
@@ -19,7 +21,7 @@ def query(text: str, query_type: str, risk: int, disaster: str) -> QueryRecord:
         language="zh",
         should_fallback=query_type == "insufficient_information",
         source_group_id="g",
-    )
+    ).to_inference_query()
 
 
 class RouterTests(unittest.TestCase):

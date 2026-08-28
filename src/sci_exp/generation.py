@@ -6,7 +6,7 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Protocol
 
-from .schemas import QueryRecord, RetrievedChunk
+from .schemas import InferenceQuery, RetrievedChunk
 
 
 @dataclass(frozen=True)
@@ -20,7 +20,7 @@ class GenerationResult:
 class Generator(Protocol):
     def generate(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         evidence: list[RetrievedChunk],
         *,
         configuration: str,
@@ -28,7 +28,7 @@ class Generator(Protocol):
 
 
 def build_prompt(
-    query: QueryRecord,
+    query: InferenceQuery,
     evidence: list[RetrievedChunk],
     *,
     configuration: str = "C2",
@@ -66,7 +66,7 @@ class ExtractiveGenerator:
 
     def generate(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         evidence: list[RetrievedChunk],
         *,
         configuration: str,
@@ -128,7 +128,7 @@ class LlamaServerGenerator:
 
     def generate(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         evidence: list[RetrievedChunk],
         *,
         configuration: str,
@@ -211,7 +211,7 @@ def _optional_int(value: object) -> int | None:
         return None
 
 
-def render_safety_fallback(query: QueryRecord, reason: str) -> str:
+def render_safety_fallback(query: InferenceQuery, reason: str) -> str:
     templates = {
         "out_of_scope": (
             "这个问题超出当前离线应急协议库的范围，无法安全作答。请联系相应的"

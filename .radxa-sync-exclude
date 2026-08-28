@@ -9,6 +9,15 @@ __pycache__/
 .playwright-cli/
 results/
 data/raw/runs/
+# Gold、双审、裁决和完整开发记录不得进入推理设备。
+data/annotations/
+data/formal_preprocess_v1.0/
+data/pilot_preprocess_v0.1/
+data/splits/
+data/splits_stratified_v2/
+data/processed/queries.cleaned.jsonl
+data/processed/sample_queries.jsonl
+data/processed/*查询*.jsonl
 third_party/llama.cpp-b9627/build*/
 bin/llama-server
 bin/*.so*

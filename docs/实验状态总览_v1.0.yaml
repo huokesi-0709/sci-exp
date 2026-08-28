@@ -1,0 +1,937 @@
+schema_version: sci-exp-stage-ledger-v1.0
+updated_at: "2026-08-28T00:00:00+08:00"
+timezone: Asia/Shanghai
+project: SC-EA-RAG
+status_authority: docs/实验状态总览_v1.0.yaml
+requirements_authority: docs/E0-E8实验设计与执行协议_v1.0.md
+agent_rules: AGENTS.md
+
+status_semantics:
+  completed: 已有可定位证据并满足对应冻结门槛
+  in_progress: 已完成部分门槛，但阶段尚未通过
+  waiting_hardware: 继续工作需要已下单但尚未到货的硬件
+  formal_blocked: 不允许产生或宣称正式论文级结果
+  dry_run_only: 只允许准备、测试或模拟，不计入正式证据
+
+global_rules:
+  - 先读取本账本，再规划实验；不得从E0自动重新开始
+  - 已完成门槛除非设备、固件、接线或协议改变，否则不得自动重跑
+  - 新实验不得覆盖旧原始文件，必须使用新的session和run ID
+  - E0正式通过前，所有要求有效物理能耗的正式E1至E8运行停止
+  - dry-run必须记录formal_evidence为false
+  - 每次实验后更新账本、实验日志、证据哈希和异常记录
+
+resolved_issues:
+  gold_label_inference_leakage:
+    status: resolved
+    resolved_at: "2026-08-21"
+    record_id: SCER-DG-260821-001
+    formal_evidence: false
+    summary: 推理端只接受Gold-free InferenceQuery，C2不再读取人工disaster_type
+    verification:
+      unit_tests_passed: 71
+      inference_jsonl_files: 7
+      inference_rows_including_smoke: 403
+      development_partition_rows: 400
+      gold_fields_found: 0
+    controls:
+      - 完整QueryRecord直接进入ConfigurationPipeline时被拒绝
+      - Runner在路由检索生成前强制转换为InferenceQuery
+      - Radxa配置设置data.query_role为inference并指向独立推理分区
+      - 同步排除清单阻止完整标注和Gold分区继续传输
+    record: docs/实验日志/SCER-DG-260821-001_Gold标签隔离修复.md
+    reopen_condition: InferenceQuery、推理Schema、Runner边界、C2检索或Radxa查询路径发生破坏性变更
+    boundary: 不改变E0状态，不代表development_gold升级为正式Gold Test
+
+preparatory_work:
+  input_gold_annotation_package:
+    status: partial_domain_approval_pending_uncovered_domain_resolution_and_statistics_approval
+    updated_at: "2026-08-22T17:20:00+08:00"
+    record_id: SCER-DG-260822-003
+    formal_evidence: false
+    source_data_status: development_gold
+    training_items: 25
+    pilot_items: 25
+    query_overlap_count: 0
+    source_group_overlap_count: 0
+    protocol_chunks: 64
+    methodology_gate_status: supervisor_scoped_domain_approval_recorded_statistics_reviewer_T_pending
+    ontology_status: supplement_resolved_identity_verified_partial_domain_coverage
+    verification:
+      unit_tests_passed: 71
+      agreement_smoke_status: BLOCKED_EXPECTED_FOR_N4
+      reviewer_workbooks: 4
+      reviewer_A_legacy_label_leakage_found: false
+      reviewer_B_legacy_label_leakage_found: false
+      domain_review_returned: true
+      domain_review_source_sha256: 5C32231329D2BA6E5D4CE8FB83B90DE474D400B27549DAB93B132797916D6F1A
+      ontology_unique_ids_returned:
+        risk_trigger: 29
+        action: 59
+        constraint: 27
+      supplemental_action_items_required: 2
+      evidence_span_schema_repairs_required: 20
+      supplemental_action_items_resolved: 2
+      mechanical_fixes_acknowledged: 4
+      domain_reviewer_identity_verified: true
+      credential_verified_by: HOST-P
+      credential_sensitive_material_stored_in_workbook: false
+      training_completed_at: "2026-06-15T12:16:00+08:00"
+      domain_signed_at: "2026-06-16T12:16:00+08:00"
+      C_supplement_source_sha256: A30FFE7E65352A34BC542E52AFF3A3BB8CD33710C89371F2EC3514F56B6356DC
+      clean_acceptance_workbook_sha256: 1B86820105B723F9822A613D1925065D4AE982E48244D6805A181EA6105B9E73
+      host_registry_update_workbook_sha256: 87BE93529312EDE92BC29580F4AD1B2C8C771B5EED9D718081940D2141A4A94A
+      annotator_A:
+        status: REGISTERED_PENDING_TRAINING_AND_PILOT
+        profession_category: 社会急救/红十字应急救护员
+        highest_relevant_qualification: 中国红十字会应急救护员证书
+        credential_status: valid_and_verified_by_HOST_P
+        relevant_years: 3
+        training_hours: 120_plus
+        clinical_license: false
+        legacy_label_or_model_exposure: false
+        conflict_of_interest: NONE_DECLARED
+        independence_statement: YES
+        training_completed_at: "2026-06-15T12:16:00+08:00"
+      annotator_B:
+        status: REGISTERED_PENDING_TRAINING_AND_PILOT
+        profession_category: 红十字初级救护员/急救文本结构化标注
+        highest_relevant_qualification: 红十字会初级救护员证书
+        credential_status: valid_and_verified_by_HOST_P
+        relevant_years: 2
+        clinical_license: false
+        legacy_label_or_model_exposure: false
+        conflict_of_interest: NONE_DECLARED
+        independence_statement: YES
+        training_completed_at: "2026-06-15T12:16:00+08:00"
+      annotator_scope_note: A/B仅在冻结公众初级救护协议范围内执行risk/action/constraint/training_reference/pilot_annotation字段，不承担领域仲裁。
+      supervisor_scope_approval: SCOPED_APPROVAL
+      domain_coverage_status: partial
+      approved_scope:
+        - 心肺复苏
+        - AED
+        - 创伤处置
+        - 低温
+        - 烧伤
+        - 与上述主题直接相关且受冻结公众协议支持的公众初级救护内容
+      not_automatically_covered:
+        - 心理援助与自伤
+        - 地质灾害
+        - 气象预警
+        - 消防
+        - 公共卫生
+      full_A_B_package_release: HOLD
+      statistics_reviewer_T_approval: pending
+      scoped_preannotation_status: V1_3_PILOT_RETURNED_UNCERTAINTY_CODE_REPAIR_REQUIRED_BEFORE_AGREEMENT
+      scoped_preannotation_formal_evidence: false
+      scoped_preannotation_workbook_output_dir: outputs/input_gold_scoped_annotation_start_20260822
+      scoped_preannotation_workbooks:
+        - ANN-A_培训25_公众急救范围启动_v1.2.xlsx
+        - ANN-B_培训25_公众急救范围启动_v1.2.xlsx
+        - ANN-A_独立试标25_公众急救范围启动_v1.2.xlsx
+        - ANN-B_独立试标25_公众急救范围启动_v1.2.xlsx
+      scoped_preannotation_workbook_sha256:
+        ANN-A_training: 2D36508C4EB11099DFA0E674912DEF33E417874FC088E57287278C246BE252ED
+        ANN-B_training: 39BF343E5A0E9B050B60BB28F1D77C3FBB202786984BBF6276B889305C5F8FED
+        ANN-A_pilot: 0878FE301A42B8607A23252D5B6605150895DFF88B174654BE8B308D8B5167FA
+        ANN-B_pilot: F16B2E5FC363BB358A0835CA1BFEC529733940FD833CECDAC4965C4D7B91C1D3
+      v1_3_training_package_output_dir: outputs/input_gold_scoped_annotation_start_20260822_v1.3
+      v1_3_training_packages:
+        - ANN-A_培训25_公众急救范围启动_v1.3.xlsx
+        - ANN-B_培训25_公众急救范围启动_v1.3.xlsx
+      v1_3_training_package_sha256:
+        ANN-A_training: E0BD314863CD84A0F40ADD59353DC66CF0241068BCF036E38FA4B82669870E13
+        ANN-B_training: 3389CA28D5A8CBAC7C81E7D6FA98BDF5CBFFF930CE8C1C0DC2BDCB7212D8850F
+      v1_3_controlled_id_dictionary:
+        risk_trigger: 29
+        action: 59
+        constraint: 27
+      v1_3_verification:
+        training_rows_each: 25
+        query_id_set_preserved: true
+        pilot_body_nonblank: 0
+        formula_error_count: 0
+        source_C_sha256: 5C32231329D2BA6E5D4CE8FB83B90DE474D400B27549DAB93B132797916D6F1A
+      v1_3_training_returns:
+        ANN-A: ANN-A_培训25_公众急救范围启动_v1.3_已完成.xlsx
+        ANN-B: ANN-B_培训25_公众急救范围启动_v1.3_已完成.xlsx
+        ANN-A_sha256: 4806FEEF0AE517A6143C6C9623FCE06316F04D105C680C340A40CBC0F776A6A7
+        ANN-B_sha256: 0C9F74C11FEE24231882513AEE77BA379CE839E17C2D525E751664DA851799F3
+      v1_3_training_return_notes:
+        - ANN-A: TRN-018/TRN-020 required_prohibited_overlap_retained_as_training_error
+        - ANN-B: hazard_family_and_query_intent_filled_ONTOLOGY_GAP_despite_unfrozen_field_rule
+        - training_answers_not_host_rewritten: true
+      v1_3_pilot_package_output_dir: outputs/input_gold_scoped_annotation_start_20260823
+      v1_3_pilot_packages:
+        - ANN-A_独立试标25_公众急救范围启动_v1.3.xlsx
+        - ANN-B_独立试标25_公众急救范围启动_v1.3.xlsx
+      v1_3_pilot_package_sha256:
+        ANN-A_pilot: F1720CDDBFAFA8EB543142710BC18586B7D9E46003C385824FA57B84A1EC0E19
+        ANN-B_pilot: 012BACDA5D0FF650761ADAADED554AC5EAF7B5E8EF2383E858222564FE39BC03
+      v1_3_pilot_package_verification:
+        training_body_nonblank_each: 0
+        pilot_rows_each: 25
+        pilot_query_id_set_match: true
+        controlled_id_dictionary_attached: true
+        formula_error_count: 0
+      c_training_lecture_received: true
+      pilot_release_formal_evidence: false
+      v1_3_pilot_returns:
+        ANN-A: ANN-A_独立试标25_公众急救范围启动_v1.3_已标注.xlsx
+        ANN-B: ANN-B_独立试标25_公众急救范围启动_v1.3_已标注.xlsx
+        ANN-A_sha256: 41765008358A82D93406ED5EE2AC32585A6EF09E82D1422FB88C905F7E3B8FE3
+        ANN-B_sha256: 89220058DF009B51F91EB030B5382F7024C534BB4967249CACF5AA789B095058
+      v1_3_pilot_return_precheck:
+        rows_each: 25
+        query_id_set_match: true
+        training_body_nonblank_each: 0
+        formula_error_count: 0
+        ANN-A_evidence_span_refs_json_blank_rows: 25
+        ANN-B_evidence_span_refs_missing_span_ref_objects: true
+        ANN-B_unfrozen_fields_filled_with_ONTOLOGY_GAP_rows: 25
+        agreement_script_status: HOLD
+        next_action: ANN-A_AND_ANN-B_evidence_span_json_repair_only
+      v1_3_pilot_return_repair:
+        ANN-A: ANN-A_独立试标25_公众急救范围启动_v1.3_证据跨度修正版.xlsx
+        ANN-B: ANN-B_独立试标25_公众急救范围启动_v1.3_证据跨度修正版.xlsx
+        ANN-A_sha256: 6BE5896A5444062524E5681C410176F97721ECF6AEDEA98A6BC561061129CF61
+        ANN-B_sha256: AC3EC1857E97784AB9F770CFCE3D71F2C1B0E13D6818BC62C5B574BC2288A924
+        evidence_span_schema_valid_each: true
+        evidence_span_refs_in_evidence_ids_each: true
+        structural_action_conflicts_each: 0
+        uncertainty_code_single_controlled_value: false
+        ANN-A_multi_value_uncertainty_rows: 8
+        ANN-B_custom_or_multi_value_uncertainty_rows: 18
+        completed_at_workbook_serialization: HOST_ISO8601_NORMALIZATION_REQUIRED
+        agreement_script_status: HOLD
+        next_action: ANN-A_AND_ANN-B_uncertainty_code_single_value_repair_only
+      v1_3_pilot_agreement:
+        reviewer_A_csv_sha256: A0E6224EFB74901CB6758C26E43D614FDFF7D319BC506D8E614A1D800C652A84
+        reviewer_B_csv_sha256: FE98DDE1978017B179341F563F266667F0FA3864FB98EB8627F8A78354724869
+        paired_items: 25
+        bootstrap_iterations: 2000
+        metric_decision: REVIEW_REQUIRED
+        formal_decision: REVIEW_REQUIRED_UNTIL_GATE_PROFILE_APPROVED
+        disagreement_query_count: 25
+        severe_severity_disagreement_count: 0
+        required_prohibited_conflict_count: 0
+        critical_not_required_conflict_count: 0
+        report_md: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_pilot_agreement/输入级Gold一致性报告_v1.3.md
+        report_json: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_pilot_agreement/输入级Gold一致性报告_v1.3.json
+        adjudication_workbook: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_pilot_agreement/C_独立试标仲裁_v1.3.xlsx
+        adjudication_rows: 25
+        next_action: SEND_ADJUDICATION_WORKBOOK_AND_REPORT_TO_ANN-C_WITH_REVIEW_REQUIRED_BOUNDARY
+      v1_3_c_adjudication_return:
+        source: D:/desktop/AAAAA标注/C/C_独立试标仲裁_v1.3_已完成.xlsx
+        sha256: FA36C5F5E7592575F29FCEBE426E1C3846923D857BC31AC388FFE5627AF4A24F
+        rows: 25
+        final_values_filled: 25
+        substantive_evidence_and_structure_qa: PASS
+        formula_error_count: 0
+        input_snapshot_modified: false
+        schema_status: C_SCHEMA_REPAIR_REQUIRED_BEFORE_FINAL_GOLD
+        schema_errors:
+          - decision_uses_unfrozen_ADJUDICATED_values
+          - protocol_gap_not_boolean
+          - manual_or_ontology_change_required_not_boolean
+          - final_uncertainty_code_multivalue_or_unfrozen
+        next_action: ANN-C_MECHANICAL_SCHEMA_REPAIR_ONLY_THEN_FINAL_GOLD_QA
+      v1_3_c_schema_repair_return:
+        source: D:/desktop/AAAAA标注/C/C_独立试标仲裁_v1.3_SCHEMA修正版.xlsx
+        sha256: 5C05BBCAFB583CDE1C62DA20A58626A0C6FF031E436EB927B731DDD589D9DBBF
+        rows: 25
+        schema_mechanical_qa: PASS
+        final_gold_derivation_status: DERIVED_NOT_FORMALLY_FROZEN_REVIEW_REQUIRED
+        final_gold_xlsx: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_final_gold/输入级Gold_仲裁后派生_v1.3_非正式冻结.xlsx
+        final_gold_csv: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_final_gold/输入级Gold_仲裁后派生_v1.3_非正式冻结.csv
+        final_gold_qa_md: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_final_gold/仲裁后Gold_QA报告_v1.3.md
+        final_gold_qa_json: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_final_gold/仲裁后Gold_QA报告_v1.3.json
+        final_gold_rows: 25
+        final_gold_structural_errors: 0
+        final_gold_evidence_span_errors: 0
+        final_gold_unresolved_rows: 10
+        final_gold_out_of_scope_rows: 3
+        final_gold_index_locator_span_fills: 2
+        confidence_derivation: MIN_A_B_CONFIDENCE
+        hazard_query_normalization: UNRESOLVED_OR_ONTOLOGY_GAP_TO_BLANK
+        next_action: HOLD_UNTIL_UNCOVERED_DOMAIN_AND_STATISTICS_APPROVAL
+      v1_3_c_org_adjudication_return:
+        source: D:/desktop/AAAAA标注/C/C_独立试标仲裁_v1.3_机构审核已完成.xlsx
+        sha256: C0DAA1796AD7DC48BF929A8E0B79079F87E861C3CC3CC58A860F860FF811876A
+        adjudicator_id: ANN-C-ORG
+        covered_fields: risk|action|constraint|training_reference|pilot_adjudication|ontology_review
+        rows: 25
+        decision_distribution:
+          NEW: 21
+          A: 4
+          B: 0
+        protocol_gap_true: 5
+        manual_or_ontology_change_required_true: 5
+        input_snapshot_modified: false
+        mechanical_qa: PASS
+        credential_verified_by: MISSING_HOST_ENTRY
+        final_gold_derivation_status: DERIVED_NOT_FORMALLY_FROZEN_REVIEW_REQUIRED
+        final_gold_output_dir: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_final_gold_org
+        final_gold_xlsx_sha256: 437A4E2ED860CD29D6AD7A2BC2168BC09E997CA35910B54EF1424D0F677011A3
+        final_gold_csv_sha256: 5210380B3DE3BE5F428B450221A623691F0F576D335C4E06223C79AAB2BC7477
+        final_gold_qa_md_sha256: 82632A2BEC80851494BD0F72D49BB0073BC82DE8138974A2F088F0E4DBA2A236
+        final_gold_qa_json_sha256: 9513CD42151EEBE2E93820155D22207007C75B682C5BCC25266B0897561A6276
+        evidence_span_index_locator_fills: 4
+        formal_gate: HOLD_UNTIL_HOST_CREDENTIAL_ENTRY_AND_SUPERVISOR_STATISTICS_APPROVAL
+        record: docs/实验日志/SCER-DG-260824-001_v1.3机构仲裁回传审计与派生Gold.md
+      v1_3_formal_scoped_freeze:
+        status: FORMALLY_FROZEN_SCOPED
+        formal_evidence: true
+        host_source: D:/desktop/AAAAA标注/C/C_独立试标仲裁_v1.3_机构审核_HOST验收版.xlsx
+        host_source_sha256: 913768450D77B069CBF1252418A33F29CD8FC17B84EB835008C70E907A80FA5E
+        approvals:
+          HOST-P: APPROVED
+          SUP-S: APPROVED
+          STAT-T: APPROVED
+        full_archive_rows: 25
+        formal_supervision_rows: 12
+        uncertainty_challenge_rows: 5
+        excluded_or_pending_rows: 8
+        decision_distribution:
+          NEW: 21
+          A: 4
+          B: 0
+        protocol_gap_rows: 5
+        manual_or_ontology_change_rows: 5
+        hazard_query_ontology_as_supervision_target: false
+        final_xlsx: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_v1.3.xlsx
+        final_xlsx_sha256: 4CCA0696DF75DC193615229A3FC0A5FE840DA6736F70C7F622820B04EA530EB7
+        full_csv: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_v1.3_全量25.csv
+        full_csv_sha256: 51FF2E2B37928153D17164D37CAC66171EB8E0105EBD5CEB0C3D68D62EE051C9
+        supervision_csv: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_v1.3_监督子集12.csv
+        supervision_csv_sha256: 3D37D2F4AE302EDF938D551B8217715C0F64EA2966722C72B933BE7825DACA6E
+        qa_md: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_QA报告_v1.3.md
+        qa_json: outputs/input_gold_scoped_annotation_start_20260823/qa_v13_formal_scoped_gold/输入级Gold_机构仲裁正式冻结_QA报告_v1.3.json
+        next_action: USE_ONLY_FORMAL_SUPERVISION_SUBSET12_FOR_DETERMINED_SUPERVISION_TARGETS
+        record: docs/实验日志/SCER-DG-260824-002_v1.3正式范围限定Gold冻结.md
+      v1_3_gold_test_registration:
+        status: GOLD_TEST_REGISTERED_AND_LEAKAGE_CONTROLS_MATERIALIZED
+        directory: docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3
+        formal_test_rows: 12
+        uncertainty_challenge_rows: 5
+        excluded_pending_rows: 8
+        all_nontraining_rows: 25
+        manifest: docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_test_manifest_v1.3.json
+        formal_test_csv: docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_test_v1.3.csv
+        nontraining_id_list: docs/sci-exp/data/annotations/input_gold_v1.0/frozen/gold_test_v1.3/gold_nontraining_ids_v1.3.txt
+        leakage_rule: ALL_25_PILOT_IDS_EXCLUDED_FROM_TRAINING_FEWSHOT_RETRIEVAL_AND_TUNING
+        evaluation_rule: READ_ONLY_FORMAL_TEST_CSV_12_ROWS
+        record: docs/实验日志/SCER-DG-260824-003_v1.3GoldTest注册与防泄漏材料.md
+      boundary: 培训与试标题永久排除于正式Gold calibration/test；未覆盖领域完成补审或正式排除且T批准前，完整A/B包不得发放或改为approved
+      record: docs/实验日志/SCER-DG-260823-006_v1.3独立试标回传预检与仲裁暂停.md
+
+stages:
+  E0:
+    name: 功率测量链验证
+    status: formal_pass_with_operational_reference_limitations
+    formal_pass: true
+    last_session: E0_20260828_stability_radxa_idle_marked_003
+    completed_gates:
+      continuous_sampling:
+        report_sample_count: 378348
+        report_duration_s: 3809.973096
+        effective_sample_rate_hz: 99.30437577032171
+        dropout_fraction: 0.0
+        maximum_gap_ms: 17.026
+        sequence_missing_samples: 0
+        sequence_regressions: 0
+        quality_flags_total: 0
+        current_software_gate_pass: true
+        evidence_status: report_retained_but_full_raw_not_in_repository
+      idle_baseline:
+        qualifying_intervals: 3
+        interval_duration_s_approx: 65
+        aggregate_mean_power_w: 1.2805423676297019
+        between_interval_sd_w: 0.004747084104089376
+        current_software_gate_pass: true
+      synchronization:
+        sync_count: 381
+        rtt_ms_p99: 6.107399999999994
+        current_software_gate_pass: true
+      external_markers:
+        marker_count: 100
+        errors: 0
+        rtt_ms_p50: 8.601809999618126
+        rtt_ms_p95: 12.35430674928466
+        rtt_ms_p99: 14.912314169869237
+        rtt_ms_max: 21.245955000267713
+        current_software_gate_pass: true
+      radxa_hardware_observation:
+        samples: 1089
+        duration_s: 229.98755894199985
+        cooling_state_peak: 0.0
+        thermal_throttling_observed: false
+    invalid_preflight_20260826:
+      status: invalid_not_for_calibration
+      reason:
+        - ZERO在约1.07A和1.12A的真实负载下执行，错误零偏被写入ESP32偏好设置
+        - 1A和2A尝试的INA226负载侧平均电压分别为4.68V和4.40V，低于4.75V门槛
+      stream_summaries:
+        P05:
+          samples: 6147
+          raw_current_mean_a: 0.58
+          corrected_current_mean_a: -0.54
+          bus_voltage_mean_v: 4.88
+        P10:
+          samples: 6171
+          raw_current_mean_a: 1.10
+          corrected_current_mean_a: -0.02
+          bus_voltage_mean_v: 4.68
+        P20:
+          samples: 6510
+          raw_current_mean_a: 2.04
+          corrected_current_mean_a: 0.93
+          bus_voltage_mean_v: 4.40
+    invalid_recalibration_r1_20260826:
+      status: invalid_undervoltage_not_for_calibration
+      cold_zero_offset_a: -0.000285156
+      cold_gain: 0.906461537
+      cold_cal_reference_a: 1.046
+      hot_zero_offset_a: -0.000507813
+      hot_gain: 0.925798118
+      hot_cal_reference_a: 1.046
+      note: 冷/热ZERO均接近0；gain差异约2.13%，参考仪器准确度/读数稳定性仍需记录
+      reference_display_readings:
+        P05: {voltage_v: 4.608, current_a: 0.490}
+        P10: {voltage_v: 4.280, current_a: 1.015}
+        P20: {voltage_v: 3.800, current_a: 2.000}
+      source_condition: 移动电源与USB转接链在三点均欠压；不得作为E0三点校准电源
+      stream_summaries:
+        P05:
+          samples: 5423
+          duration_s: 54.599
+          effective_rate_hz: 99.306
+          bus_voltage_mean_v: 4.8957
+          bus_voltage_min_v: 4.875
+          corrected_current_mean_a: 0.5103
+          power_mean_w: 2.4983
+          maximum_gap_ms: 16.022
+          quality_flags: 0
+        P10:
+          samples: 5504
+          duration_s: 55.411
+          effective_rate_hz: 99.312
+          bus_voltage_mean_v: 4.7190
+          bus_voltage_min_v: 4.7012
+          corrected_current_mean_a: 0.9807
+          power_mean_w: 4.6279
+          maximum_gap_ms: 16.021
+          undervoltage_samples: 5504
+        P20:
+          samples: 5564
+          duration_s: 56.011
+          effective_rate_hz: 99.320
+          bus_voltage_mean_v: 4.3546
+          bus_voltage_min_v: 4.3188
+          corrected_current_mean_a: 1.9441
+          power_mean_w: 8.4656
+          maximum_gap_ms: 16.022
+          undervoltage_samples: 5564
+    invalid_recalibration_overwrite_20260827:
+      status: invalid_undervoltage_and_raw_overwrite
+      record_id: SCER-PM-260827-001
+      formal_evidence: false
+      cold_zero_offset_a: 0.019597657
+      cold_gain: 1.070212603
+      hot_zero_offset_a: 0.019546876
+      hot_gain: 1.026941061
+      gain_difference_percent_approx: 4.1
+      estimated_series_resistance_ohm_approx: 0.69
+      raw_retention_status: current_files_complete_but_previous_r1_files_overwritten
+      stream_summaries:
+        P05:
+          samples: 3477
+          duration_s: 34.994
+          bus_voltage_mean_v: 4.650823
+          raw_current_mean_a: 0.492967
+          corrected_current_mean_a: 0.506605
+          undervoltage_samples: 3477
+          sha256: FC579C13F4468EB323F08DEBF5AFEE6B95D1C737853B1C92FB460D9D4028635F
+        P10:
+          samples: 5061
+          duration_s: 50.946
+          bus_voltage_mean_v: 4.323599
+          raw_current_mean_a: 0.980240
+          corrected_current_mean_a: 1.028091
+          undervoltage_samples: 5061
+          sha256: C8B5DE929DF396D981344D1B74372552C21196C4F9248092B22B7862EA23EA49
+        P20:
+          samples: 5146
+          duration_s: 51.808
+          bus_voltage_mean_v: 3.644366
+          raw_current_mean_a: 1.961207
+          corrected_current_mean_a: 2.077935
+          undervoltage_samples: 5146
+          sha256: 2E505780479E23DFC0AC4945E4C6FF3B5BAA5A51B1BD4CE5EB3EBDAC38B3DBE4
+    invalid_recalibration_hot_zero_20260827:
+      status: invalid_undervoltage_hot_zero_under_load_and_raw_overwrite
+      record_id: SCER-PM-260827-002
+      formal_evidence: false
+      cold_zero_offset_a: -0.000078125
+      cold_cal_reference_a: 1.002
+      cold_cal_measured_a: 0.994918048
+      cold_gain: 1.007118106
+      hot_zero_offset_a: 1.980511785
+      hot_cal_reference_a: 1.001
+      hot_cal_measured_a: -0.986113310
+      hot_cal_ok: false
+      persistent_calibration_state: recovered_by_empty_load_reset_gain_is_1
+      recovery:
+        reset_ok: true
+        zero_ok: true
+        offset_a: -0.000203125
+        samples: 64
+        gain: 1.0
+        interpretation: 错误offset已清除；供电压降未解决，暂不执行CAL
+      voltage_drop_diagnostic_20260828:
+        record_id: SCER-PM-260828-001
+        formal_evidence: false
+        source_mode: UTP3313_5V_CV
+        source_current_a: [0.634, 0.634, 0.634]
+        aneng_current_a: [0.492, 0.523, 0.523]
+        node_voltage_v:
+          U0_utp_terminals: 5.00
+          U1_ina226_vin_gnd: 4.54
+          U2_ina226_vout_gnd: 4.53
+          U3_aneng_display: 4.328
+        segment_drop_v:
+          U0_to_U1: 0.46
+          U1_to_U2: 0.01
+          U2_to_U3: 0.202
+        interpretation: 主要高阻段在INA226前后的USB-A转接/引线/接触链；INA226分流路径未见显著压降；ANENG电流与UTP不一致，暂不能作可信参考
+        direct_input_followup:
+          U1_ina226_vin_gnd_v: 4.92
+          U2_ina226_vout_gnd_v: 4.92
+          U3_aneng_display_v: 4.776
+          utp_current_a_approx: 0.5
+          aneng_current_a_approx: 0.43
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_direct_input_P05_001.full.jsonl
+          collector_samples: 3127
+          collector_invalid: 0
+          collector_sha256: EB154EE70D406D80CF318BA8E57F94B8B2F977B2331C6C5C72020253D8F45CBD
+          ina226_raw_current_mean_a: 0.49918516149664216
+          ina226_current_mean_a: 0.4993881614966421
+          ina226_bus_voltage_mean_v: 4.9106315957787015
+          ina226_power_mean_w: 2.4523119040614008
+          interpretation: UTP短粗测试线直连输入后，输入高阻显著改善；INA226约0.499A与UTP约0.5A一致，ANENG约0.43A低读约13.9%；输出段仍有约0.144V压降
+        output_direct_usb_a_followup:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_output_direct_P05_001.full.jsonl
+          collector_samples: 5455
+          collector_invalid: 0
+          collector_sha256: C2D8103956D689F149D9313BA6A6618049C3D69C6CFA02D6B50415C38F649CB7
+          manual_node_voltage_v:
+            U0_utp_terminal: 4.99
+            U1_ina226_vin_gnd: 4.92
+            U2_ina226_vout_gnd: 4.91
+          ina226_current_mean_a: 0.49848352245646194
+          ina226_bus_voltage_mean_v: 4.907738313473877
+          ina226_bus_voltage_min_v: 4.905
+          ina226_undervoltage_samples: 0
+          load_side_voltage: not_measurable_with_sealed_usb_a_socket
+          interpretation: 约0.5A下传感器输出前总线稳定，但无法安全测到电子负载插头节点；改用20AWG Type-C红黑线消除USB-A母座并暴露测量节点
+        typec_output_followup:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_typec_output_P05_001.full.jsonl
+          collector_samples: 3776
+          collector_invalid: 0
+          collector_sha256: C49F0B561A530820B8825A3D77102057239E21E97C83B1AD9028EF1396D5FDD2
+          manual_node_voltage_v:
+            U0_utp_terminal: 5.00
+            U1_ina226_vin_gnd: 4.92
+            U2_ina226_vout_gnd: 4.91
+            U3_typec_red_black: 4.91
+          ina226_current_mean_a: 0.4986373220338983
+          ina226_bus_voltage_mean_v: 4.906563493114406
+          ina226_bus_voltage_min_v: 4.8975
+          ina226_undervoltage_samples: 0
+          interpretation: 20AWG Type-C直连输出后，约0.5A负载侧电压通过诊断；1A/2A和可信参考仪器仍待复核
+        typec_output_p10_followup:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_typec_output_P10_001.full.jsonl
+          collector_samples: 4619
+          collector_invalid: 0
+          collector_sha256: C6AAE70B1306C4DE574A75295D05EB208F6B50B4A711804E256EBDF91F5518A2
+          manual_node_voltage_v:
+            U0_utp_terminal: 5.00
+            U1_ina226_vin_gnd: 4.83
+            U2_ina226_vout_gnd: 4.82
+            U3_typec_red_black: 4.81
+          ina226_current_mean_a: 0.9900193022299199
+          ina226_bus_voltage_mean_v: 4.816701667027496
+          ina226_bus_voltage_min_v: 4.81
+          ina226_undervoltage_samples: 0
+          estimated_series_resistance_ohm_from_p05_p10: 0.183
+          estimated_bus_voltage_at_2a_v: 4.63
+          interpretation: 约1A负载侧电压通过诊断，但按两点线性估算2A将欠压；先降低UTP至INA226输入段阻抗，不执行2A
+        improved_input_three_point_voltage_diagnostic:
+          wiring: UTP_short_input_leads_to_INA226_plus_20AWG_typec_output_to_electronic_load
+          formal_evidence: false
+          points:
+            P05:
+              collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_typec_output_P05_002.full.jsonl
+              collector_samples: 4445
+              collector_invalid: 0
+              collector_sha256: 06A4B5CF7258BFA17D64FDE1A02FF7AF21A76AA2337D9B9D605475B860E4656E
+              current_a_mean: 0.4998810652418448
+              bus_voltage_mean_v: 4.946917041619797
+              bus_voltage_min_v: 4.945
+              load_side_manual_voltage_v: 4.95
+              undervoltage_samples: 0
+            P10:
+              collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_typec_output_P10_002.full.jsonl
+              collector_samples: 5752
+              collector_invalid: 0
+              collector_sha256: A8C2EFE8DBB5DD5FCEE45A508CCA725C27B5C7345EA1CFB0203CCC0786310E18
+              current_a_mean: 0.9927518091098748
+              bus_voltage_mean_v: 4.896258692628651
+              bus_voltage_min_v: 4.89375
+              undervoltage_samples: 0
+            P20:
+              collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_typec_output_P20_002.full.jsonl
+              collector_samples: 4088
+              collector_invalid: 0
+              collector_sha256: 48B969E640B722F86579EBDE3900F704839B9EA6F1684D1D2FB08DD927A6E63D
+              current_a_mean: 2.000373927103718
+              bus_voltage_mean_v: 4.787363625244619
+              bus_voltage_min_v: 4.7825
+              load_side_manual_voltage_v: 4.78
+              undervoltage_samples: 0
+          interpretation: 最终接线的P05/P10/P20均无欠压，供电链三点诊断已完成；未重新ZERO/CAL且未选定可信参考，不能视为正式校准
+      formal_factory_reference_attempt_20260828:
+        status: three_point_error_and_hot_gain_passed_long_stability_rerun_required
+        formal_evidence: false
+        wiring: UTP_short_input_leads_to_INA226_plus_20AWG_typec_output_to_electronic_load
+        cold_zero:
+          offset_a: -0.000074219
+          samples: 64
+          pass: true
+        cold_cal:
+          reference_current_a: 1.001
+          measured_current_a: 0.994511724
+          gain: 1.006524086
+          samples: 64
+          pass: true
+        points:
+          P05:
+            collector_file: D:\sci-exp-data\E0_20260828\formal_utp_factoryref_001\INA226_E0_formal_P05_001.full.jsonl
+            bytes: 3127087
+            sha256: 2D76994615F7BEE733E74752C1589F23C28282C236D15305C7BDD330438ADF4B
+            samples: 7084
+            duration_s: 71.328
+            effective_rate_hz: 99.30181695827726
+            raw_current_mean_a: 0.4992544466403162
+            corrected_current_mean_a: 0.5025863219932242
+            bus_voltage_mean_v: 4.942879199604743
+            bus_voltage_min_v: 4.94
+            power_mean_w: 2.484223330180689
+            max_gap_ms: 32.0
+            gaps_over_30ms: 1
+            undervoltage_samples: 0
+            integration_gap_samples: 0
+            saturated_samples: 0
+          P10:
+            collector_file: D:\sci-exp-data\E0_20260828\formal_utp_factoryref_001\INA226_E0_formal_P10_001.full.jsonl
+            bytes: 3239967
+            sha256: 6C812582C803BB895261615927A0756F34E7DA7C2304EFF10A71D95944FE3C6D
+            samples: 7329
+            duration_s: 73.782
+            effective_rate_hz: 99.31961725081999
+            raw_current_mean_a: 0.9937050757265657
+            corrected_current_mean_a: 1.0002628328557783
+            bus_voltage_mean_v: 4.890943000409333
+            bus_voltage_min_v: 4.88875
+            power_mean_w: 4.892228076135899
+            max_gap_ms: 31.0
+            gaps_over_30ms: 1
+            undervoltage_samples: 0
+            integration_gap_samples: 0
+            saturated_samples: 0
+          P20:
+            collector_file: D:\sci-exp-data\E0_20260828\formal_utp_factoryref_001\INA226_E0_formal_P20_001.full.jsonl
+            bytes: 3818014
+            sha256: 49A5E7DEFC36FC4AA6A875C8BC32F3773CDA1BFB7424ABF64759EA6F51E32C80
+            samples: 8594
+            duration_s: 86.516
+            effective_rate_hz: 99.32266863932682
+            raw_current_mean_a: 2.0078038457063068
+            corrected_current_mean_a: 2.020977741796602
+            bus_voltage_mean_v: 4.781644170351408
+            bus_voltage_min_v: 4.7775
+            power_mean_w: 9.663541664882477
+            max_gap_ms: 32.0
+            gaps_over_30ms: 4
+            undervoltage_samples: 0
+            integration_gap_samples: 0
+            saturated_samples: 0
+        hot_zero:
+          offset_a: -0.000082031
+          samples: 64
+          pass: true
+        invalid_followup_after_hot_zero:
+          action: RESET_CAL_plus_ZERO_then_CAL
+          offset_a: 0.074011721
+          gain: 1.087826490
+          reason: 不满足物理空载零偏门槛；不可作热态增益复核，且已覆盖ESP32持久校准状态
+          recovery:
+            zero_offset_a: -0.000054688
+            zero_samples: 64
+            cal_reference_current_a: 1.000
+            cal_measured_current_a: 0.993156314
+            cal_gain: 1.006890893
+            cal_samples: 64
+            recovered: true
+        reference_readings:
+          UTP3313_current_a_start_mid_end:
+            P05: [0.500, 0.500, 0.500]
+            P10: [1.000, 1.000, 1.000]
+            P20: [2.000, 2.000, 2.000]
+          DT_9205A_vout_gnd_voltage_v_start_mid_end:
+            P05: [4.95, 4.95, 4.95]
+            P10: [4.89, 4.89, 4.89]
+            P20: [4.77, 4.77, 4.77]
+          source_mode: CV_for_all_points
+          limitation: 这是UTP电流面板与DT-9205A直流20V档构成的厂家指标复合参考链，无计量溯源证书
+        three_point_error_report:
+          path: data/logs/INA226三点校准_20260828_UTP厂家指标运行参考.json
+          sha256: 8B2705FA0DAE1C1E7530E64A564B37BF829159515F587DA0C21598568BBBB974
+          input_path: data/annotations/INA226三点校准记录_20260828_UTP厂家指标运行参考.csv
+          input_sha256: 1D8726FD0352B7E7A263944A80125405030E4558D16660210C852B6156295B8D
+          maximum_relative_error: 0.02
+          points:
+            P05: {voltage_error_percent: 0.1438545534, current_error_percent: 0.5172643986, power_error_percent: 0.3726657368}
+            P10: {voltage_error_percent: 0.0192842619, current_error_percent: 0.0262832856, power_error_percent: 0.0455726161}
+            P20: {voltage_error_percent: 0.2441125860, current_error_percent: 1.0488870898, power_error_percent: 1.2955601412}
+          gates:
+            at_least_three_points: true
+            covers_low_and_high_current: true
+            all_points_within_error_limit: true
+            all_points_at_least_30_seconds: true
+          calibration_pass: true
+          interpretation: 在明确披露的厂家指标复合参考链下，三点误差门槛通过；脚本中的single_identified_reference_instrument只是单一复合链ID，不代表单一物理仪器或计量溯源
+        reported_hot_zero_pending_dwell_confirmation:
+          target_load_current_a: 2.000
+          source_mode: CV
+          U2_vout_gnd_v: 4.78
+          offset_a: -0.000105469
+          samples: 64
+          zero_value_pass: true
+          dwell_duration_s: 300
+          dwell_requirement_met: true
+          interpretation: 用户确认约2A/CV热负载已保持满5分钟；该ZERO可作为热态复核的一部分
+        hot_cal:
+          reference_current_a: 1.002
+          U2_vout_gnd_v: 4.89
+          source_mode: CV
+          measured_current_a: 0.995246112
+          gain: 1.006786108
+          samples: 64
+          ok: true
+          gain_relative_difference_vs_recovery_cold_percent: 0.0104068
+          pass: true
+        failed_long_stability_001:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_stability_radxa_idle_001.full.jsonl
+          bytes: 159295541
+          sha256: 2346BB907251DADCD6D155FD0338738B4B514B5365B43C8D15BB493BABDA8F1D
+          duration_s: 3616.183048
+          samples: 358998
+          environment_samples: 3590
+          collector_invalid_serial_rows: 19
+          sync_ack_count: 362
+          effective_rate_hz: 99.27511833189702
+          sequence_missing_samples: 108
+          dropout_fraction: 0.0003007468546891447
+          sequence_regressions: 0
+          gap_ms_p99: 16.015
+          gap_ms_max: 110.0
+          quality_flags: {current_saturated: 0, shunt_near_limit: 0, undervoltage: 0, integration_gap: 0}
+          bus_voltage_mean_v: 4.969203278987627
+          bus_voltage_min_v: 4.945
+          power_mean_w: 1.2120032333327762
+          power_sd_w: 0.029683232354395087
+          analysis_report: data/logs/E0功率测量链分析_20260828_001.json
+          analysis_report_sha256: CDDCB7127DFC8CD71B6BFD1DC951A7466AC656F853B217B14571D0F607B3F7D1
+          status: failed_not_for_formal_stability_evidence
+          failure_reasons:
+            - maximum_device_gap_110ms_exceeds_frozen_30ms_limit
+            - no_idle_start_end_markers_in_this_session_so_three_new_idle_intervals_cannot_be_reconstructed
+          retained: true
+        stability_preflight_002:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_stability_preflight_002.full.jsonl
+          duration_s: 603.953758
+          samples: 59977
+          environment_samples: 600
+          collector_invalid_serial_rows: 0
+          effective_rate_hz: 99.30561604353822
+          sequence_missing_samples: 0
+          dropout_fraction: 0.0
+          sequence_regressions: 0
+          gap_ms_p99: 11.003
+          gap_ms_max: 16.025
+          quality_flags: {current_saturated: 0, shunt_near_limit: 0, undervoltage: 0, integration_gap: 0}
+          analysis_report: data/logs/E0预检分析_20260828_002.json
+          analysis_report_sha256: 21C2AB07D2C5F367B1E8974FA9921062A38678AD50C2C3844C5E771E085AF49A
+          status: passed_preflight_not_a_60_minute_formal_session
+          interpretation: 当前USB/串口路径满足短时质量门槛；正式会话须监听0.0.0.0以接收Radxa idle标记
+        formal_long_stability_003:
+          collector_file: D:\sci-exp-data\E0_20260828\INA226_E0_stability_radxa_idle_marked_003.full.jsonl
+          bytes: 165150043
+          sha256: 2EAAABB9289AA934A6BA9FCACEFFA3D85572E6A7BE930E2149DBADE31A434163
+          duration_s: 3741.775793
+          samples: 371578
+          environment_samples: 3716
+          marker_count: 6
+          collector_invalid_serial_rows: 0
+          sync_ack_count: 375
+          effective_rate_hz: 99.30498794052143
+          sequence_missing_samples: 0
+          dropout_fraction: 0.0
+          sequence_regressions: 0
+          gap_ms_p99: 10.98524
+          gap_ms_max: 16.026
+          quality_flags: {current_saturated: 0, shunt_near_limit: 0, undervoltage: 0, integration_gap: 0}
+          idle_intervals:
+            - {run_key: E0_idle_20260828_201, duration_s: 65.469, sample_count: 6503, mean_power_w: 1.2646946581577734, sd_power_w: 0.09823404803892422}
+            - {run_key: E0_idle_20260828_202, duration_s: 65.469, sample_count: 6503, mean_power_w: 1.2680296804551745, sd_power_w: 0.09160913353270535}
+            - {run_key: E0_idle_20260828_203, duration_s: 65.484, sample_count: 6505, mean_power_w: 1.2511610475019217, sd_power_w: 0.08703732961363826}
+          idle_power_w_mean: 1.2612940898980063
+          idle_power_w_sd: 0.09269011057030813
+          between_interval_sd_w: 0.00893338092791965
+          sync_rtt_ms_p95: 4.32034
+          analysis_report: data/logs/E0功率测量链分析_20260828_003.json
+          analysis_report_sha256: 46EA9A118BC6CE5D29B173F576FBE4DA7CA22975199F2A3F317D52F07118C514
+          all_software_gates_pass: true
+          status: passed_formal_60_minute_stability_evidence
+          interpretation: 使用0.0.0.0监听后成功接收三对Radxa idle标记；该会话替代001作为正式稳定性证据，001仍保留为失败诊断证据
+        pending: []
+      raw_retention_status: current_files_complete_but_prior_r1_versions_overwritten_again
+      stream_summaries:
+        P05:
+          samples: 5570
+          duration_s: 56.071
+          bus_voltage_mean_v: 4.674513
+          corrected_current_mean_a: 0.501825
+          undervoltage_samples: 5570
+          sha256: 4CD801B641E6C937268DB6805AC9EF1B207B94CAE8AEFB0453FF3B3BDD3D411C
+        P10:
+          samples: 6682
+          duration_s: 67.268
+          bus_voltage_mean_v: 4.336264
+          corrected_current_mean_a: 1.000479
+          undervoltage_samples: 6682
+          sha256: C943346DF77E6EDEE9C8422AE2689AE7F146C9BFCD16B52299FC54626065198C
+        P20:
+          samples: 6214
+          duration_s: 62.560
+          bus_voltage_mean_v: 3.618757
+          corrected_current_mean_a: 1.988528
+          undervoltage_samples: 6214
+          sha256: 0790179A9C3B27349061363BD384415DF45A0B23B3CB634E29DDC6B29A155020
+    pending_gates: []
+    reference_strategy_20260828:
+      status: user_authorized_operational_reference
+      selected_by_user: 选项1
+      device: UNI-T UTP3313TFL-II
+      role: 以面板稳定电流读数作为E0中点CAL和三点电流/功率误差计算的运行参考
+      basis: 厂家说明书载明电流设定分辨率1mA、25°C±5°C下电流设定准确度小于0.5%加5mA
+      source: https://instruments.uni-trend.com.cn/static/upload/file/20241127/UTP3313TFL%20UTP3315TFL%E4%B8%AD%E6%96%87%E8%AF%B4%E6%98%8E%E4%B9%A6REV.2(20210818).pdf
+      traceability: 无计量溯源证书
+      limitation: 厂家资料描述设定准确度，未单独给出面板读回的可溯源准确度；不能称为计量级绝对校准
+      voltage_reference_companion: DT-9205A直流20V档，在INA226 VOUT-GND同一节点读取；用于三点电压误差，不能使用UTP端子5V设定值替代
+      permitted_claim: 有厂家指标边界的物理能耗测量，以及同一仪器和固定接线下的相对物理能耗比较
+      prohibited_claim: 计量溯源、经认可实验室校准、无条件的绝对功率准确度
+      aneng_status: excluded_due_to_about_13_9_percent_low_reading_in_three_way_comparison
+    blockers:
+      - 已选UTP3313厂家指标运行参考，但无计量溯源证书且厂家资料未单独给出面板读回准确度；论文不得声称计量级绝对校准
+      - 用户为控制Git体积已主动删除同名JSONL中段；仓库文件是首尾摘录而非完整raw
+      - 2026-08-26前检显示ZERO执行时存在真实负载，且P10/P20负载侧欠压；须重测
+      - 2026-08-26 r1的P10/P20全程undervoltage；须在实际负载下将总线电压稳定到至少4.75V
+      - 用户补录P01值为4.608V@0.490A、4.280V@1.015A、3.800V@2.000A；当前移动电源与线缆组合不合格
+      - 2026-08-27重测三点全部undervoltage，等效串联电阻约0.69Ω；旧r1 raw已被同名覆盖
+      - 2026-08-27热态ZERO误写的1.9805A offset已由空载RESET_CAL+ZERO清除；供电压降修复后仍须重新CAL
+      - 2026-08-28定位到UTP至INA226输入降0.46V、INA226输出至ANENG显示节点再降0.202V；必须更换短粗线与可靠USB-A转接件后复查
+      - UTP实际电流0.634A与ANENG显示0.492至0.523A不一致；在确认测量节点和准确度前，ANENG不得用作中点CAL或三点误差参考
+      - 2026-08-28三表对照证实INA226约0.499A与UTP约0.500A一致，而ANENG约0.430A低读约13.9%；ANENG从E0校准参考链中排除
+      - 移除ANENG后的USB-A输出链虽在INA226输出前显示4.905V以上，但封装母座无法安全测量电子负载插头电压；该结果不得替代负载侧电压门槛
+      - 20AWG Type-C输出链在约0.5A负载侧电压通过诊断，但尚未验证1A/2A，不能进入CAL或正式三点采集
+      - 20AWG Type-C链约1A通过但余量仅约0.06V；两点估计2A总线约4.63V，须先改善UTP至INA226输入线/夹子/端子接触，不进行2A升载
+      - 供电链压降已由短粗UTP输入线和20AWG Type-C输出线的最终P05/P10/P20诊断解决；仍缺可信电流参考及重新ZERO/CAL后的正式三点误差报告
+      - 输入直连后ANENG节点在约0.5A升至4.776V的历史诊断仅用于定位；ANENG已从参考链排除，最终Type-C接线的三点供电链已通过
+    evidence:
+      - path: results/E0_session001_final_precalibration_report.json
+        sha256: 0E5E509B612339D3FDE52C0A9535B57F0FEA34A4D638D6907E32FED1A25F4BFE
+        role: 当时生成的预校准分析报告
+      - path: results/e0_marker_rtt_100.jsonl
+        sha256: 3F9F0EFBABD537469CABA14E4170D29826DF103B39E737FBE03939EF8888B7DE
+        role: 100次外部标记RTT摘要
+      - path: results/radxa_hardware_state_E0_idle_formal_20260820.jsonl
+        sha256: 296D6F0921B58E3B4179C514FA4F2846FAE1B6C427AABE16BE970F98D8E3A313
+        role: Radxa空闲阶段硬件状态
+      - path: data/raw/runs/INA226_E0_session001.jsonl
+        current_sha256: D260F0EA2CED17E3425F487D96DDD9EF9D685F5332ABA5EB29956FBAE65A203B
+        current_lines: 214
+        current_bytes: 91957
+        retention_status: intentional_excerpt_in_place
+        full_raw_available_in_repository: false
+        note: 用户确认已删除中段以减小Git体积；不得作为完整raw重新分析
+
+  E1:
+    name: 配置异质性
+    status: ready_for_formal_e1_dev_phase
+    formal_pass: false
+    power_source_preflight_20260828:
+      status: passed_idle_only_high_load_preflight_required
+      source: user_reported_5V_3A_charger_model_not_recorded
+      wiring: charger_to_INA226_input_plus_existing_20AWG_typec_output_to_Radxa
+      collector_file: D:\sci-exp-data\E1_preflight_20260828\INA226_source_5V3A_radxa_idle_001.full.jsonl
+      bytes: 25952865
+      lines: 59448
+      sha256: 53AADC2B8006DBB6F43E058241E25FA206414CF306E5EE5214603FA389920AC4
+      samples: 58797
+      environment_samples: 588
+      collector_invalid_serial_rows: 0
+      bus_voltage_mean_v: 4.993701506879603
+      bus_voltage_min_v: 4.98125
+      power_mean_w: 1.2360958230862118
+      quality_flags: {undervoltage: 0, integration_gap: 0, current_saturated: 0}
+      manual_vout_gnd_v: 5.00
+      formal_evidence: false
+      interpretation: 空闲供电稳定且明显高于4.75V门槛；不能替代最高负载配置下的换源预检，不执行ZERO或CAL
+    completed_preparation:
+      - Radxa ZERO 3W aarch64、4核和内存状态已实机探测
+      - llama.cpp b9627 ARM64构建、GGUF加载、health和Chat API最小验证已完成
+      - E1分析入口和候选配置代码已建立
+    remaining_preparation:
+      - Python生成器从裸completion适配并验证Chat API
+      - GGUF来源/tokenizer和BGE实机运行时锁定
+      - E1运行清单及随机顺序dry-run
+    formal_start_condition:
+      - E0 formal_pass必须为true
+      - 每次运行必须具有有效物理能耗external_meter_valid=true
+
+  E2:
+    name: Safety calibration
+    status: formal_blocked_by_E0_and_sequence
+    formal_pass: false
+  E3:
+    name: 能耗预测
+    status: formal_blocked_by_E0_and_sequence
+    formal_pass: false
+  E4_E8:
+    name: 主实验及稳健性实验
+    status: not_started_formal_blocked
+    formal_pass: false
+
+allowed_while_waiting:
+  - code_and_unit_tests
+  - chat_api_adapter_validation
+  - model_runtime_and_hash_audit
+  - data_governance_and_annotation
+  - calibration_script_and_template_preparation
+  - explicitly_nonformal_dry_runs
+
+next_formal_action:
+  stage: E1
+  action: E0已通过厂家指标运行参考边界下的正式验证；后续可按冻结协议从Dev数据开始E1配置异质性正式实验，并沿用当前外部功率测量链和每次运行的有效性记录

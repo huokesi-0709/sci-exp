@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sci-exp/input_gold_adjudication.schema.json",
+  "title": "SC-EA-RAG input-level protocol Gold adjudication",
+  "type": "object",
+  "required": [
+    "blind_batch_id",
+    "query_id",
+    "disputed_fields",
+    "reviewer_a_values",
+    "reviewer_b_values",
+    "final_values",
+    "decision",
+    "supporting_evidence_ids",
+    "adjudication_reason",
+    "protocol_gap",
+    "manual_or_ontology_change_required",
+    "adjudicator_id",
+    "adjudicated_at"
+  ],
+  "properties": {
+    "blind_batch_id": {"type": "string", "minLength": 1},
+    "query_id": {"type": "string", "minLength": 1},
+    "disputed_fields": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "reviewer_a_values": {"type": "object"},
+    "reviewer_b_values": {"type": "object"},
+    "final_values": {"type": "object"},
+    "decision": {"type": "string", "enum": ["A", "B", "NEW", "UNRESOLVED", "EXCLUDE"]},
+    "supporting_evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "adjudication_reason": {"type": "string", "minLength": 1},
+    "protocol_gap": {"type": "boolean"},
+    "manual_or_ontology_change_required": {"type": "boolean"},
+    "adjudicator_id": {"type": "string", "minLength": 1},
+    "adjudicated_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

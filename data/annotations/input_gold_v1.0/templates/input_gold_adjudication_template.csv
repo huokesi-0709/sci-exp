@@ -1,0 +1,1 @@
+blind_batch_id,query_id,disputed_fields,reviewer_a_values_json,reviewer_b_values_json,final_values_json,decision,supporting_evidence_ids,adjudication_reason,protocol_gap,manual_or_ontology_change_required,adjudicator_id,adjudicated_at

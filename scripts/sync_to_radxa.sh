@@ -18,6 +18,7 @@ if ! command -v rsync >/dev/null 2>&1; then
 fi
 
 # Deliberately omit --delete: Radxa上的ARM64 build、结果和校准原始日志必须保留。
+# Gold/标注目录由.radxa-sync-exclude阻止传输；正式运行配置只读取Gold-free推理分区。
 # rsync compares metadata and transfers only new or changed files.
 rsync \
   --archive \

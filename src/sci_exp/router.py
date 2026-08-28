@@ -5,7 +5,7 @@ import math
 from typing import Any, Mapping, Protocol
 
 from .features import query_features
-from .schemas import QueryRecord
+from .schemas import InferenceQuery
 
 
 @dataclass(frozen=True)
@@ -37,7 +37,7 @@ class HeuristicRiskPredictor:
 
     offsets = {"C0": 0.18, "C1": 0.02, "C2": -0.04}
 
-    def predict(self, query: QueryRecord, configuration: str) -> float:
+    def predict(self, query: InferenceQuery, configuration: str) -> float:
         features = query_features(query)
         base = (
             0.05
@@ -50,7 +50,7 @@ class HeuristicRiskPredictor:
 
 
 class RiskPredictor(Protocol):
-    def predict(self, query: QueryRecord, configuration: str) -> float: ...
+    def predict(self, query: InferenceQuery, configuration: str) -> float: ...
 
 
 class EnergyPredictorProtocol(Protocol):
@@ -113,7 +113,7 @@ class SafetyConstrainedRouter:
 
     def select(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         state: Mapping[str, Any] | None = None,
     ) -> RoutingDecision:
         configurations = ("C0", "C1", "C2")
@@ -222,7 +222,7 @@ class SoftWeightingRouter:
 
     def select(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         state: Mapping[str, Any] | None = None,
     ) -> RoutingDecision:
         configurations = ("C0", "C1", "C2")

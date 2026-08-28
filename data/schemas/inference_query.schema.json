@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gold-free offline emergency RAG inference query",
+  "type": "object",
+  "required": ["query_id", "text", "language", "source_group_id", "split"],
+  "properties": {
+    "query_id": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 1},
+    "source_group_id": {"type": "string"},
+    "split": {"type": "string"},
+    "jurisdiction": {"type": "string"},
+    "as_of_date": {"type": "string"},
+    "query_date": {"type": "string"},
+    "target_population": {"type": "string"}
+  },
+  "additionalProperties": false
+}

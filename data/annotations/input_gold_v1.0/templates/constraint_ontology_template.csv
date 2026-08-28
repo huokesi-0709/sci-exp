@@ -1,0 +1,2 @@
+constraint_id,canonical_name,constraint_type,definition,applies_to_action_ids,protocol_evidence_ids,status,domain_reviewer_id,reviewed_at,notes
+CONSTRAINT_OTHER_REVIEW,待本体审核的其他约束,REVIEW_ONLY,仅用于发现正式本体缺项，不得作为冻结Gold标签,,,REVIEW_REQUIRED,,,

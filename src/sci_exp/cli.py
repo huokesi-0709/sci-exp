@@ -23,7 +23,7 @@ from .risk_model import (
 )
 from .resource_model import build_resource_profile
 from .runner import run_exhaustive, run_routed
-from .schemas import ProtocolChunk, QueryRecord
+from .schemas import InferenceQuery, ProtocolChunk, QueryRecord
 from .splitting import group_split
 from .telemetry import device_info
 from .validation import (
@@ -42,10 +42,25 @@ def _load_queries(path: Path) -> list[QueryRecord]:
     return [QueryRecord.from_dict(row) for row in read_jsonl(path)]
 
 
-def _configured_data(config: dict[str, Any]) -> tuple[list[ProtocolChunk], list[QueryRecord]]:
+def _load_inference_queries(path: Path) -> list[InferenceQuery]:
+    return [InferenceQuery.from_dict(row) for row in read_jsonl(path)]
+
+
+def _configured_data(
+    config: dict[str, Any],
+) -> tuple[list[ProtocolChunk], list[QueryRecord | InferenceQuery]]:
     data = config.get("data", {})
     protocols = _load_protocols(project_path(config, data["protocols"]))
-    queries = _load_queries(project_path(config, data["queries"]))
+    query_path = project_path(config, data["queries"])
+    query_role = str(data.get("query_role", "annotated"))
+    if query_role == "inference":
+        queries: list[QueryRecord | InferenceQuery] = _load_inference_queries(
+            query_path
+        )
+    elif query_role == "annotated":
+        queries = _load_queries(query_path)
+    else:
+        raise ValueError("data.query_role must be 'annotated' or 'inference'")
     return protocols, queries
 
 
@@ -85,11 +100,18 @@ def command_run(args: argparse.Namespace) -> int:
     if args.queries:
         config.setdefault("data", {})["queries"] = args.queries
     protocols, queries = _configured_data(config)
-    errors = [
-        *validate_protocols(protocols),
-        *validate_queries(queries, {item.evidence_id for item in protocols}),
-        *validate_no_group_leakage(queries),
-    ]
+    errors = list(validate_protocols(protocols))
+    if queries and isinstance(queries[0], QueryRecord):
+        annotated_queries = [
+            query for query in queries if isinstance(query, QueryRecord)
+        ]
+        errors.extend(
+            validate_queries(
+                annotated_queries,
+                {item.evidence_id for item in protocols},
+            )
+        )
+        errors.extend(validate_no_group_leakage(annotated_queries))
     if errors:
         print(json.dumps({"errors": errors}, ensure_ascii=False, indent=2), file=sys.stderr)
         return 2
@@ -116,6 +138,31 @@ def command_run(args: argparse.Namespace) -> int:
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if success == len(rows) else 3
+
+
+def command_export_inference_queries(args: argparse.Namespace) -> int:
+    input_path = Path(args.input)
+    output_path = Path(args.output)
+    queries = _load_queries(input_path)
+    inference_queries = [query.to_inference_query() for query in queries]
+    write_jsonl(output_path, (query.to_dict() for query in inference_queries))
+    # Read the result back through the strict loader.  This makes the export
+    # fail immediately if a future edit accidentally reintroduces a Gold field.
+    _load_inference_queries(output_path)
+    print(
+        json.dumps(
+            {
+                "input": str(input_path.resolve()),
+                "output": str(output_path.resolve()),
+                "rows": len(inference_queries),
+                "output_sha256": _file_sha256(output_path),
+                "gold_fields_exported": False,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+    return 0
 
 
 def command_train_risk(args: argparse.Namespace) -> int:
@@ -520,6 +567,11 @@ def build_parser() -> argparse.ArgumentParser:
     split_parser.add_argument("--output-directory", required=True)
     split_parser.add_argument("--seed", type=int, default=42)
     split_parser.set_defaults(handler=command_split)
+
+    export_inference_parser = subparsers.add_parser("export-inference-queries")
+    export_inference_parser.add_argument("--input", required=True)
+    export_inference_parser.add_argument("--output", required=True)
+    export_inference_parser.set_defaults(handler=command_export_inference_queries)
 
     calibration_parser = subparsers.add_parser("calibrate")
     calibration_parser.add_argument("--input", required=True)

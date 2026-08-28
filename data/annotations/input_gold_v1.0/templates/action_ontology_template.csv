@@ -1,0 +1,2 @@
+action_id,canonical_name,action_type,definition,actor,applicability_conditions,exclusion_conditions,criticality,protocol_evidence_ids,allowed_paraphrases,confusable_action_ids,status,domain_reviewer_id,reviewed_at,notes
+ACTION_OTHER_REVIEW,待本体审核的其他行动,REVIEW_ONLY,仅用于发现正式本体缺项，不得作为冻结Gold标签,,,,NON_CRITICAL,,,,REVIEW_REQUIRED,,,

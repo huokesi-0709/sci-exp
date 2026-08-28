@@ -15,7 +15,7 @@ from sci_exp.retrieval import (
     detect_evidence_conflicts,
     filter_applicable_protocols,
 )
-from sci_exp.schemas import ProtocolChunk, QueryRecord, RetrievedChunk
+from sci_exp.schemas import InferenceQuery, ProtocolChunk, QueryRecord, RetrievedChunk
 
 
 def chunk(
@@ -72,7 +72,7 @@ class FormalRetrievalTests(unittest.TestCase):
         ]
         kept, rejected = filter_applicable_protocols(
             candidates,
-            disaster_type="fire",
+            predicted_hazard_types=("fire",),
             jurisdiction="CN-SC",
             as_of_date="2026-07-28",
         )
@@ -105,21 +105,20 @@ class FormalRetrievalTests(unittest.TestCase):
             c2_candidate_k=2,
             c2_min_evidence=2,
         )
-        query = QueryRecord(
+        query = InferenceQuery(
             query_id="q1",
             text="屋里有烟怎么撤离",
-            disaster_type="fire",
-            query_type="single",
-            risk_level=3,
             language="zh-CN",
-            should_fallback=False,
             metadata={"jurisdiction": "CN-SC", "as_of_date": "2026-07-28"},
         )
         result = pipeline.run("C2", query)
-        self.assertEqual([item.chunk.evidence_id for item in result.evidence], ["fire"])
-        self.assertEqual(result.retrieval_diagnostics["retrieval_steps"], 2)
-        self.assertGreaterEqual(
-            result.retrieval_diagnostics["filter_rejections"]["hazard"], 1
+        self.assertEqual(
+            {item.chunk.evidence_id for item in result.evidence}, {"fire", "flood"}
+        )
+        self.assertFalse(result.retrieval_diagnostics["gold_label_access"])
+        self.assertEqual(
+            result.retrieval_diagnostics["hazard_filter_source"],
+            "disabled_no_inference_time_predictor",
         )
 
     def test_c3_is_deterministic_template_without_evidence(self):
@@ -130,9 +129,7 @@ class FormalRetrievalTests(unittest.TestCase):
             ExtractiveGenerator(),
             hybrid_index=hybrid,
         )
-        query = QueryRecord(
-            "q", "怎么办", "fire", "underspecified", 3, "zh-CN", True
-        )
+        query = InferenceQuery("q", "怎么办", "zh-CN")
         first = pipeline.run("C3", query)
         second = pipeline.run("C3", query)
         self.assertEqual(first.answer, second.answer)
@@ -153,18 +150,47 @@ class FormalRetrievalTests(unittest.TestCase):
         )
         common = dict(
             text="烟雾怎么撤离",
+            language="zh-CN",
+        )
+        left = QueryRecord(
+            query_id="same",
             disaster_type="fire",
             query_type="single",
             risk_level=3,
-            language="zh-CN",
             should_fallback=False,
+            gold_evidence_ids=("a",),
+            required_actions=("低姿撤离",),
+            prohibited_actions=("乘坐电梯",),
+            **common,
         )
-        left = QueryRecord(query_id="left", gold_evidence_ids=("a",), **common)
-        right = QueryRecord(query_id="right", gold_evidence_ids=("b",), **common)
+        right = QueryRecord(
+            query_id="same",
+            disaster_type="flood",
+            query_type="out_of_scope",
+            risk_level=0,
+            should_fallback=True,
+            gold_evidence_ids=("b",),
+            required_actions=("远离积水",),
+            prohibited_actions=("低姿撤离",),
+            **common,
+        )
         self.assertEqual(
-            [item.chunk.evidence_id for item in pipeline.run("C2", left).evidence],
-            [item.chunk.evidence_id for item in pipeline.run("C2", right).evidence],
+            pipeline.run("C2", left.to_inference_query()).to_dict(),
+            pipeline.run("C2", right.to_inference_query()).to_dict(),
         )
+
+    def test_pipeline_rejects_annotated_query_record(self):
+        chunks = [chunk("a", "烟雾时低姿撤离。")]
+        pipeline = ConfigurationPipeline(
+            BM25Index(chunks),
+            ExtractiveGenerator(),
+            hybrid_index=HybridIndex(chunks, HashingDenseEncoder(64)),
+        )
+        annotated = QueryRecord(
+            "q", "烟雾怎么撤离", "fire", "single", 3, "zh-CN", False
+        )
+        with self.assertRaises(TypeError):
+            pipeline.run("C2", annotated)  # type: ignore[arg-type]
 
     def test_formal_manifest_and_dense_weight_hash_are_consistent(self):
         root = Path(__file__).resolve().parents[1]

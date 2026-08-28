@@ -1,0 +1,59 @@
+{
+  "schema_version": "input-gold-quality-gates-v0.2",
+  "status": "methodology_approved_with_blocking_preconditions",
+  "decision_scope": "admission_pilot_to_adjudication_only",
+  "minimum_paired_items": 25,
+  "bootstrap_iterations": 2000,
+  "bootstrap_seed": 20260821,
+  "thresholds": {
+    "minimum_paired_items": 25,
+    "scope_state_kappa_min": 0.80,
+    "scope_state_raw_agreement_min": 0.92,
+    "risk_state_kappa_min": 0.75,
+    "risk_state_raw_agreement_min": 0.84,
+    "risk_severity_quadratic_kappa_min": 0.75,
+    "risk_severity_raw_agreement_min": 0.72,
+    "escalation_required_kappa_min": 0.80,
+    "escalation_required_raw_agreement_min": 0.88,
+    "recommended_response_mode_kappa_min": 0.75,
+    "recommended_response_mode_raw_agreement_min": 0.80,
+    "risk_trigger_ids_mean_iou_min": 0.67,
+    "evidence_ids_mean_iou_min": 0.67,
+    "required_action_ids_mean_iou_min": 0.67,
+    "critical_action_ids_mean_iou_min": 0.67,
+    "prohibited_action_ids_mean_iou_min": 0.67,
+    "constraint_ids_mean_iou_min": 0.67,
+    "severe_severity_disagreement_max": 0,
+    "required_prohibited_conflict_max": 0,
+    "critical_not_required_conflict_max": 0
+  },
+  "interpretation_rules": {
+    "minimum_per_observed_category_for_strong_claim": 3,
+    "bootstrap_ci_is_diagnostic_not_sole_gate_for_n25": true,
+    "passing_all_metrics_allows": "PASS_FOR_ADJUDICATION",
+    "passing_does_not_establish": [
+      "medical_correctness",
+      "clinical_validity",
+      "real_world_safety"
+    ]
+  },
+  "blocking_preconditions": [
+    "risk_trigger_ontology_domain_approved",
+    "action_ontology_domain_approved",
+    "constraint_ontology_domain_approved",
+    "domain_reviewer_signed",
+    "research_supervisor_signed",
+    "statistics_reviewer_signed"
+  ],
+  "methodology_review": {
+    "reviewed_at": "2026-08-21",
+    "result": "APPROVED_WITH_BLOCKING_PRECONDITIONS",
+    "review_note": "Threshold logic is acceptable for a 25-item admission pilot when raw agreement, kappa, set overlap, serious-error zero tolerances and qualitative review are all reported."
+  },
+  "approval": {
+    "domain_reviewer_id": null,
+    "research_supervisor_id": null,
+    "statistics_reviewer_id": null,
+    "approved_at": null
+  }
+}

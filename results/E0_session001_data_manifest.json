@@ -1,0 +1,43 @@
+{
+  "schema_version": "experiment-data-manifest-v1.0",
+  "session_id": "E0_session001",
+  "stage": "E0",
+  "updated_at": "2026-08-21T00:00:00+08:00",
+  "formal_evidence": false,
+  "analysis_report": {
+    "path": "results/E0_session001_final_precalibration_report.json",
+    "sha256": "0E5E509B612339D3FDE52C0A9535B57F0FEA34A4D638D6907E32FED1A25F4BFE",
+    "reported_sample_count": 378348,
+    "reported_duration_s": 3809.973096,
+    "reported_effective_sample_rate_hz": 99.30437577032171
+  },
+  "power_stream": {
+    "path": "data/raw/runs/INA226_E0_session001.jsonl",
+    "retention_status": "intentional_excerpt_in_place",
+    "complete_raw": false,
+    "reason": "The user intentionally removed most middle records to reduce Git repository size and retained only beginning and ending records.",
+    "current_excerpt_lines": 214,
+    "current_excerpt_bytes": 91957,
+    "current_excerpt_sha256": "D260F0EA2CED17E3425F487D96DDD9EF9D685F5332ABA5EB29956FBAE65A203B",
+    "full_raw_sha256": null,
+    "external_archive_uri": null,
+    "allowed_uses": [
+      "schema inspection",
+      "beginning and ending record examples"
+    ],
+    "prohibited_uses": [
+      "recomputing 60-minute dropout rate",
+      "recomputing maximum sampling gap",
+      "claiming independent reproduction of the retained analysis report"
+    ]
+  },
+  "legacy_hardware_test_stream": {
+    "path": "data/raw/runs/INA226_硬件测试001.jsonl",
+    "retention_status": "intentional_excerpt_in_place",
+    "complete_raw": false,
+    "current_excerpt_lines": 362,
+    "current_excerpt_bytes": 80083,
+    "current_excerpt_sha256": "A9EC211F1B3C30AC804AEF0957989C7DF7F7181FE82E0613F0600E82276C4D68"
+  },
+  "formal_resolution": "Use an external complete backup if one exists; otherwise acquire a new long-duration session and archive the complete compressed raw stream outside Git."
+}

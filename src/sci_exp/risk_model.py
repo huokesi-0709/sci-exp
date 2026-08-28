@@ -5,7 +5,7 @@ from collections import defaultdict
 from typing import Any, Iterable
 
 from .features import query_features
-from .schemas import QueryRecord
+from .schemas import InferenceQuery
 
 
 DEFAULT_FEATURES = (
@@ -167,7 +167,7 @@ class LogisticRiskPredictor:
         }
         self.models = self.heads.get(self.primary_head, model["models"])
 
-    def predict(self, query: QueryRecord, configuration: str) -> float:
+    def predict(self, query: InferenceQuery, configuration: str) -> float:
         features = query_features(query)
         return self.predict_features(features, configuration)
 
@@ -195,7 +195,7 @@ class LogisticRiskPredictor:
 
     def predict_heads(
         self,
-        query: QueryRecord,
+        query: InferenceQuery,
         configuration: str,
     ) -> dict[str, float]:
         return self.predict_feature_heads(query_features(query), configuration)

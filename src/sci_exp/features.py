@@ -4,16 +4,21 @@ import math
 import re
 
 from .retrieval import tokenize
-from .schemas import QueryRecord
+from .schemas import InferenceQuery
 
 
-def query_features(query: QueryRecord) -> dict[str, float]:
+def query_features(query: InferenceQuery) -> dict[str, float]:
     """Inference-time surface features only.
 
     Gold risk level, gold query type, expected fallback and gold disaster label
     are deliberately excluded to prevent label leakage into the router.
     """
 
+    if not isinstance(query, InferenceQuery):
+        raise TypeError(
+            "query_features accepts InferenceQuery only; Gold-bearing "
+            "QueryRecord must be sanitized first"
+        )
     tokens = tokenize(query.text)
     compact = re.sub(r"\s+", "", query.text.lower())
     urgency_terms = ("立即", "马上", "快", "救命", "昏迷", "呼吸", "着火", "浓烟", "被困")

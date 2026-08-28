@@ -1,0 +1,25 @@
+{
+  "schema_version": "input-gold-quality-gates-v0.1",
+  "status": "provisional_pending_domain_and_supervisor_approval",
+  "bootstrap_iterations": 2000,
+  "bootstrap_seed": 20260821,
+  "thresholds": {
+    "risk_state_kappa_min": 0.75,
+    "risk_severity_quadratic_kappa_min": 0.75,
+    "escalation_required_kappa_min": 0.8,
+    "recommended_response_mode_kappa_min": 0.75,
+    "evidence_ids_mean_iou_min": 0.67,
+    "required_action_ids_mean_iou_min": 0.67,
+    "critical_action_ids_mean_iou_min": 0.67,
+    "prohibited_action_ids_mean_iou_min": 0.67,
+    "severe_severity_disagreement_max": 0,
+    "required_prohibited_conflict_max": 0,
+    "critical_not_required_conflict_max": 0
+  },
+  "approval": {
+    "domain_reviewer_id": null,
+    "research_supervisor_id": null,
+    "statistics_reviewer_id": null,
+    "approved_at": null
+  }
+}

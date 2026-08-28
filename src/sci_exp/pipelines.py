@@ -13,7 +13,7 @@ from .retrieval import (
     merge_ranked_results,
     protocol_aware_rerank,
 )
-from .schemas import QueryRecord, RetrievedChunk
+from .schemas import InferenceQuery, RetrievedChunk
 
 
 @dataclass(frozen=True)
@@ -57,7 +57,6 @@ class ConfigurationPipeline:
         c2_top_k: int = 8,
         c2_candidate_k: int = 24,
         c2_min_evidence: int = 3,
-        strict_hazard_filter: bool = True,
         configuration_library: dict[str, dict[str, Any]] | None = None,
     ) -> None:
         self.index = index
@@ -68,12 +67,18 @@ class ConfigurationPipeline:
         self.c2_top_k = c2_top_k
         self.c2_candidate_k = c2_candidate_k
         self.c2_min_evidence = c2_min_evidence
-        self.strict_hazard_filter = strict_hazard_filter
         self.configuration_library = configuration_library or {}
 
-    def run(self, configuration: str, query: QueryRecord) -> PipelineResult:
+    def run(self, configuration: str, query: InferenceQuery) -> PipelineResult:
+        if not isinstance(query, InferenceQuery):
+            raise TypeError(
+                "ConfigurationPipeline.run accepts InferenceQuery only; "
+                "convert annotated QueryRecord with to_inference_query()"
+            )
         diagnostics: dict[str, Any] = {
             "retrieval_profile": configuration,
+            "gold_label_access": False,
+            "hazard_filter_source": "disabled_no_inference_time_predictor",
             "dense_backend": (
                 self.hybrid_index.encoder_backend if self.hybrid_index else None
             ),
@@ -104,7 +109,6 @@ class ConfigurationPipeline:
             )
             applicable, rejected = filter_applicable_protocols(
                 first,
-                disaster_type=query.disaster_type,
                 jurisdiction=str(query.metadata.get("jurisdiction", "")),
                 as_of_date=str(
                     query.metadata.get(
@@ -112,13 +116,10 @@ class ConfigurationPipeline:
                     )
                 ),
                 target_population=str(query.metadata.get("target_population", "")),
-                strict_hazard=self.strict_hazard_filter,
             )
             steps = 1
             if len(applicable) < self.c2_min_evidence:
-                second_query = build_second_step_query(
-                    query.text, query.disaster_type
-                )
+                second_query = build_second_step_query(query.text)
                 second = self.hybrid_index.search(
                     second_query,
                     self.c2_candidate_k,
@@ -126,7 +127,6 @@ class ConfigurationPipeline:
                 )
                 second_applicable, second_rejected = filter_applicable_protocols(
                     second,
-                    disaster_type=query.disaster_type,
                     jurisdiction=str(query.metadata.get("jurisdiction", "")),
                     as_of_date=str(
                         query.metadata.get(
@@ -136,15 +136,12 @@ class ConfigurationPipeline:
                     target_population=str(
                         query.metadata.get("target_population", "")
                     ),
-                    strict_hazard=self.strict_hazard_filter,
                 )
                 applicable = merge_ranked_results(applicable, second_applicable)
                 for key, value in second_rejected.items():
                     rejected[key] = rejected.get(key, 0) + value
                 steps = 2
-            reranked = protocol_aware_rerank(
-                query.text, query.disaster_type, applicable
-            )
+            reranked = protocol_aware_rerank(query.text, applicable)
             evidence = reranked[: self.c2_top_k]
             conflicts = detect_evidence_conflicts(evidence)
             diagnostics.update(

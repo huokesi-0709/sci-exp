@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sci-exp/input_gold_raw_annotation.schema.json",
+  "title": "SC-EA-RAG input-level protocol Gold raw reviewer annotation",
+  "type": "object",
+  "required": [
+    "annotation_phase",
+    "blind_batch_id",
+    "query_id",
+    "source_group_id",
+    "query_text",
+    "observable_context",
+    "annotator_id",
+    "manual_version",
+    "protocol_corpus_version",
+    "ontology_version",
+    "scope_state",
+    "hazard_family_id",
+    "query_intent_ids",
+    "risk_state",
+    "risk_trigger_ids",
+    "risk_severity",
+    "escalation_required",
+    "recommended_response_mode",
+    "evidence_gap",
+    "evidence_ids",
+    "evidence_span_refs",
+    "required_action_ids",
+    "critical_action_ids",
+    "prohibited_action_ids",
+    "constraint_ids",
+    "uncertainty_code",
+    "confidence",
+    "rationale",
+    "completed_at"
+  ],
+  "properties": {
+    "annotation_phase": {"type": "string", "enum": ["TRAINING", "PILOT", "FORMAL"]},
+    "blind_batch_id": {"type": "string", "minLength": 1},
+    "query_id": {"type": "string", "minLength": 1},
+    "source_group_id": {"type": "string", "minLength": 1},
+    "query_text": {"type": "string", "minLength": 1},
+    "observable_context": {"type": "object"},
+    "annotator_id": {"type": "string", "minLength": 1},
+    "manual_version": {"type": "string", "minLength": 1},
+    "protocol_corpus_version": {"type": "string", "minLength": 1},
+    "ontology_version": {"type": "string", "minLength": 1},
+    "scope_state": {"type": "string", "enum": ["IN_SCOPE", "OUT_OF_SCOPE", "UNKNOWN"]},
+    "hazard_family_id": {"type": "string", "minLength": 1},
+    "query_intent_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "risk_state": {"type": "string", "enum": ["POSITIVE", "NEGATIVE", "UNKNOWN"]},
+    "risk_trigger_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "risk_severity": {"type": "string", "enum": ["S0", "S1", "S2", "S3"]},
+    "escalation_required": {"type": "string", "enum": ["YES", "NO", "UNKNOWN"]},
+    "recommended_response_mode": {
+      "type": "string",
+      "enum": ["DIRECT_GUIDANCE", "CONDITIONAL_GUIDANCE", "SAFE_FALLBACK"]
+    },
+    "evidence_gap": {"type": "boolean"},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "evidence_span_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "span_ref"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "span_ref": {"type": "string", "minLength": 1},
+          "quote": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "required_action_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "critical_action_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "prohibited_action_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "constraint_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "uncertainty_code": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "INSUFFICIENT_QUERY",
+        "NO_APPLICABLE_PROTOCOL",
+        "CONFLICTING_PROTOCOLS",
+        "JURISDICTION_MISMATCH",
+        "POPULATION_MISMATCH",
+        "OUT_OF_SCOPE",
+        "ONTOLOGY_GAP",
+        "OTHER"
+      ]
+    },
+    "confidence": {"type": "integer", "minimum": 1, "maximum": 5},
+    "rationale": {"type": "string", "minLength": 1},
+    "completed_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"risk_state": {"const": "POSITIVE"}}, "required": ["risk_state"]},
+      "then": {"properties": {"risk_trigger_ids": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"risk_state": {"const": "UNKNOWN"}}, "required": ["risk_state"]},
+      "then": {"properties": {"uncertainty_code": {"not": {"const": "NONE"}}}}
+    },
+    {
+      "if": {"properties": {"evidence_gap": {"const": false}}, "required": ["evidence_gap"]},
+      "then": {"properties": {"evidence_ids": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"evidence_gap": {"const": true}}, "required": ["evidence_gap"]},
+      "then": {"properties": {"uncertainty_code": {"not": {"const": "NONE"}}}}
+    }
+  ],
+  "additionalProperties": false
+}
