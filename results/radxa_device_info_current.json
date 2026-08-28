@@ -1,0 +1,45 @@
+{
+  "available_memory_mb": 7205.375,
+  "cooling_devices": [
+    {
+      "cur_state": 0.0,
+      "max_state": 6.0,
+      "name": "cooling_device0",
+      "type": "thermal-cpufreq-0"
+    },
+    {
+      "cur_state": 0.0,
+      "max_state": 5.0,
+      "name": "cooling_device1",
+      "type": "thermal-devfreq-0"
+    }
+  ],
+  "cooling_state": 0.0,
+  "cpu_count": 4,
+  "cpu_frequency_mhz": 1800.0,
+  "device_temperature_c": 36.666,
+  "load_1m": 0.22,
+  "machine": "aarch64",
+  "platform": "Linux-5.10.160-26-rk356x-aarch64-with-glibc2.31",
+  "processor": "",
+  "python": "3.11.15",
+  "temperature_c": 36.666,
+  "thermal_paths": [
+    "/sys/class/thermal/thermal_zone0/temp",
+    "/sys/class/thermal/thermal_zone1/temp"
+  ],
+  "thermal_zones": [
+    {
+      "name": "thermal_zone0",
+      "temp_path": "/sys/class/thermal/thermal_zone0/temp",
+      "temperature_c": 36.111,
+      "type": "soc-thermal"
+    },
+    {
+      "name": "thermal_zone1",
+      "temp_path": "/sys/class/thermal/thermal_zone1/temp",
+      "temperature_c": 33.75,
+      "type": "gpu-thermal"
+    }
+  ]
+}
