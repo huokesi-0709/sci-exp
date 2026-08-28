@@ -882,7 +882,7 @@ stages:
     status: ready_for_formal_e1_dev_phase
     formal_pass: false
     power_source_preflight_20260828:
-      status: passed_idle_only_high_load_preflight_required
+      status: passed_idle_and_short_high_load_preflight_model_record_required_before_freeze
       source: user_reported_5V_3A_charger_model_not_recorded
       wiring: charger_to_INA226_input_plus_existing_20AWG_typec_output_to_Radxa
       collector_file: D:\sci-exp-data\E1_preflight_20260828\INA226_source_5V3A_radxa_idle_001.full.jsonl
@@ -898,7 +898,24 @@ stages:
       quality_flags: {undervoltage: 0, integration_gap: 0, current_saturated: 0}
       manual_vout_gnd_v: 5.00
       formal_evidence: false
-      interpretation: 空闲供电稳定且明显高于4.75V门槛；不能替代最高负载配置下的换源预检，不执行ZERO或CAL
+      short_high_load_followup:
+        collector_file: D:\sci-exp-data\E1_preflight_20260828\INA226_source_5V3A_radxa_load_002.full.jsonl
+        bytes: 2667500
+        lines: 6124
+        sha256: 1414B8CDC3A2B2C28D5C2287081D57CDC91A1B9A0BE513C6678E07B29C7C8C63
+        samples: 6053
+        environment_samples: 61
+        duration_s: 60.936056
+        collector_invalid_serial_rows: 0
+        current_mean_a: 0.4757879390384933
+        current_max_a: 0.699319
+        power_mean_w: 2.3870682535932595
+        power_max_w: 3.514953
+        bus_voltage_min_v: 4.9825
+        quality_flags: {undervoltage: 0, integration_gap: 0, current_saturated: 0}
+        manual_vout_gnd_v: 5.00
+        pass: true
+      interpretation: 空闲与60.936秒短时高负载均保持Vbus至少4.75V且无质量标志；不用重做E0或更改校准。E1开始前只需补记充电头型号/额定输出与输入线标识，然后固定该源和接线
     completed_preparation:
       - Radxa ZERO 3W aarch64、4核和内存状态已实机探测
       - llama.cpp b9627 ARM64构建、GGUF加载、health和Chat API最小验证已完成
