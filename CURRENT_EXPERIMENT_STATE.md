@@ -1,6 +1,6 @@
 # 当前实验状态
 
-更新时间：2026-08-28（Asia/Shanghai）
+更新时间：2026-08-29（Asia/Shanghai）
 
 权威机器可读账本：[`docs/实验状态总览_v1.0.yaml`](docs/实验状态总览_v1.0.yaml)
 
@@ -98,6 +98,32 @@ Radxa接线不变。其10分钟空闲预检得到58,797个样本、`invalid=0`�
 `2.387068/3.514953W`，Vbus最低`4.982500V`，无欠压、积分间隙或饱和；手工`VOUT-GND=5.00V`。
 充电头在本轮Radxa负载预检下通过，且无需重做E0或修改ESP32校准。E1开始前仅需记录该充电头标签型号/
 额定输出与实际使用的输入线标识，并在整个可比较E1批次中保持该源和接线不变。
+
+2026-08-29已完成E1运行时的ARM64本机构建与密集检索准备：冻结的`llama.cpp b9627`
+在Radxa ZERO 3上成功构建`bin/llama-server`（SHA-256
+`4d157af0eb8c136ffa845065c7ed8d749ce40b048037c19696254a6344ae16b9`），`file`确认其为
+`ELF 64-bit aarch64`，`ldd`无缺失共享库。构建期间，预构建UI包缺少`loading.html`；已通过
+关闭嵌入式UI并在构建脚本中从冻结源码补齐该静态资产修复，后续不应删除构建目录。Python
+`openai_chat`适配单元测试通过；安装`sentence-transformers 3.4.1`与`torch 2.13.0+cu130`后，
+本地BGE模型编码输出为`(1, 512)`。随后当前二进制的真实`/health`返回`{"status":"ok"}`，
+`/v1/chat/completions`返回非空正文“E1接口正常。”；本机服务验证通过。Windows采集器监听
+`0.0.0.0:8765`后，Radxa以`SCI_EXP_METER_HOST=192.168.66.219`发送`idle_start`并收到匹配ACK，
+标记闭环也通过。此前的`TimeoutError`不能归因为未`export`主机变量：该命令已成功发送UDP并等待ACK，
+直接故障是Windows端未返回ACK；今后须同时显式导出主机IP并确认采集器正在监听。上述均为E1运行时/
+边界预检证据，`formal_evidence=false`；GGUF来源/tokenizer审计与随机顺序dry-run仍未完成，不能据此
+宣称E1正式实验已开始。
+随后以`E1_devtemp_dryrun_idle_004`完成一对同名`idle_start`/`idle_end`：Windows raw
+`D:\sci-exp-data\E1_20260829\INA226_E1_devtemp_dryrun_004.full.jsonl`记录8,451个sample、85个
+environment、2个marker和0个invalid；按Radxa单调时钟，配对空闲区间为`74.922470s`。此前001含重复
+start、002只有一条marker、003的start/end run key不一致，均保留为非正式诊断而不用于积分或基线。
+2026-08-29的单query随机顺序dry-run `005`随后完成：C0/C1/C2各3次，`9/9`运行成功；Windows raw
+`D:\sci-exp-data\E1_20260829\INA226_E1_devtemp_dryrun_005.full.jsonl`含47,904个功率样本、480个环境
+样本、20个标记和0条无效串口行。首次整合错误地以Windows串口到达时间作为积分连续性时钟，因Windows约
+15.6ms调度量化产生14个31ms和4个32ms到达间隔，导致5/9条被30ms门槛拒绝；原始ESP32设备时钟的P99/最大
+间隔实际为10.984/16.025ms，所有9条均无缺样、欠压、饱和或固件积分间隙。整合器已更正为“主机时钟只用于
+UDP标记边界，`device_us`用于积分和连续性判定”，经新增单元测试后复算为9/9有效，空闲功率为
+`1.277806725W`。该dry-run验证了随机任务顺序、外部能耗回填和时钟判定；仍为`formal_evidence=false`，不得
+用于E1结论或替代正式315次Dev-Temp穷举。GGUF tokenizer/来源审计仍是正式E1的下一门槛。
 
 ## 最近完成的跨阶段数据治理
 

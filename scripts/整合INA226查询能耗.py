@@ -36,15 +36,41 @@ def read_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def sample_timing(samples: list[dict[str, Any]]) -> tuple[str, float]:
+    """Return the authoritative timing field and its units per second.
+
+    Markers are received by the Windows collector, so their boundaries must
+    remain on ``host_monotonic_ns``.  Once samples inside that boundary have
+    been selected, however, INA226 integration and continuity validation must
+    use the ESP32 device clock when it is present.  Host receive timestamps are
+    affected by Windows scheduler quanta and are only an arrival-path audit
+    signal, not a power-sampling clock.
+    """
+    if samples and all(row.get("device_us") is not None for row in samples):
+        return "device_us", 1_000_000.0
+    return "host_monotonic_ns", 1_000_000_000.0
+
+
+def maximum_host_arrival_gap_ms(samples: list[dict[str, Any]]) -> float:
+    if len(samples) < 2:
+        return float("inf")
+    return max(
+        (int(right["host_monotonic_ns"]) - int(left["host_monotonic_ns"]))
+        / 1_000_000.0
+        for left, right in zip(samples, samples[1:])
+    )
+
+
 def integrate(samples: list[dict[str, Any]]) -> tuple[float | None, float]:
     if len(samples) < 2:
         return None, float("inf")
+    timing_field, units_per_second = sample_timing(samples)
     energy = 0.0
     maximum_gap_ms = 0.0
     for left, right in zip(samples, samples[1:]):
         delta_s = (
-            int(right["host_monotonic_ns"]) - int(left["host_monotonic_ns"])
-        ) / 1_000_000_000.0
+            int(right[timing_field]) - int(left[timing_field])
+        ) / units_per_second
         maximum_gap_ms = max(maximum_gap_ms, delta_s * 1000.0)
         energy += (
             delta_s
@@ -87,6 +113,10 @@ def estimate_idle_power(
                 "sample_count": len(selected),
                 "duration_s": duration_s,
                 "maximum_sample_gap_ms": maximum_gap_ms,
+                "integration_timing_source": sample_timing(selected)[0]
+                if selected
+                else None,
+                "maximum_host_arrival_gap_ms": maximum_host_arrival_gap_ms(selected),
                 "mean_power_w": mean_power_w,
             }
         )
@@ -294,6 +324,10 @@ def main() -> int:
                     else None
                 ),
                 "maximum_sample_gap_ms": maximum_gap_ms,
+                "integration_timing_source": sample_timing(selected)[0]
+                if selected
+                else None,
+                "maximum_host_arrival_gap_ms": maximum_host_arrival_gap_ms(selected),
                 "flags": flags,
                 "valid": valid,
                 "reason": (

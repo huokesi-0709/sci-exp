@@ -36,6 +36,28 @@ class Ina226PowerChainTests(unittest.TestCase):
         self.assertAlmostEqual(energy, 6.0)
         self.assertEqual(gap_ms, 1000.0)
 
+    def test_device_clock_is_used_after_host_marker_selection(self):
+        module = load_energy_module()
+        samples = [
+            {
+                "host_monotonic_ns": 0,
+                "device_us": 0,
+                "power_w": 2.0,
+            },
+            {
+                # Delayed Windows serial delivery must not inflate measured
+                # energy or invalidate an otherwise continuous INA226 stream.
+                "host_monotonic_ns": 32_000_000,
+                "device_us": 10_000,
+                "power_w": 4.0,
+            },
+        ]
+        energy, gap_ms = module.integrate(samples)
+        self.assertAlmostEqual(energy, 0.03)
+        self.assertEqual(gap_ms, 10.0)
+        self.assertEqual(module.sample_timing(samples)[0], "device_us")
+        self.assertEqual(module.maximum_host_arrival_gap_ms(samples), 32.0)
+
     def test_external_marker_requires_matching_ack(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         server.bind(("127.0.0.1", 0))

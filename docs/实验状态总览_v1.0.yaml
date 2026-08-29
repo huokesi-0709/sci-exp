@@ -918,12 +918,82 @@ stages:
       interpretation: 空闲与60.936秒短时高负载均保持Vbus至少4.75V且无质量标志；不用重做E0或更改校准。E1开始前只需补记充电头型号/额定输出与输入线标识，然后固定该源和接线
     completed_preparation:
       - Radxa ZERO 3W aarch64、4核和内存状态已实机探测
-      - llama.cpp b9627 ARM64构建、GGUF加载、health和Chat API最小验证已完成
+      - llama.cpp b9627已在Radxa本机构建；bin/llama-server为aarch64 ELF，SHA-256为4d157af0eb8c136ffa845065c7ed8d749ce40b048037c19696254a6344ae16b9，ldd无缺失库
+      - Python openai_chat请求/响应适配单元测试已通过（不是对实时服务的替代）
+      - sentence-transformers 3.4.1与torch 2.13.0+cu130已在Radxa .venv安装；本地BGE编码核验输出(1, 512)
+      - 当前llama-server真实/health与/v1/chat/completions已返回成功和非空正文
+      - Windows采集器监听0.0.0.0:8765时，Radxa以SCI_EXP_METER_HOST=192.168.66.219发送idle_start并收到匹配marker ACK
       - E1分析入口和候选配置代码已建立
     remaining_preparation:
-      - Python生成器从裸completion适配并验证Chat API
-      - GGUF来源/tokenizer和BGE实机运行时锁定
-      - E1运行清单及随机顺序dry-run
+      - GGUF来源/tokenizer审计和运行时哈希文件回传Git；BGE已实机验证
+    runtime_preparation_20260829:
+      status: runtime_marker_and_deviceclock_dryrun_passed_model_audit_pending
+      formal_evidence: false
+      device_probe_remote_path: results/E1_device_runtime_probe_20260828.json
+      runtime_hashes_remote_path: results/E1_runtime_hashes_20260828.txt
+      build:
+        llama_cpp_commit: 53bd47ea5b46335cf6125a674af378ac422fc392
+        llama_server_sha256: 4d157af0eb8c136ffa845065c7ed8d749ce40b048037c19696254a6344ae16b9
+        architecture: aarch64
+        dynamic_library_resolution: passed_no_not_found_entries
+        ui_build_incident: prebuilt_ui_archive_missing_loading_html
+        remediation: disable_embedded_ui_and_install_source_static_loading_html_before_build
+      adapter_unit_test:
+        command: .venv/bin/python -m unittest discover -s tests -p test_generation_chat_api.py -v
+        result: passed_1_test
+      live_llm_api:
+        health_response: '{"status":"ok"}'
+        chat_response_content: E1接口正常。
+        result: passed
+      external_marker_preflight:
+        marker_host: 192.168.66.219
+        marker_port: 8765
+        collector_bind: 0.0.0.0
+        clean_pair_run_key: E1_devtemp_dryrun_idle_004
+        collector_file: D:\sci-exp-data\E1_20260829\INA226_E1_devtemp_dryrun_004.full.jsonl
+        samples: 8451
+        environment_samples: 85
+        marker_count: 2
+        invalid_serial_rows: 0
+        paired_idle_duration_s: 74.922469742
+        result: passed_clean_matching_start_end_pair
+        timeout_diagnosis: prior_timeout_means_no_ack_received_not_missing_export_by_itself
+        prior_noncanonical_dryruns:
+          - E1_devtemp_dryrun_idle_001_duplicate_idle_start
+          - E1_devtemp_dryrun_idle_002_single_marker
+          - E1_devtemp_dryrun_idle_003_mismatched_start_end_run_keys
+      randomized_dryrun_005:
+        formal_evidence: false
+        query_count: 1
+        configurations: [C0, C1, C2]
+        repetitions_per_configuration: 3
+        total_runs: 9
+        successful_runs: 9
+        run_order_seed: 42
+        collector_file: D:\sci-exp-data\E1_20260829\INA226_E1_devtemp_dryrun_005.full.jsonl
+        collector_sha256: 841D54A4513297935327EF554113F71B57296C0DCDC512708FDE515470AD1E6D
+        collector_bytes: 21145763
+        samples: 47904
+        environment_samples: 480
+        marker_count: 20
+        invalid_serial_rows: 0
+        idle_power_w: 1.2778067249631462
+        marker_boundary_clock: host_monotonic_ns
+        integration_clock: device_us
+        device_clock_gap_ms_max: 16.025
+        host_arrival_gap_ms_max: 32.0
+        external_meter_valid_runs: 9
+        initial_host_arrival_time_integration:
+          valid_runs: 4
+          invalid_runs: 5
+          disposition: diagnostic_only_superseded_by_device_clock_integration
+        corrected_energy_output: results/E1_devtemp_dryrun_005.deviceclock.energy.jsonl
+        corrected_merged_output: results/E1_devtemp_dryrun_005.deviceclock.meter_merged.jsonl
+      dense_runtime:
+        sentence_transformers_version: 3.4.1
+        torch_version: 2.13.0+cu130
+        local_bge_encode_shape: [1, 512]
+        result: passed
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true

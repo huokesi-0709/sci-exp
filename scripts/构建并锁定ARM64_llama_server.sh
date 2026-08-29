@@ -37,7 +37,16 @@ cmake -S "$SOURCE_DIR" -B "$BUILD_DIR" \
   -DGGML_NATIVE=ON \
   -DGGML_OPENMP=ON \
   -DLLAMA_CURL=OFF \
-  -DLLAMA_BUILD_TESTS=OFF
+  -DLLAMA_BUILD_TESTS=OFF \
+  -DLLAMA_BUILD_UI=OFF \
+  -DLLAMA_USE_PREBUILT_UI=OFF
+
+# b9627 仍会把可用静态资源嵌入 server；关闭 Web UI 后，若构建目录残留了
+# index.html，嵌入器仍要求 loading.html。使用源码自带的静态文件补齐该唯一资产，
+# 避免联网下载的 UI 包覆盖缓存后导致构建失败。
+mkdir -p "$BUILD_DIR/tools/ui/dist"
+install -m 0644 "$SOURCE_DIR/tools/ui/static/loading.html" \
+  "$BUILD_DIR/tools/ui/dist/loading.html"
 cmake --build "$BUILD_DIR" --config Release --target llama-server --parallel "$(nproc)"
 
 BUILT="$BUILD_DIR/bin/llama-server"
@@ -53,7 +62,7 @@ install -m 0755 "$BUILT" "$TARGET"
   echo "llama_cpp_tag=$EXPECTED_TAG"
   echo "llama_cpp_commit=$ACTUAL_COMMIT"
   echo "build_type=Release"
-  echo "build_flags=-DGGML_NATIVE=ON -DGGML_OPENMP=ON -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF"
+  echo "build_flags=-DGGML_NATIVE=ON -DGGML_OPENMP=ON -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF"
   echo "llama_server_path=$TARGET"
   echo "llama_server_sha256=$(sha256sum "$TARGET" | awk '{print $1}')"
   echo "llama_server_size_bytes=$(stat -c %s "$TARGET")"
