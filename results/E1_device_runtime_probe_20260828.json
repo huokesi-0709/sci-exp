@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0",
+  "created_at_utc": "2026-08-29T03:38:15.165748+00:00",
+  "device_id": "E1",
+  "anonymous_device_instance_id": "269d61e621f39e82",
+  "hostname": "radxa-zero3",
+  "hardware": {
+    "device_tree_model": "Radxa ZERO 3",
+    "device_tree_compatible": "radxa,zero3w-aic8800ds2\u0000radxa,zero3\u0000rockchip,rk3566",
+    "machine": "aarch64",
+    "processor": "",
+    "cpu_count": 4,
+    "lscpu": {
+      "available": true,
+      "command": [
+        "lscpu"
+      ],
+      "returncode": 0,
+      "stdout": "Architecture:                    aarch64\nCPU op-mode(s):                  32-bit, 64-bit\nByte Order:                      Little Endian\nCPU(s):                          4\nOn-line CPU(s) list:             0-3\nThread(s) per core:              1\nCore(s) per socket:              4\nSocket(s):                       1\nVendor ID:                       ARM\nModel:                           0\nModel name:                      Cortex-A55\nStepping:                        r2p0\nCPU max MHz:                     1800.0000\nCPU min MHz:                     408.0000\nBogoMIPS:                        48.00\nVulnerability Itlb multihit:     Not affected\nVulnerability L1tf:              Not affected\nVulnerability Mds:               Not affected\nVulnerability Meltdown:          Not affected\nVulnerability Mmio stale data:   Not affected\nVulnerability Retbleed:          Not affected\nVulnerability Spec store bypass: Not affected\nVulnerability Spectre v1:        Mitigation; __user pointer sanitization\nVulnerability Spectre v2:        Not affected\nVulnerability Srbds:             Not affected\nVulnerability Tsx async abort:   Not affected\nFlags:                           fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp",
+      "stderr": ""
+    },
+    "memory": {
+      "MemTotal_bytes": 8068550656,
+      "MemFree_bytes": 7019307008,
+      "MemAvailable_bytes": 7559786496,
+      "Buffers_bytes": 57483264,
+      "Cached_bytes": 512802816,
+      "SwapCached_bytes": 0,
+      "Active_bytes": 229310464,
+      "Inactive_bytes": 599937024,
+      "Active(anon)_bytes": 1179648,
+      "Inactive(anon)_bytes": 263233536,
+      "Active(file)_bytes": 228130816,
+      "Inactive(file)_bytes": 336703488,
+      "Unevictable_bytes": 3293184,
+      "Mlocked_bytes": 65536,
+      "SwapTotal_bytes": 4034273280,
+      "SwapFree_bytes": 4034273280,
+      "Dirty_bytes": 536576,
+      "Writeback_bytes": 0,
+      "AnonPages_bytes": 262553600,
+      "Mapped_bytes": 173801472,
+      "Shmem_bytes": 5300224,
+      "KReclaimable_bytes": 74371072,
+      "Slab_bytes": 120946688,
+      "SReclaimable_bytes": 74371072,
+      "SUnreclaim_bytes": 46575616,
+      "KernelStack_bytes": 5537792,
+      "PageTables_bytes": 8085504,
+      "NFS_Unstable_bytes": 0,
+      "Bounce_bytes": 0,
+      "WritebackTmp_bytes": 0,
+      "CommitLimit_bytes": 8068546560,
+      "Committed_AS_bytes": 1881657344,
+      "VmallocTotal_bytes": 138537257074688,
+      "VmallocUsed_bytes": 36872192,
+      "VmallocChunk_bytes": 0,
+      "Percpu_bytes": 2228224,
+      "CmaTotal_bytes": 16777216,
+      "CmaAllocated_bytes": 4734976,
+      "CmaReleased_bytes": 12042240,
+      "CmaFree_bytes": 12042240,
+      "HugePages_Total_bytes": 0,
+      "HugePages_Free_bytes": 0,
+      "HugePages_Rsvd_bytes": 0,
+      "HugePages_Surp_bytes": 0,
+      "Hugepagesize_bytes": 2097152,
+      "Hugetlb_bytes": 0
+    },
+    "storage": {
+      "available": true,
+      "command": [
+        "lsblk",
+        "-b",
+        "-J",
+        "-o",
+        "NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS,MODEL"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "lsblk: unknown column: MOUNTPOINTS,MODEL"
+    },
+    "root_filesystem": {
+      "total": 122693345280,
+      "used": 30511038464,
+      "free": 87133794304
+    }
+  },
+  "software": {
+    "platform": "Linux-5.10.160-26-rk356x-aarch64-with-glibc2.31",
+    "kernel": "5.10.160-26-rk356x",
+    "python": "3.11.15",
+    "os_release": "PRETTY_NAME=\"Debian GNU/Linux 11 (bullseye)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"11\"\nVERSION=\"11 (bullseye)\"\nVERSION_CODENAME=bullseye\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"",
+    "cmake": {
+      "available": true,
+      "command": [
+        "cmake",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "cmake version 3.18.4\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).",
+      "stderr": ""
+    },
+    "gcc": {
+      "available": true,
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "gcc (Debian 10.2.1-6) 10.2.1 20210110\nCopyright (C) 2020 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "stderr": ""
+    },
+    "git": {
+      "available": true,
+      "command": [
+        "git",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "git version 2.30.2",
+      "stderr": ""
+    }
+  },
+  "resource_state": {
+    "thermal_zones": [
+      {
+        "path": "/sys/class/thermal/thermal_zone0/temp",
+        "type": "soc-thermal",
+        "raw_value": 36111.0,
+        "temperature_c": 36.111
+      },
+      {
+        "path": "/sys/class/thermal/thermal_zone1/temp",
+        "type": "gpu-thermal",
+        "raw_value": 33750.0,
+        "temperature_c": 33.75
+      }
+    ],
+    "cpu_governors": [
+      {
+        "path": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+        "value": "ondemand"
+      },
+      {
+        "path": "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+        "value": "ondemand"
+      },
+      {
+        "path": "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+        "value": "ondemand"
+      },
+      {
+        "path": "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+        "value": "ondemand"
+      }
+    ],
+    "load_average": [
+      0.29,
+      0.88,
+      1.74
+    ]
+  },
+  "power_probe": {
+    "candidates": [
+      {
+        "path": "/sys/class/power_supply/tcpm-source-psy-3-0022/current_now",
+        "field": "current_now",
+        "value": 0.0,
+        "unit_hint_only": "typically_microampere_unverified",
+        "rail_name": "USB",
+        "formal_use_allowed": false
+      },
+      {
+        "path": "/sys/class/power_supply/tcpm-source-psy-3-0022/voltage_now",
+        "field": "voltage_now",
+        "value": 0.0,
+        "unit_hint_only": "typically_microvolt_unverified",
+        "rail_name": "USB",
+        "formal_use_allowed": false
+      }
+    ],
+    "formal_interpretation": "候选路径只有在单位、采样频率和供电轨覆盖范围经实测核验后，才能写入正式配置；没有板级输入功率路径时必须使用外置功率计。"
+  },
+  "llama_server": {
+    "candidates": [
+      {
+        "path": "/home/radxa/sci-exp/bin/llama-server",
+        "executable": true,
+        "size_bytes": 15576,
+        "sha256": "4d157af0eb8c136ffa845065c7ed8d749ce40b048037c19696254a6344ae16b9"
+      }
+    ]
+  }
+}

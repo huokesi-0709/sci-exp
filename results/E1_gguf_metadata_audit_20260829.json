@@ -1,0 +1,90 @@
+{
+  "path": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-q4_k_m.gguf",
+  "file_size_bytes": 407155552,
+  "gguf_version": 3,
+  "tensor_count": 291,
+  "metadata_count": 21,
+  "metadata": {
+    "general.architecture": "qwen2",
+    "general.name": "Qwen1.5-0.5B-Chat-AWQ-fp16",
+    "qwen2.block_count": 24,
+    "qwen2.context_length": 32768,
+    "qwen2.embedding_length": 1024,
+    "qwen2.feed_forward_length": 2816,
+    "qwen2.attention.head_count": 16,
+    "qwen2.attention.head_count_kv": 16,
+    "qwen2.attention.layer_norm_rms_epsilon": 9.999999974752427e-07,
+    "qwen2.rope.freq_base": 1000000.0,
+    "qwen2.use_parallel_residual": true,
+    "tokenizer.ggml.model": "gpt2",
+    "tokenizer.ggml.tokens": {
+      "array_length": 151936,
+      "first_values": [
+        "!",
+        "\"",
+        "#",
+        "$",
+        "%",
+        "&",
+        "'",
+        "(",
+        ")",
+        "*",
+        "+",
+        ",",
+        "-",
+        ".",
+        "/",
+        "0"
+      ]
+    },
+    "tokenizer.ggml.token_type": {
+      "array_length": 151936,
+      "first_values": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "tokenizer.ggml.merges": {
+      "array_length": 151387,
+      "first_values": [
+        "Ġ Ġ",
+        "ĠĠ ĠĠ",
+        "i n",
+        "Ġ t",
+        "ĠĠĠĠ ĠĠĠĠ",
+        "e r",
+        "ĠĠ Ġ",
+        "o n",
+        "Ġ a",
+        "r e",
+        "a t",
+        "s t",
+        "e n",
+        "o r",
+        "Ġt h",
+        "Ċ Ċ"
+      ]
+    },
+    "tokenizer.ggml.eos_token_id": 151645,
+    "tokenizer.ggml.padding_token_id": 151643,
+    "tokenizer.ggml.bos_token_id": 151643,
+    "tokenizer.chat_template": "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+    "general.quantization_version": 2,
+    "general.file_type": 15
+  }
+}
