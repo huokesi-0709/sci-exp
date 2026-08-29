@@ -1,10 +1,11 @@
 {
   "schema_version": "formal-config-manifest-v1.0",
   "frozen_on": "2026-07-28",
-  "research_status": "implementation_complete_runtime_validation_blocked",
+  "research_status": "official_gguf_runtime_validated_pending_E1_power_dryrun",
   "common_generation": {
     "model_family": "Qwen1.5-0.5B-Chat",
-    "gguf_file": "models/qwen1_5-0_5b-chat-q4_k_m.gguf",
+    "gguf_file": "models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
+    "gguf_runtime_path_radxa": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
     "quantization": "Q4_K_M",
     "temperature": 0.0,
     "maximum_generated_tokens": 512,
@@ -101,7 +102,7 @@
     "formal_dense_backend_loads": false,
     "C0_C3_real_output_annotation_complete": false,
     "quality_risk_resource_differences_verified": false,
-    "radxa_runtime_validated": false,
+    "radxa_runtime_validated": true,
     "physical_energy_measurement_validated": false
   }
 }

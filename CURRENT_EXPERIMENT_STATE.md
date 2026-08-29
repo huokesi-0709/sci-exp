@@ -123,7 +123,14 @@ start、002只有一条marker、003的start/end run key不一致，均保留为�
 间隔实际为10.984/16.025ms，所有9条均无缺样、欠压、饱和或固件积分间隙。整合器已更正为“主机时钟只用于
 UDP标记边界，`device_us`用于积分和连续性判定”，经新增单元测试后复算为9/9有效，空闲功率为
 `1.277806725W`。该dry-run验证了随机任务顺序、外部能耗回填和时钟判定；仍为`formal_evidence=false`，不得
-用于E1结论或替代正式315次Dev-Temp穷举。GGUF tokenizer/来源审计仍是正式E1的下一门槛。
+用于E1结论或替代正式315次Dev-Temp穷举。随后已从官方`Qwen/Qwen1.5-0.5B-Chat`固定revision
+`4d14e384a4b037942bb3f3016665157c8bcb70ea`重新转换并量化；新Q4_K_M位于Git外的
+`/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf`，SHA-256为
+`ef63ebd112199c99e53b394fc6c9f10f27927b565258738fcf99a91421ea31a8`。其元数据完整包含
+`tokenizer.ggml.pre=qwen2`；ARM64服务启动不再出现旧的tokenizer缺失/质量降级警告，`/health`及最小Chat
+请求均通过。启动期仍报告token 128247 `</s>`的control-type覆盖；该观察已记录，不能静默忽略，须在新模型
+dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛已通过；下一步是在该新模型上重做非正式
+`E1_devtemp_dryrun_006`，之后才可开始正式E1穷举。
 
 ## 最近完成的跨阶段数据治理
 

@@ -925,7 +925,7 @@ stages:
       - Windows采集器监听0.0.0.0:8765时，Radxa以SCI_EXP_METER_HOST=192.168.66.219发送idle_start并收到匹配marker ACK
       - E1分析入口和候选配置代码已建立
     remaining_preparation:
-      - GGUF来源/tokenizer审计和运行时哈希文件回传Git；BGE已实机验证
+      - 新官方GGUF上的随机顺序E1 dry-run、运行时警告记录与哈希回传Git；BGE已实机验证
     runtime_preparation_20260829:
       status: runtime_marker_and_deviceclock_dryrun_passed_model_audit_pending
       formal_evidence: false
@@ -989,6 +989,23 @@ stages:
           disposition: diagnostic_only_superseded_by_device_clock_integration
         corrected_energy_output: results/E1_devtemp_dryrun_005.deviceclock.energy.jsonl
         corrected_merged_output: results/E1_devtemp_dryrun_005.deviceclock.meter_merged.jsonl
+      official_gguf_rebuild_20260829:
+        formal_evidence: false
+        source_repository: Qwen/Qwen1.5-0.5B-Chat
+        source_revision: 4d14e384a4b037942bb3f3016665157c8bcb70ea
+        converter_commit: 53bd47ea5b46335cf6125a674af378ac422fc392
+        converter_dependency: sentencepiece 0.2.2
+        f16_path: /home/radxa/model-cache/qwen1_5-0_5b-chat-official-4d14e384-f16-r2.gguf
+        f16_sha256: 6AEB13A29529AAD63EB80C2AD07B449709D14108C58423F69D65F8DFF0F7FA46
+        q4_k_m_path: /home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf
+        q4_k_m_sha256: EF63EBD112199C99E53B394FC6C9F10F27927B565258738FCF99A91421EA31A8
+        q4_k_m_bytes: 407156192
+        tokenizer_ggml_pre: qwen2
+        old_missing_pre_tokenizer_warning: eliminated
+        live_health: passed
+        live_chat_response: 新模型接口正常。
+        observed_runtime_warning: token_128247_control_type_overridden
+        result: model_source_tokenizer_and_minimal_runtime_passed_new_power_dryrun_required
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130

@@ -18,6 +18,8 @@ compile_commands.json
 *.elf
 *.map
 *.o
+# Radxa本机构建入口；依赖其旁边的ARM64共享库，不能作为跨机器制品版本化。
+/bin/llama-server
 
 # Structured experiment outputs are versioned so Radxa results can be pulled
 # into Windows. Put high-rate/raw streams under results/raw or results/telemetry.
@@ -27,6 +29,8 @@ results/*
 !results/*.json
 !results/*.jsonl
 !results/*.csv
+# 仅保留模型/运行时可复核的短文本哈希清单；完整模型仍不提交。
+!results/*_sha256_*.txt
 results/raw/
 results/telemetry/
 logs/

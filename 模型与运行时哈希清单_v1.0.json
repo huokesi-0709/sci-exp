@@ -1,26 +1,28 @@
 {
   "schema_version": "1.0",
-  "status": "candidate_staged_pending_E1_probe",
+  "status": "official_q4_runtime_validated_pending_E1_power_dryrun",
   "formal_lock": false,
   "gguf_candidate": {
-    "file": "models/qwen1_5-0_5b-chat-q4_k_m.gguf",
-    "size_bytes": 407155552,
-    "sha256": "92916B71D32F5AFEA48FB7383E3B48C5B1C111F5A59F0B83C764EA1D07FE1A3A",
+    "file": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
+    "size_bytes": 407156192,
+    "sha256": "EF63EBD112199C99E53B394FC6C9F10F27927B565258738FCF99A91421EA31A8",
     "gguf_version": 3,
     "architecture": "qwen2",
-    "metadata_name": "Qwen1.5-0.5B-Chat-AWQ-fp16",
+    "metadata_name": "Qwen1.5 0.5B Chat",
     "context_length_declared": 32768,
     "quantization": "Q4_K_M",
     "quantization_evidence": {
       "general_file_type": 15,
       "llama_header_reference": "third_party/llama.cpp-b9627/include/llama.h:132"
     },
-    "base_model_source": "https://huggingface.co/Qwen/Qwen1.5-0.5B-Chat",
+    "base_model_source": "https://huggingface.co/Qwen/Qwen1.5-0.5B-Chat/tree/4d14e384a4b037942bb3f3016665157c8bcb70ea",
+    "base_model_revision": "4d14e384a4b037942bb3f3016665157c8bcb70ea",
     "base_model_license": "Tongyi Qianwen Research License Agreement; non-commercial research/evaluation",
-    "local_asset_source": "D:/代码项目/MoniBox-KB/models/llm/qwen1_5-0_5b-chat-q4_k_m.gguf",
-    "derivative_quantizer_source": null,
+    "local_asset_source": "/home/radxa/model-cache/Qwen1.5-0.5B-Chat",
+    "derivative_quantizer_source": "llama-quantize build 1 (53bd47e), input=official F16 GGUF sha256=6AEB13A29529AAD63EB80C2AD07B449709D14108C58423F69D65F8DFF0F7FA46",
+    "tokenizer_ggml_pre": "qwen2",
     "redistribution_allowed": false,
-    "selection_state": "pending_E1_RAM_load_and_stability_test"
+    "selection_state": "runtime_validated_pending_E1_power_dryrun"
   },
   "llama_cpp_source": {
     "directory": "third_party/llama.cpp-b9627",
@@ -31,11 +33,11 @@
     "license_sha256": "BCD8EC749126D45CB06737D0690295D73DF4B6E7E194205BCF91190368F27285",
     "target_architecture": "aarch64",
     "build_script": "scripts/构建并锁定ARM64_llama_server.sh",
-    "build_state": "pending_E1_probe"
+    "build_state": "runtime_validated_with_official_q4_candidate"
   },
   "llama_server": {
     "file": "bin/llama-server",
-    "sha256": null,
+    "sha256": "4D157AF0EB8C136FFA845065C7ED8D749CE40B048037C19696254A6344AE16B9",
     "build_flags": [
       "-DCMAKE_BUILD_TYPE=Release",
       "-DGGML_NATIVE=ON",
@@ -43,12 +45,11 @@
       "-DLLAMA_CURL=OFF",
       "-DLLAMA_BUILD_TESTS=OFF"
     ],
-    "lock_state": "not_built"
+    "lock_state": "built_and_live_api_validated"
   },
   "blocking_conditions": [
-    "E1当前未在线，尚未取得设备型号、ARM64架构和RAM实测记录",
-    "候选GGUF尚未在E1完成加载、生成、峰值内存和热稳定性测试",
-    "ARM64 llama-server尚未在E1本机编译，因而没有目标二进制SHA-256",
-    "功率候选路径的单位和板级供电轨覆盖范围尚未核验"
+    "当前新模型仅通过最小Chat API验证；须以该模型重做带外部INA226积分的随机顺序E1 dry-run",
+    "llama-server加载时对token 128247 '</s>'打印control-type覆盖警告；须在dry-run和人工质量审查中保留该运行时观察",
+    "正式E1仍须完成盲审、仲裁与每条external_meter_valid=true的穷举运行"
   ]
 }
