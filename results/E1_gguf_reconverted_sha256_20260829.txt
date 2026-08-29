@@ -1,0 +1,2 @@
+6aeb13a29529aad63eb80c2ad07b449709d14108c58423f69d65f8dff0f7fa46  /home/radxa/model-cache/qwen1_5-0_5b-chat-official-4d14e384-f16-r2.gguf
+ef63ebd112199c99e53b394fc6c9f10f27927b565258738fcf99a91421ea31a8  /home/radxa/model-cache/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf
