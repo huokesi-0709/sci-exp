@@ -139,7 +139,11 @@ dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛
 2026-08-30的012预检已证明新Windows地址`192.168.10.11`上的UDP闭环正常（2个marker、
 `invalid_marker=0`）。其唯一`invalid_serial=1`是用户停止采集时遗留的单字节`{`，不是完整串口行
 损坏；采集器已将此停止边界尾部改为`partial_serial_at_shutdown`独立审计，不计入真实无效行。
-下一步用新run ID重复短预检，仍要求`invalid`、`invalid_serial`、`invalid_marker`均为0。
+随后013预检得到3,997 sample、2 marker，`invalid`、`invalid_serial`、`invalid_marker`均为0；
+`partial_serial_at_shutdown=1`仅作停止边界审计。短预检已通过，下一步以新run ID执行新官方Q4_K_M的
+单query、C0/C1/C2各3次随机顺序dry-run。015现已完成9/9 runner并取得65,399 sample、20 marker、
+三项无效计数均为0的完整raw；该会话仍为`candidate_pending_device_clock_integration`，必须同步runner
+结果、核对内部marker错误并确认设备时钟积分9/9有效后，才能判为通过的非正式dry-run。
 
 ## 最近完成的跨阶段数据治理
 

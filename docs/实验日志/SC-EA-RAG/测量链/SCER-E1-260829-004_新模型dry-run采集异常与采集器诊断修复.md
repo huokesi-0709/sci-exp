@@ -42,3 +42,15 @@ device: Radxa ZERO 3 + ESP32-S3/INA226/SHT31
 短时配对标记预检`012`收到5,404 sample、55 environment和2个完整marker，`invalid_marker=0`；唯一的`invalid_serial=1`审计记录为`unterminated serial row`，长度1字节、十六进制`7b`（字符`{`），时间位于用户按`Ctrl+C`的采集停止边界。它不是一条已换行但无法解析的串口记录，而是下一条NDJSON只读取首字节时进程收到停止信号。完整raw为`D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_marker_precheck_012.full.jsonl`，2,379,426 bytes、5,473行，SHA-256为`00D40E3BCAE176730165853BA140F667AD9410F5CD7E50CF8E178734F25F0660`，保留在Git外且不得覆盖。
 
 采集器进一步修正：停止边界的非空尾部改记为`collector_shutdown_partial`和`partial_serial_at_shutdown`，不再计入`invalid`或`invalid_serial`；完整换行记录的UTF-8/JSON解析失败仍保持严格无效。后续接受门槛仍要求`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，同时透明报告停止边界尾部计数。
+
+## 2026-08-30补充：013预检通过
+
+使用修正后的collector与Windows新地址`192.168.10.11`完成短时配对标记预检013：3,997 sample、40 environment、2 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，`partial_serial_at_shutdown=1`。停止尾部按设计独立审计，不影响完整记录有效性；UDP与串口短预检门槛通过。
+
+完整raw为`D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_marker_precheck_013.full.jsonl`，1,760,039 bytes、4,050行，SHA-256为`AFA8C02007DE6AA6C9CF02998F7413F31B460842556DAE0CFEB5E1E382077EA8`，保留在Git外且不得覆盖。下一步使用全新run ID执行新官方Q4_K_M的一条query、C0/C1/C2各3次随机顺序dry-run；仍为`formal_evidence: false`。
+
+## 2026-08-31补充：015完整会话等待积分
+
+`E1_devtemp_dryrun_015`首次完成新官方Q4_K_M下的完整采集会话：Radxa runner报告9/9成功；Windows collector记录65,399 sample、654 environment、20 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，`partial_serial_at_shutdown=1`。20个marker恰好由一对65秒空闲标记与9条查询的起止边界组成，不存在010的重复空闲对。
+
+完整raw为`D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_dryrun_015.full.jsonl`，28,950,062 bytes、66,163行，SHA-256为`18684A34F4E7433174D3366343592C7EDD9CA53EF0318019F81D0D2178205027`，保留在Git外且不得覆盖。当前状态仅为`candidate_pending_device_clock_integration`：仍须同步Radxa的`results/E1_devtemp_dryrun_015.jsonl`，核对内部marker错误，并以设备时钟积分确认9/9 `external_meter_valid=true`后才能判定非正式dry-run通过。

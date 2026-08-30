@@ -1031,7 +1031,37 @@ stages:
           invalid_record: {error: unterminated_serial_row, byte_length: 1, preview_hex: '7b'}
           interpretation: Ctrl+C停止边界的下一条NDJSON首字节，不是完整行解析失败
         collector_shutdown_tail_remediation: partial_serial_at_shutdown_is_audited_but_not_counted_invalid
-        required_next_gate: repeat_short_paired_marker_precheck_with_all_true_invalid_counts_zero
+        marker_precheck_013:
+          collector_file: D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_marker_precheck_013.full.jsonl
+          collector_bytes: 1760039
+          collector_lines: 4050
+          collector_sha256: AFA8C02007DE6AA6C9CF02998F7413F31B460842556DAE0CFEB5E1E382077EA8
+          samples: 3997
+          environment_samples: 40
+          marker_count: 2
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          result: passed_nonformal_marker_and_serial_precheck
+        dryrun_015_candidate:
+          formal_evidence: false
+          runner_runs: 9
+          runner_successful: 9
+          runner_failed: 0
+          collector_file: D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_dryrun_015.full.jsonl
+          collector_bytes: 28950062
+          collector_lines: 66163
+          collector_sha256: 18684A34F4E7433174D3366343592C7EDD9CA53EF0318019F81D0D2178205027
+          samples: 65399
+          environment_samples: 654
+          marker_count: 20
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          status: candidate_pending_device_clock_integration
+        required_next_gate: synchronize_runner_output_check_marker_errors_and_require_9_of_9_external_meter_valid_after_device_clock_integration
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
