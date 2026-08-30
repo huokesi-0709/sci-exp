@@ -145,6 +145,12 @@ dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛
 三项无效计数均为0的完整raw；该会话仍为`candidate_pending_device_clock_integration`，必须同步runner
 结果、核对内部marker错误并确认设备时钟积分9/9有效后，才能判为通过的非正式dry-run。
 
+015后续设备时钟积分为9/9有效，merged中9/9 `external_meter_valid=true`，证明新模型、标记和物理
+积分链已经闭环；但C2三次生成token均为30时，首轮仍为67.130秒/141.856J，后两轮仅约11.5秒/
+19.7J。冻结llama-server默认开启prompt cache，会跨请求复用公共前缀KV且可能造成非位级确定结果；
+因此015被降为`measurement_valid_but_prompt_cache_contaminated_diagnostic_only`。启动脚本已加入
+`--no-cache-prompt`并写入正式配置锁；下一步重启服务后用全新run ID重做9-run，不重做E0或013。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free

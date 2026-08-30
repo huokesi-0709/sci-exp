@@ -1060,8 +1060,25 @@ stages:
           invalid_serial: 0
           invalid_marker: 0
           partial_serial_at_shutdown: 1
-          status: candidate_pending_device_clock_integration
-        required_next_gate: synchronize_runner_output_check_marker_errors_and_require_9_of_9_external_meter_valid_after_device_clock_integration
+          runner_marker_error_runs: 0
+          integration_valid_runs: 9
+          external_meter_valid_runs: 9
+          idle_power_w: 1.3411159715014278
+          idle_duration_s: 65.391
+          maximum_device_gap_ms: 16.832
+          energy_output_sha256: 073577E5F3A4F61A444B47BACD15DA014DD4AB644EF199364493771340A0EDBC
+          merged_output_sha256: 98DEE266338543D98CDDEB3CF01797218BC439D0B23B4613140B51D5458E5008
+          prompt_cache_diagnostic:
+            c2_generated_tokens: [30, 30, 30]
+            c2_duration_s: [67.13026505900007, 11.627411004999885, 11.453371192999839]
+            c2_energy_j: [141.85610659917893, 19.962749766353944, 19.672962526130163]
+            cause: llama_server_default_prompt_cache_cross_run_kv_reuse
+          status: measurement_valid_but_prompt_cache_contaminated_diagnostic_only
+        runtime_cache_policy:
+          prompt_cache: false
+          argument: --no-cache-prompt
+          source_basis: frozen_llama_cpp_b9627_default_cache_prompt_true_and_nondeterminism_warning
+        required_next_gate: restart_llama_server_without_prompt_cache_and_repeat_9_run_new_id
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130

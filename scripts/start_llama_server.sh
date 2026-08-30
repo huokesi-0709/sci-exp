@@ -21,4 +21,5 @@ exec "$LLAMA_SERVER" \
   --host 127.0.0.1 \
   --port 8080 \
   --ctx-size 4096 \
+  --no-cache-prompt \
   --threads "$(nproc)"

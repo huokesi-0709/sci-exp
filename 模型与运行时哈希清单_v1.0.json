@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "official_q4_runtime_validated_pending_E1_power_dryrun",
+  "status": "official_q4_runtime_no_prompt_cache_pending_E1_revalidation",
   "formal_lock": false,
   "gguf_candidate": {
     "file": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
@@ -45,10 +45,15 @@
       "-DLLAMA_CURL=OFF",
       "-DLLAMA_BUILD_TESTS=OFF"
     ],
-    "lock_state": "built_and_live_api_validated"
+    "runtime_arguments": {
+      "context_size": 4096,
+      "prompt_cache": false,
+      "prompt_cache_argument": "--no-cache-prompt"
+    },
+    "lock_state": "built_and_live_api_validated_cache_policy_pending_revalidation"
   },
   "blocking_conditions": [
-    "当前新模型仅通过最小Chat API验证；须以该模型重做带外部INA226积分的随机顺序E1 dry-run",
+    "015虽完成9/9有效物理积分，但默认prompt cache使同query重复复用KV；须以--no-cache-prompt重启并重做随机顺序E1 dry-run",
     "llama-server加载时对token 128247 '</s>'打印control-type覆盖警告；须在dry-run和人工质量审查中保留该运行时观察",
     "正式E1仍须完成盲审、仲裁与每条external_meter_valid=true的穷举运行"
   ]

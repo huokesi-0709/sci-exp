@@ -1,13 +1,15 @@
 {
   "schema_version": "formal-config-manifest-v1.0",
   "frozen_on": "2026-07-28",
-  "research_status": "official_gguf_runtime_validated_pending_E1_power_dryrun",
+  "research_status": "official_gguf_runtime_prompt_cache_disabled_pending_E1_revalidation",
   "common_generation": {
     "model_family": "Qwen1.5-0.5B-Chat",
     "gguf_file": "models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
     "gguf_runtime_path_radxa": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
     "quantization": "Q4_K_M",
     "temperature": 0.0,
+    "prompt_cache": false,
+    "prompt_cache_rationale": "disable cross-run KV reuse so randomized repetitions measure independent full prompt processing",
     "maximum_generated_tokens": 512,
     "per_configuration_output_limits": {"C0": 128, "C1": 256, "C2": 512, "C3": 0},
     "formal_runtime": "ARM64 llama-server",

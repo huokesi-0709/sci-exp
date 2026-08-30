@@ -32,6 +32,8 @@ IMPORT_REPORT = (
     / "logs"
     / "旧项目先导数据导入报告_v0.1.json"
 )
+START_LLAMA_SERVER = PROJECT_ROOT / "scripts" / "start_llama_server.sh"
+FORMAL_CONFIG_MANIFEST = PROJECT_ROOT / "configs" / "正式配置清单_v1.0.json"
 
 
 class ResearchContractTests(unittest.TestCase):
@@ -123,6 +125,12 @@ class ResearchContractTests(unittest.TestCase):
         self.assertIn('status: "blocked_pending_radxa_probe"', text)
         self.assertIn("second_device_in_confirmatory_study: false", text)
         self.assertIn("confirmatory_execution_allowed: false", text)
+
+    def test_formal_runtime_disables_cross_run_prompt_cache(self) -> None:
+        script = START_LLAMA_SERVER.read_text(encoding="utf-8")
+        manifest = json.loads(FORMAL_CONFIG_MANIFEST.read_text(encoding="utf-8"))
+        self.assertIn("--no-cache-prompt", script)
+        self.assertIs(manifest["common_generation"]["prompt_cache"], False)
 
 
 if __name__ == "__main__":

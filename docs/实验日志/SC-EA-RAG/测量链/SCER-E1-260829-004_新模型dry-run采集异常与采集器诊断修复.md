@@ -54,3 +54,17 @@ device: Radxa ZERO 3 + ESP32-S3/INA226/SHT31
 `E1_devtemp_dryrun_015`首次完成新官方Q4_K_M下的完整采集会话：Radxa runner报告9/9成功；Windows collector记录65,399 sample、654 environment、20 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，`partial_serial_at_shutdown=1`。20个marker恰好由一对65秒空闲标记与9条查询的起止边界组成，不存在010的重复空闲对。
 
 完整raw为`D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_dryrun_015.full.jsonl`，28,950,062 bytes、66,163行，SHA-256为`18684A34F4E7433174D3366343592C7EDD9CA53EF0318019F81D0D2178205027`，保留在Git外且不得覆盖。当前状态仅为`candidate_pending_device_clock_integration`：仍须同步Radxa的`results/E1_devtemp_dryrun_015.jsonl`，核对内部marker错误，并以设备时钟积分确认9/9 `external_meter_valid=true`后才能判定非正式dry-run通过。
+
+## 015积分结果与prompt cache异常
+
+runner审计为9条`status=ok`且0条`external_marker_errors`。设备时钟积分得到9/9有效、空闲功率`1.3411159715014278W`；空闲区间65.391秒、6,495样本，最大设备间隔16.021ms。所有查询区间均无欠压、饱和、shunt近限或固件integration gap，merged中9/9 `external_meter_valid=true`。
+
+派生文件：
+
+- `results/E1_devtemp_dryrun_015.jsonl`：83,289 bytes，SHA-256 `49F36B33CF6CDD8EACE455F09730A90AA7246A22F600A0EDD6196A49A663F514`；
+- `results/E1_devtemp_dryrun_015.deviceclock.energy.jsonl`：8,854 bytes，SHA-256 `073577E5F3A4F61A444B47BACD15DA014DD4AB644EF199364493771340A0EDBC`；
+- `results/E1_devtemp_dryrun_015.deviceclock.meter_merged.jsonl`：88,927 bytes，SHA-256 `98DEE266338543D98CDDEB3CF01797218BC439D0B23B4613140B51D5458E5008`。
+
+但015不能作为最终dry-run通行证。C2三次生成token均为30，首个C2耗时/能耗为67.130秒/141.856J，后两次仅11.627秒/19.963J与11.453秒/19.673J；C1首个长提示运行也明显高于后续重复。冻结`llama.cpp b9627`文档与源码确认server的prompt cache默认开启，重复公共前缀时只计算未见suffix，并明确提示可能产生非位级确定结果。015的变化符合跨运行KV复用，而不是功率链故障。
+
+处置：`scripts/start_llama_server.sh`新增`--no-cache-prompt`，正式配置清单冻结`prompt_cache=false`。必须重启服务并用全新run ID重做9-run；015保留为`measurement_valid_but_prompt_cache_contaminated_diagnostic_only`，不得进入配置能耗统计或Oracle。
