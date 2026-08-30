@@ -112,6 +112,15 @@ class ExperimentAnalysisTests(unittest.TestCase):
         self.assertEqual(value["sync_request_epoch_ns"], "123")
         self.assertNotEqual(value["host_epoch_ns"], "123")
 
+    def test_collector_keeps_partial_serial_json_until_newline(self):
+        module = load_script("collector_partial_serial", "采集INA226串口功率.py")
+        records, pending = module.split_complete_lines(b"", b'{"type":"sample"')
+        self.assertEqual(records, [])
+        self.assertEqual(pending, b'{"type":"sample"')
+        records, pending = module.split_complete_lines(pending, b',"seq":1}\n')
+        self.assertEqual(records, [b'{"type":"sample","seq":1}'])
+        self.assertEqual(pending, b"")
+
     def test_e2_uar_and_ser_definitions(self):
         module = load_script("e2_analysis", "分析E2安全校准.py")
         result = module.metrics([1, 1, 0, 0], [0.9, 0.2, 0.1, 0.3], 0.25)

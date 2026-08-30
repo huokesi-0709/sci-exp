@@ -39,6 +39,18 @@ def add_host_time(value: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def split_complete_lines(
+    pending: bytes, received: bytes
+) -> tuple[list[bytes], bytes]:
+    """Keep partial serial records until their terminating newline arrives."""
+    buffer = pending + received
+    complete: list[bytes] = []
+    while b"\n" in buffer:
+        line, buffer = buffer.split(b"\n", 1)
+        complete.append(line.rstrip(b"\r"))
+    return complete, buffer
+
+
 def main() -> int:
     args = parse_args()
     try:
@@ -73,7 +85,15 @@ def main() -> int:
         send("START")
 
     next_sync = time.monotonic() + args.sync_interval
-    counts = {"sample": 0, "environment": 0, "marker": 0, "invalid": 0}
+    counts = {
+        "sample": 0,
+        "environment": 0,
+        "marker": 0,
+        "invalid": 0,
+        "invalid_serial": 0,
+        "invalid_marker": 0,
+    }
+    serial_pending = b""
     with args.output.open("w", encoding="utf-8", newline="\n") as handle:
         session = add_host_time(
             {
@@ -87,6 +107,25 @@ def main() -> int:
         )
         handle.write(json.dumps(session, ensure_ascii=False) + "\n")
         handle.flush()
+
+        def record_invalid(source: str, raw: bytes, exc: Exception) -> None:
+            """Preserve bounded diagnostics instead of silently discarding bad input."""
+            source_count = f"invalid_{source}"
+            counts["invalid"] += 1
+            counts[source_count] += 1
+            diagnostic = add_host_time(
+                {
+                    "type": "collector_invalid",
+                    "source": source,
+                    "error_type": type(exc).__name__,
+                    "error": str(exc),
+                    "byte_length": len(raw),
+                    "preview_hex": raw[:64].hex(),
+                }
+            )
+            handle.write(json.dumps(diagnostic, ensure_ascii=False) + "\n")
+            handle.flush()
+
         while running:
             if time.monotonic() >= next_sync:
                 send(f"SYNC {time.time_ns()}")
@@ -126,26 +165,33 @@ def main() -> int:
                         ensure_ascii=False,
                     ).encode("utf-8")
                     marker_socket.sendto(acknowledgement, address)
-                except (UnicodeDecodeError, json.JSONDecodeError, ValueError):
-                    counts["invalid"] += 1
+                except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+                    record_invalid("marker", packet, exc)
 
-            raw = serial_port.readline()
-            if not raw:
+            received = serial_port.read(serial_port.in_waiting or 1)
+            if not received:
                 continue
-            try:
-                value = json.loads(raw.decode("utf-8").strip())
-                if not isinstance(value, dict):
-                    raise ValueError("serial row must be an object")
-                value = add_host_time(value)
-                handle.write(json.dumps(value, ensure_ascii=False) + "\n")
-                if value.get("type") == "sample":
-                    counts["sample"] += 1
-                elif value.get("type") == "environment":
-                    counts["environment"] += 1
-                if counts["sample"] % 20 == 0:
-                    handle.flush()
-            except (UnicodeDecodeError, json.JSONDecodeError, ValueError):
-                counts["invalid"] += 1
+            complete_lines, serial_pending = split_complete_lines(serial_pending, received)
+            for raw in complete_lines:
+                if not raw.strip():
+                    continue
+                try:
+                    value = json.loads(raw.decode("utf-8").strip())
+                    if not isinstance(value, dict):
+                        raise ValueError("serial row must be an object")
+                    value = add_host_time(value)
+                    handle.write(json.dumps(value, ensure_ascii=False) + "\n")
+                    if value.get("type") == "sample":
+                        counts["sample"] += 1
+                    elif value.get("type") == "environment":
+                        counts["environment"] += 1
+                    if counts["sample"] % 20 == 0:
+                        handle.flush()
+                except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+                    record_invalid("serial", raw, exc)
+
+        if serial_pending.strip():
+            record_invalid("serial", serial_pending, ValueError("unterminated serial row"))
 
     try:
         send("STOP")

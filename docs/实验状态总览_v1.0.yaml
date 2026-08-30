@@ -925,9 +925,10 @@ stages:
       - Windows采集器监听0.0.0.0:8765时，Radxa以SCI_EXP_METER_HOST=192.168.66.219发送idle_start并收到匹配marker ACK
       - E1分析入口和候选配置代码已建立
     remaining_preparation:
+      - 更新后Windows采集器的短时配对标记预检必须同时满足invalid、invalid_serial、invalid_marker均为0
       - 新官方GGUF上的随机顺序E1 dry-run、运行时警告记录与哈希回传Git；BGE已实机验证
     runtime_preparation_20260829:
-      status: runtime_marker_and_deviceclock_dryrun_passed_model_audit_pending
+      status: collector_diagnostic_fix_pending_marker_precheck
       formal_evidence: false
       device_probe_remote_path: results/E1_device_runtime_probe_20260828.json
       runtime_hashes_remote_path: results/E1_runtime_hashes_20260828.txt
@@ -1006,6 +1007,17 @@ stages:
         live_chat_response: 新模型接口正常。
         observed_runtime_warning: token_128247_control_type_overridden
         result: model_source_tokenizer_and_minimal_runtime_passed_new_power_dryrun_required
+      new_model_dryrun_recovery_006_010:
+        formal_evidence: false
+        disposition: no_run_is_acceptable_for_energy_integration_or_E1_evidence
+        sessions:
+          - {id: '006', result: 9_of_9_connection_refused_and_marker_timeouts}
+          - {id: '007', result: idle_pair_only_invalid_0_no_inference}
+          - {id: '008', result: marker_timeout_no_inference}
+          - {id: '009', result: single_marker_precheck_invalid_0}
+          - {id: '010', result: 9_of_9_runner_success_but_75346_samples_22_markers_invalid_34_rejected}
+        collector_remediation: complete_line_buffering_plus_source_separated_invalid_audit
+        required_next_gate: short_paired_marker_precheck_with_all_invalid_counts_zero
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130

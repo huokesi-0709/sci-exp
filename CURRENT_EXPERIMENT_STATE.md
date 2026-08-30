@@ -129,8 +129,12 @@ UDP标记边界，`device_us`用于积分和连续性判定”，经新增单元
 `ef63ebd112199c99e53b394fc6c9f10f27927b565258738fcf99a91421ea31a8`。其元数据完整包含
 `tokenizer.ggml.pre=qwen2`；ARM64服务启动不再出现旧的tokenizer缺失/质量降级警告，`/health`及最小Chat
 请求均通过。启动期仍报告token 128247 `</s>`的control-type覆盖；该观察已记录，不能静默忽略，须在新模型
-dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛已通过；下一步是在该新模型上重做非正式
-`E1_devtemp_dryrun_006`，之后才可开始正式E1穷举。
+dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛已通过；新模型后的006至010均为
+`formal_evidence: false`。其中010的RAG运行层为9/9成功，但collector记录75,346 sample、22 marker及
+`invalid=34`，不能积分或回填；raw保留在`D:\sci-exp-data\E1_20260829\`且不得覆盖。采集器已改为
+完整串口行缓冲，并分开报告`invalid_serial`/`invalid_marker`，将异常元数据写入raw。下一步先做新的
+短时配对标记预检，三项无效计数必须均为0；详见
+[`SCER-E1-260829-004_新模型dry-run采集异常与采集器诊断修复.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260829-004_新模型dry-run采集异常与采集器诊断修复.md)。
 
 ## 最近完成的跨阶段数据治理
 
