@@ -88,3 +88,11 @@ runner审计为9条`status=ok`且0条`external_marker_errors`。设备时钟积�
 使用`nohup`启动PID 33876并写入独立服务日志；采集前确认进程包含`--no-cache-prompt --cache-ram 0 --no-cache-idle-slots`，启动日志显示`prompt cache is disabled`。018 runner为9/9成功，结束后同一PID仍存在且`/health`成功。Windows collector记录101,957 sample、1,020 environment、20 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`、`partial_serial_at_shutdown=1`。
 
 完整raw为`D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_018.full.jsonl`，45,174,078 bytes、103,124行，SHA-256为`7C770E2D49D1B21F3CE414527FAA4866A1ED408F5AC67828010A6C1C4BF7C9FC`，保留在Git外且不得覆盖。当前仅登记为`candidate_pending_device_clock_integration`；须同步9行runner结果、确认0个marker错误并完成9/9设备时钟积分后，才能判定无缓存dry-run是否通过。
+
+## 2026-08-31最终处置：018通过
+
+018后续审计确认runner 9/9成功、0条marker错误、设备时钟积分9/9有效且merged中9/9
+`external_meter_valid=true`。服务在runner后仍健康，随后按PID 33876正常停止；最终服务日志154行、
+14,147 bytes、SHA-256 `1AEB4B4E3E9E4D94EA88FC952A3233A3B469DA3692C2FDE7647E6E7746BC1018`，
+末行是正常清理。018状态升级为`passed_nonformal_dry_run`；完整结论与派生文件哈希见
+[`SCER-E1-260831-001_无缓存新模型完整dry-run通过.md`](SCER-E1-260831-001_无缓存新模型完整dry-run通过.md)。

@@ -924,11 +924,12 @@ stages:
       - 当前llama-server真实/health与/v1/chat/completions已返回成功和非空正文
       - Windows采集器监听0.0.0.0:8765时，Radxa以SCI_EXP_METER_HOST=192.168.66.219发送idle_start并收到匹配marker ACK
       - E1分析入口和候选配置代码已建立
+      - 018无缓存后台服务最终dry-run已通过：9/9 runner成功、0条marker错误、9/9设备时钟积分有效且external_meter_valid=true
     remaining_preparation:
-      - 更新后Windows采集器的短时配对标记预检必须同时满足invalid、invalid_serial、invalid_marker均为0
-      - 新官方GGUF上的随机顺序E1 dry-run、运行时警告记录与哈希回传Git；BGE已实机验证
+      - 记录并冻结实际5V/3A充电头标签型号、额定输出与本批次输入线标识
+      - 冻结正式Dev-Temp 35条查询、固定seed的315次运行清单、唯一输出路径及盲法双审/仲裁材料
     runtime_preparation_20260829:
-      status: collector_diagnostic_fix_pending_marker_precheck
+      status: passed_nonformal_runtime_and_power_dryrun_ready_for_formal_e1_preflight_freeze
       formal_evidence: false
       device_probe_remote_path: results/E1_device_runtime_probe_20260828.json
       runtime_hashes_remote_path: results/E1_runtime_hashes_20260828.txt
@@ -1113,15 +1114,26 @@ stages:
           marker_count: 20
           invalid: 0
           disposition: diagnostic_only_no_integration
-        dryrun_018_candidate:
+        dryrun_018_final:
           formal_evidence: false
           runtime_process_id: 33876
           runtime_launch: nohup_background_with_separate_log
           runtime_prompt_cache: disabled_request_and_global
           runtime_healthy_after_runner: true
+          runtime_stopped_by_explicit_pid_after_validation: true
+          runtime_exit: normal_cleaning_up_before_exit
+          runtime_log: /home/radxa/sci-exp/logs/runtime/llama_server_nocache_018.log
+          runtime_log_lines: 154
+          runtime_log_bytes: 14147
+          runtime_log_sha256: 1AEB4B4E3E9E4D94EA88FC952A3233A3B469DA3692C2FDE7647E6E7746BC1018
           runner_runs: 9
           runner_successful: 9
           runner_failed: 0
+          runner_marker_error_runs: 0
+          runner_file: results/E1_devtemp_dryrun_018.jsonl
+          runner_bytes: 82790
+          runner_lines: 9
+          runner_sha256: F9C66857C5BCE78D7242E5EB1E59C8A09ED18EDA53715B1B62E8588DB9E059D6
           collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_018.full.jsonl
           collector_bytes: 45174078
           collector_lines: 103124
@@ -1133,9 +1145,29 @@ stages:
           invalid_serial: 0
           invalid_marker: 0
           partial_serial_at_shutdown: 1
-          status: candidate_pending_device_clock_integration
+          integration_clock: device_us
+          marker_boundary_clock: host_monotonic_ns
+          integration_valid_runs: 9
+          external_meter_valid_runs: 9
+          idle_power_w: 1.3441157696693329
+          idle_samples: 6498
+          idle_duration_s: 65.422
+          idle_maximum_device_gap_ms: 16.021
+          maximum_query_device_gap_ms: 16.827
+          physical_quality_flags: {undervoltage: 0, overcurrent: 0, integration_gap: 0}
+          energy_output: results/E1_devtemp_dryrun_018.deviceclock.energy.jsonl
+          energy_output_bytes: 8821
+          energy_output_lines: 9
+          energy_output_sha256: 82D830F8EFE1CF01C6463E73D153B072CED8D71B3A4E89556873C125721D7B95
+          merged_output: results/E1_devtemp_dryrun_018.deviceclock.meter_merged.jsonl
+          merged_output_bytes: 88398
+          merged_output_lines: 9
+          merged_output_sha256: 0FD5450BFC61DD549A6332797B8ABFB0C6C96CFEE681A3AD5915BB3BA1DBD467
+          answer_hash_stable_within_each_configuration: true
+          status: passed_nonformal_dry_run
+          disposition: workflow_ready_but_not_part_of_formal_E1_315_runs
         required_startup_evidence: prompt_cache_is_disabled
-        required_next_gate: synchronize_018_runner_output_check_marker_errors_and_require_9_of_9_device_clock_integration
+        required_next_gate: freeze_power_source_identity_formal_315_run_manifest_and_blind_review_materials
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
@@ -1147,11 +1179,11 @@ stages:
 
   E2:
     name: Safety calibration
-    status: formal_blocked_by_E0_and_sequence
+    status: formal_blocked_by_sequence
     formal_pass: false
   E3:
     name: 能耗预测
-    status: formal_blocked_by_E0_and_sequence
+    status: formal_blocked_by_sequence
     formal_pass: false
   E4_E8:
     name: 主实验及稳健性实验
@@ -1168,4 +1200,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: E0已通过厂家指标运行参考边界下的正式验证；后续可按冻结协议从Dev数据开始E1配置异质性正式实验，并沿用当前外部功率测量链和每次运行的有效性记录
+  action: 018最终非正式dry-run已通过；先补记并冻结5V/3A充电头标签型号、额定输出和输入线标识，再冻结Dev-Temp 35条查询、固定seed的315次运行清单及盲法双审/仲裁材料，随后以全新session开始正式E1并要求每条运行external_meter_valid=true

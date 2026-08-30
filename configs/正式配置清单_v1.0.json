@@ -1,7 +1,7 @@
 {
   "schema_version": "formal-config-manifest-v1.0",
   "frozen_on": "2026-07-28",
-  "research_status": "official_gguf_runtime_prompt_cache_disabled_pending_E1_revalidation",
+  "research_status": "official_gguf_no_cache_runtime_and_power_dryrun_validated_pending_formal_E1_freeze",
   "common_generation": {
     "model_family": "Qwen1.5-0.5B-Chat",
     "gguf_file": "models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
@@ -107,6 +107,7 @@
     "C0_C3_real_output_annotation_complete": false,
     "quality_risk_resource_differences_verified": false,
     "radxa_runtime_validated": true,
-    "physical_energy_measurement_validated": false
+    "physical_energy_measurement_validated": true,
+    "physical_energy_measurement_scope": "manufacturer-spec operational reference; not metrological traceability"
   }
 }

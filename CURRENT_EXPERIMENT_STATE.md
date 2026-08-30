@@ -1,6 +1,6 @@
 # 当前实验状态
 
-更新时间：2026-08-29（Asia/Shanghai）
+更新时间：2026-08-31（Asia/Shanghai）
 
 权威机器可读账本：[`docs/实验状态总览_v1.0.yaml`](docs/实验状态总览_v1.0.yaml)
 
@@ -161,9 +161,13 @@ run ID，采集前必须同时确认进程参数、`/health`及服务终端持�
 sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积分。为消除操作性重复失败，下一轮改用
 `nohup`后台常驻并保存服务日志，记录明确PID，验证进程与health后再采集。
 
-018已用`nohup`后台无缓存服务完成候选会话：9/9 runner成功，结束后PID 33876与health仍正常；
-collector获得101,957 sample、20 marker且三项无效计数均为0。完整raw在Git外保留并已登记SHA-256。
-当前仍为`candidate_pending_device_clock_integration`，须同步runner结果并确认9/9设备时钟积分有效。
+018已用`nohup`后台无缓存服务完成最终非正式dry-run：9/9 runner成功、0条marker错误、9/9设备
+时钟积分有效且merged中9/9 `external_meter_valid=true`；collector获得101,957 sample、20 marker，
+`invalid`、`invalid_serial`、`invalid_marker`均为0。空闲功率为`1.344115770W`，查询区间最大设备
+间隔`16.827ms`，无欠压、饱和、shunt近限或固件integration gap。服务在runner结束后仍健康，随后
+按PID 33876正常停止；最终服务日志154行、14,147 bytes、SHA-256为
+`1AEB4B4E3E9E4D94EA88FC952A3233A3B469DA3692C2FDE7647E6E7746BC1018`，末行是正常清理。
+该会话状态为`passed_nonformal_dry_run`，只证明正式流程已具备运行条件，不计入E1的315次正式证据。
 
 ## 最近完成的跨阶段数据治理
 
@@ -253,29 +257,28 @@ collector获得101,957 sample、20 marker且三项无效计数均为0。完整ra
 
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
-|E0 功率测量链|`in_progress_recalibration_required`|否，尚缺合格校准与证据归档|
-|E1 配置异质性正式运行|`formal_blocked_by_E0`|否|
-|E2–E8正式运行|`not_started_or_blocked`|否|
+|E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
+|E1 配置异质性正式运行|`ready_for_formal_e1_dev_phase`|尚未开始；018仅为`formal_evidence=false`的最终dry-run|
+|E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
-## 等待硬件期间可以继续
+## 正式E1开始前仍需完成
 
-- 修复/验证Radxa Chat API实验生成器适配；
-- 完成GGUF来源、tokenizer、BGE运行时和哈希锁定；
-- 准备E0三点采集脚本、CSV模板和分析流程；
-- 继续数据治理、标注、双审、测试和实验脚本dry-run；
-- 任何dry-run必须标记`formal_evidence: false`，不得进入正式结论。
+- 记录并冻结实际5V/3A充电头的标签型号、额定输出以及本批次输入线标识；
+- 冻结正式Dev-Temp查询清单、固定随机seed、315次运行清单与唯一输出路径；
+- 准备盲法双审与仲裁材料，确保每个C0/C1/C2输出都有两名独立审查者及仲裁入口；
+- 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
+- 每条正式运行仅在`external_meter_valid=true`时进入有效物理测量子集，失败和无效运行仍须保留报告。
 
-## 当前不能提前执行
+## 当前不能宣称
 
-- 需要`external_meter_valid=true`的正式E1配置穷举；
-- 任何正式单查询能耗、节能率、能耗模型或Router节能结论；
-- E4–E8 Gold Test及论文级物理能耗实验。
+- 018不能替代35条Dev-Temp × 3配置 × 3重复的315次正式穷举；
+- 尚无正式E1 Oracle配置占比、选择矩阵或Safety–Energy Pareto结论；
+- 在E1、盲审/仲裁及后续阶段完成前，不能提前给出E2–E8或Gold Test论文级结论。
 
 ## 下一正式动作
 
-供电链三点已满足负载侧至少4.75V；用户已选UTP3313TFL-II面板读数作为厂家指标、不可溯源的运行参考。
-冷/热ZERO和CAL、三点误差报告与持久校准恢复均已完成；首个新60分钟流因最大间隔110ms及缺少新的
-三段idle标记而失败。下一步先做短时串口稳定性预检（排除USB线、Hub、睡眠和端口争用），再以新session
-重采带三段idle标记的60分钟稳定性流并在Git外压缩归档，最后生成E0总报告。
-如无法从外部备份找回完整长时流，则以新session重采一次60分钟并将完整文件压缩保存到
-Git之外，Git只保存manifest和摘录。最后重新生成E0总报告。
+E0和018最终非正式dry-run均已通过，不再重做。先补记并冻结充电头/输入线身份，再生成正式E1 Dev-Temp
+315次运行清单及盲审材料；完成审计后才启动首个正式批次。正式运行必须使用全新run/session ID，保持
+Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
+后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
+和实验日志。

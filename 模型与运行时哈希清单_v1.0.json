@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "official_q4_runtime_no_prompt_cache_pending_E1_revalidation",
+  "status": "official_q4_no_cache_runtime_and_power_dryrun_validated",
   "formal_lock": false,
   "gguf_candidate": {
     "file": "/home/radxa/sci-exp/models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
@@ -22,7 +22,7 @@
     "derivative_quantizer_source": "llama-quantize build 1 (53bd47e), input=official F16 GGUF sha256=6AEB13A29529AAD63EB80C2AD07B449709D14108C58423F69D65F8DFF0F7FA46",
     "tokenizer_ggml_pre": "qwen2",
     "redistribution_allowed": false,
-    "selection_state": "runtime_validated_pending_E1_power_dryrun"
+    "selection_state": "runtime_and_nonformal_power_dryrun_validated_pending_formal_E1_freeze"
   },
   "llama_cpp_source": {
     "directory": "third_party/llama.cpp-b9627",
@@ -54,10 +54,10 @@
       "cache_idle_slots": false,
       "cache_idle_slots_argument": "--no-cache-idle-slots"
     },
-    "lock_state": "built_and_live_api_validated_cache_policy_pending_revalidation"
+    "lock_state": "built_live_api_and_no_cache_power_dryrun_validated"
   },
   "blocking_conditions": [
-    "015虽完成9/9有效物理积分，但默认prompt cache使同query重复复用KV；须以--no-cache-prompt重启并重做随机顺序E1 dry-run",
+    "正式E1前仍须记录并冻结实际5V/3A充电头标签型号、额定输出和输入线标识，并生成固定seed的315次运行清单",
     "llama-server加载时对token 128247 '</s>'打印control-type覆盖警告；须在dry-run和人工质量审查中保留该运行时观察",
     "正式E1仍须完成盲审、仲裁与每条external_meter_valid=true的穷举运行"
   ]
