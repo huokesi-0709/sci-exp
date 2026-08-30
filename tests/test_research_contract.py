@@ -130,7 +130,11 @@ class ResearchContractTests(unittest.TestCase):
         script = START_LLAMA_SERVER.read_text(encoding="utf-8")
         manifest = json.loads(FORMAL_CONFIG_MANIFEST.read_text(encoding="utf-8"))
         self.assertIn("--no-cache-prompt", script)
+        self.assertIn("--cache-ram 0", script)
+        self.assertIn("--no-cache-idle-slots", script)
         self.assertIs(manifest["common_generation"]["prompt_cache"], False)
+        self.assertEqual(manifest["common_generation"]["prompt_cache_ram_mib"], 0)
+        self.assertIs(manifest["common_generation"]["cache_idle_slots"], False)
 
 
 if __name__ == "__main__":

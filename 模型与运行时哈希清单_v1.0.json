@@ -48,7 +48,11 @@
     "runtime_arguments": {
       "context_size": 4096,
       "prompt_cache": false,
-      "prompt_cache_argument": "--no-cache-prompt"
+      "prompt_cache_argument": "--no-cache-prompt",
+      "prompt_cache_ram_mib": 0,
+      "prompt_cache_ram_argument": "--cache-ram 0",
+      "cache_idle_slots": false,
+      "cache_idle_slots_argument": "--no-cache-idle-slots"
     },
     "lock_state": "built_and_live_api_validated_cache_policy_pending_revalidation"
   },

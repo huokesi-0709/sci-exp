@@ -149,7 +149,9 @@ dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛
 积分链已经闭环；但C2三次生成token均为30时，首轮仍为67.130秒/141.856J，后两轮仅约11.5秒/
 19.7J。冻结llama-server默认开启prompt cache，会跨请求复用公共前缀KV且可能造成非位级确定结果；
 因此015被降为`measurement_valid_but_prompt_cache_contaminated_diagnostic_only`。启动脚本已加入
-`--no-cache-prompt`并写入正式配置锁；下一步重启服务后用全新run ID重做9-run，不重做E0或013。
+`--no-cache-prompt`并写入正式配置锁。首次重启发现冻结server仍启用独立的8,192MiB全局prompt cache并
+保存idle slots，因此最终参数补充`--cache-ram 0 --no-cache-idle-slots`。下一步仅在启动日志明确显示
+`prompt cache is disabled`后，用全新run ID重做9-run；不重做E0或013。
 
 ## 最近完成的跨阶段数据治理
 

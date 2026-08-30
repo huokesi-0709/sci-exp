@@ -22,4 +22,6 @@ exec "$LLAMA_SERVER" \
   --port 8080 \
   --ctx-size 4096 \
   --no-cache-prompt \
+  --cache-ram 0 \
+  --no-cache-idle-slots \
   --threads "$(nproc)"

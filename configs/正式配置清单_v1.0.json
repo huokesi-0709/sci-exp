@@ -9,6 +9,8 @@
     "quantization": "Q4_K_M",
     "temperature": 0.0,
     "prompt_cache": false,
+    "prompt_cache_ram_mib": 0,
+    "cache_idle_slots": false,
     "prompt_cache_rationale": "disable cross-run KV reuse so randomized repetitions measure independent full prompt processing",
     "maximum_generated_tokens": 512,
     "per_configuration_output_limits": {"C0": 128, "C1": 256, "C2": 512, "C3": 0},

@@ -1077,8 +1077,13 @@ stages:
         runtime_cache_policy:
           prompt_cache: false
           argument: --no-cache-prompt
+          prompt_cache_ram_mib: 0
+          prompt_cache_ram_argument: --cache-ram 0
+          cache_idle_slots: false
+          cache_idle_slots_argument: --no-cache-idle-slots
           source_basis: frozen_llama_cpp_b9627_default_cache_prompt_true_and_nondeterminism_warning
-        required_next_gate: restart_llama_server_without_prompt_cache_and_repeat_9_run_new_id
+        required_startup_evidence: prompt_cache_is_disabled
+        required_next_gate: restart_llama_server_with_request_and_global_prompt_cache_disabled_then_repeat_9_run_new_id
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
