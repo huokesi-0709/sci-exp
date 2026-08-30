@@ -1082,8 +1082,60 @@ stages:
           cache_idle_slots: false
           cache_idle_slots_argument: --no-cache-idle-slots
           source_basis: frozen_llama_cpp_b9627_default_cache_prompt_true_and_nondeterminism_warning
+        dryrun_016_failure:
+          formal_evidence: false
+          runner_runs: 9
+          runner_successful: 0
+          runner_failed: 9
+          error: 127.0.0.1_8080_connection_refused_llama_server_not_running
+          collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_016.full.jsonl
+          collector_bytes: 10491368
+          collector_lines: 24048
+          collector_sha256: C693C3987ED712696DCA5CBBE973173928F97D15587DB0749EC92BE9A11DB210
+          samples: 23742
+          environment_samples: 238
+          marker_count: 20
+          invalid: 0
+          disposition: diagnostic_only_no_integration
+        dryrun_017_failure:
+          formal_evidence: false
+          runner_runs: 9
+          runner_successful: 0
+          runner_failed: 9
+          cause: llama_server_terminated_by_ctrl_c_before_runner
+          server_exit_evidence: cleaning_up_before_exit_after_sigint
+          collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_017.full.jsonl
+          collector_bytes: 11579959
+          collector_lines: 26534
+          collector_sha256: 6A3CE0329910DA030E2EA935996648D1425BD60CF784375766865EA7182D60A3
+          samples: 26201
+          environment_samples: 262
+          marker_count: 20
+          invalid: 0
+          disposition: diagnostic_only_no_integration
+        dryrun_018_candidate:
+          formal_evidence: false
+          runtime_process_id: 33876
+          runtime_launch: nohup_background_with_separate_log
+          runtime_prompt_cache: disabled_request_and_global
+          runtime_healthy_after_runner: true
+          runner_runs: 9
+          runner_successful: 9
+          runner_failed: 0
+          collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_018.full.jsonl
+          collector_bytes: 45174078
+          collector_lines: 103124
+          collector_sha256: 7C770E2D49D1B21F3CE414527FAA4866A1ED408F5AC67828010A6C1C4BF7C9FC
+          samples: 101957
+          environment_samples: 1020
+          marker_count: 20
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          status: candidate_pending_device_clock_integration
         required_startup_evidence: prompt_cache_is_disabled
-        required_next_gate: restart_llama_server_with_request_and_global_prompt_cache_disabled_then_repeat_9_run_new_id
+        required_next_gate: synchronize_018_runner_output_check_marker_errors_and_require_9_of_9_device_clock_integration
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130

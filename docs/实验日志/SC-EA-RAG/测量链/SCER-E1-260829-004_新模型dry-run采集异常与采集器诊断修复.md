@@ -70,3 +70,21 @@ runner审计为9条`status=ok`且0条`external_marker_errors`。设备时钟积�
 处置：`scripts/start_llama_server.sh`新增`--no-cache-prompt`，正式配置清单冻结`prompt_cache=false`。必须重启服务并用全新run ID重做9-run；015保留为`measurement_valid_but_prompt_cache_contaminated_diagnostic_only`，不得进入配置能耗统计或Oracle。
 
 首次按该修改重启后，进程命令行虽包含`--no-cache-prompt`，启动日志仍明确报告全局prompt cache为`enabled`、上限8,192MiB，并保存idle slots；冻结版本存在请求级cache开关和server全局cache-ram两层。按同一启动日志与冻结README的明确说明，启动脚本进一步加入`--cache-ram 0`及`--no-cache-idle-slots`。016只能在启动日志明确显示`prompt cache is disabled`后开始。
+
+## 016：服务未保持运行，诊断失败
+
+016采集器获得23,742 sample、238 environment、20 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`、`partial_serial_at_shutdown=1`；但Radxa runner为0/9成功，9条均为连接`127.0.0.1:8080`被拒绝，且marker错误为空。用户确认执行016时没有保持`scripts/start_llama_server.sh`前台运行。
+
+完整raw为`D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_016.full.jsonl`，10,491,368 bytes、24,048行，SHA-256为`C693C3987ED712696DCA5CBBE973173928F97D15587DB0749EC92BE9A11DB210`。该raw与`results/E1_devtemp_dryrun_016.jsonl`只作失败诊断，禁止积分、回填或覆盖。下一轮必须使用新run ID，并在启动采集器前同时确认`pgrep`含三项禁缓存参数及`/health`成功；服务终端须在整轮保持前台运行。
+
+## 017：服务再次被Ctrl+C终止
+
+017物理流获得26,201 sample、262 environment、20 marker，三项无效计数均为0；runner仍为0/9成功。服务终端提供了决定性日志：`^C ... cleaning up before exit`，证明llama-server被用户按`Ctrl+C`主动终止。进程启动时已明确显示prompt cache disabled，故本轮不支持“禁缓存参数导致服务故障”的解释。
+
+完整raw为`D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_017.full.jsonl`，11,579,959 bytes、26,534行，SHA-256为`6A3CE0329910DA030E2EA935996648D1425BD60CF784375766865EA7182D60A3`。017只作服务生命周期失败诊断，不积分、不覆盖。下一轮改用`nohup`后台常驻并保存服务日志，先验证进程与health，再启动采集器；实验结束后以明确PID停止服务。
+
+## 018：无缓存后台服务完整候选会话
+
+使用`nohup`启动PID 33876并写入独立服务日志；采集前确认进程包含`--no-cache-prompt --cache-ram 0 --no-cache-idle-slots`，启动日志显示`prompt cache is disabled`。018 runner为9/9成功，结束后同一PID仍存在且`/health`成功。Windows collector记录101,957 sample、1,020 environment、20 marker，`invalid=0`、`invalid_serial=0`、`invalid_marker=0`、`partial_serial_at_shutdown=1`。
+
+完整raw为`D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_dryrun_018.full.jsonl`，45,174,078 bytes、103,124行，SHA-256为`7C770E2D49D1B21F3CE414527FAA4866A1ED408F5AC67828010A6C1C4BF7C9FC`，保留在Git外且不得覆盖。当前仅登记为`candidate_pending_device_clock_integration`；须同步9行runner结果、确认0个marker错误并完成9/9设备时钟积分后，才能判定无缓存dry-run是否通过。

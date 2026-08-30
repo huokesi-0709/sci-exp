@@ -153,6 +153,18 @@ dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛
 保存idle slots，因此最终参数补充`--cache-ram 0 --no-cache-idle-slots`。下一步仅在启动日志明确显示
 `prompt cache is disabled`后，用全新run ID重做9-run；不重做E0或013。
 
+016虽取得23,742 sample、20 marker及三项无效计数为0，但runner 9/9均因`127.0.0.1:8080`
+连接被拒绝而失败；用户确认该轮没有保持llama-server运行。016只作失败诊断，不积分。下一轮使用新
+run ID，采集前必须同时确认进程参数、`/health`及服务终端持续前台运行。
+
+017再次出现0/9，服务终端的`^C ... cleaning up before exit`证明进程被Ctrl+C主动终止；该轮26,201
+sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积分。为消除操作性重复失败，下一轮改用
+`nohup`后台常驻并保存服务日志，记录明确PID，验证进程与health后再采集。
+
+018已用`nohup`后台无缓存服务完成候选会话：9/9 runner成功，结束后PID 33876与health仍正常；
+collector获得101,957 sample、20 marker且三项无效计数均为0。完整raw在Git外保留并已登记SHA-256。
+当前仍为`candidate_pending_device_clock_integration`，须同步runner结果并确认9/9设备时钟积分有效。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free
