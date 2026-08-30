@@ -36,3 +36,9 @@ device: Radxa ZERO 3 + ESP32-S3/INA226/SHT31
 ## 下一动作
 
 先用更新后的Windows采集器执行一轮短时、配对UDP标记预检。只有collector报告`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，才使用全新run ID进行下一次9-run dry-run。下一轮只发送一对空闲标记；Windows采集器必须在空闲和全部9次推理期间持续运行。
+
+## 2026-08-30补充：012停止边界诊断
+
+短时配对标记预检`012`收到5,404 sample、55 environment和2个完整marker，`invalid_marker=0`；唯一的`invalid_serial=1`审计记录为`unterminated serial row`，长度1字节、十六进制`7b`（字符`{`），时间位于用户按`Ctrl+C`的采集停止边界。它不是一条已换行但无法解析的串口记录，而是下一条NDJSON只读取首字节时进程收到停止信号。完整raw为`D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_marker_precheck_012.full.jsonl`，2,379,426 bytes、5,473行，SHA-256为`00D40E3BCAE176730165853BA140F667AD9410F5CD7E50CF8E178734F25F0660`，保留在Git外且不得覆盖。
+
+采集器进一步修正：停止边界的非空尾部改记为`collector_shutdown_partial`和`partial_serial_at_shutdown`，不再计入`invalid`或`invalid_serial`；完整换行记录的UTF-8/JSON解析失败仍保持严格无效。后续接受门槛仍要求`invalid=0`、`invalid_serial=0`、`invalid_marker=0`，同时透明报告停止边界尾部计数。

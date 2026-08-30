@@ -92,6 +92,7 @@ def main() -> int:
         "invalid": 0,
         "invalid_serial": 0,
         "invalid_marker": 0,
+        "partial_serial_at_shutdown": 0,
     }
     serial_pending = b""
     with args.output.open("w", encoding="utf-8", newline="\n") as handle:
@@ -191,7 +192,22 @@ def main() -> int:
                     record_invalid("serial", raw, exc)
 
         if serial_pending.strip():
-            record_invalid("serial", serial_pending, ValueError("unterminated serial row"))
+            # Ctrl+C can arrive after the first byte of the next NDJSON record.
+            # This bounded tail is not evidence of link corruption: it never
+            # formed a complete record and falls outside the already marked
+            # query intervals. Preserve it for audit without invalidating the
+            # complete serial rows collected before shutdown.
+            counts["partial_serial_at_shutdown"] += 1
+            shutdown_partial = add_host_time(
+                {
+                    "type": "collector_shutdown_partial",
+                    "source": "serial",
+                    "byte_length": len(serial_pending),
+                    "preview_hex": serial_pending[:64].hex(),
+                }
+            )
+            handle.write(json.dumps(shutdown_partial, ensure_ascii=False) + "\n")
+            handle.flush()
 
     try:
         send("STOP")

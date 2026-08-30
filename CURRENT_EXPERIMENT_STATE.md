@@ -136,6 +136,11 @@ dry-run与后续人工质量审查中保留。模型来源/tokenizer审计门槛
 短时配对标记预检，三项无效计数必须均为0；详见
 [`SCER-E1-260829-004_新模型dry-run采集异常与采集器诊断修复.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260829-004_新模型dry-run采集异常与采集器诊断修复.md)。
 
+2026-08-30的012预检已证明新Windows地址`192.168.10.11`上的UDP闭环正常（2个marker、
+`invalid_marker=0`）。其唯一`invalid_serial=1`是用户停止采集时遗留的单字节`{`，不是完整串口行
+损坏；采集器已将此停止边界尾部改为`partial_serial_at_shutdown`独立审计，不计入真实无效行。
+下一步用新run ID重复短预检，仍要求`invalid`、`invalid_serial`、`invalid_marker`均为0。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free

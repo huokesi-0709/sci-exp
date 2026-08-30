@@ -1017,7 +1017,21 @@ stages:
           - {id: '009', result: single_marker_precheck_invalid_0}
           - {id: '010', result: 9_of_9_runner_success_but_75346_samples_22_markers_invalid_34_rejected}
         collector_remediation: complete_line_buffering_plus_source_separated_invalid_audit
-        required_next_gate: short_paired_marker_precheck_with_all_invalid_counts_zero
+        marker_precheck_012:
+          collector_file: D:\sci-exp-data\E1_20260830\INA226_E1_devtemp_marker_precheck_012.full.jsonl
+          collector_bytes: 2379426
+          collector_lines: 5473
+          collector_sha256: 00D40E3BCAE176730165853BA140F667AD9410F5CD7E50CF8E178734F25F0660
+          samples: 5404
+          environment_samples: 55
+          marker_count: 2
+          invalid: 1
+          invalid_serial: 1
+          invalid_marker: 0
+          invalid_record: {error: unterminated_serial_row, byte_length: 1, preview_hex: '7b'}
+          interpretation: Ctrl+C停止边界的下一条NDJSON首字节，不是完整行解析失败
+        collector_shutdown_tail_remediation: partial_serial_at_shutdown_is_audited_but_not_counted_invalid
+        required_next_gate: repeat_short_paired_marker_precheck_with_all_true_invalid_counts_zero
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
