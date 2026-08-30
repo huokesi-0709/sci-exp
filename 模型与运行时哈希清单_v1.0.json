@@ -57,7 +57,7 @@
     "lock_state": "built_live_api_and_no_cache_power_dryrun_validated"
   },
   "blocking_conditions": [
-    "正式E1前仍须记录并冻结实际5V/3A充电头标签型号、额定输出和输入线标识，并生成固定seed的315次运行清单",
+    "正式E1前仍须生成并冻结固定seed的315次运行清单及盲法双审/仲裁材料",
     "llama-server加载时对token 128247 '</s>'打印control-type覆盖警告；须在dry-run和人工质量审查中保留该运行时观察",
     "正式E1仍须完成盲审、仲裁与每条external_meter_valid=true的穷举运行"
   ]

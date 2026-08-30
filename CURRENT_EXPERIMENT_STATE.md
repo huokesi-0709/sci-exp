@@ -169,6 +169,12 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 `1AEB4B4E3E9E4D94EA88FC952A3233A3B469DA3692C2FDE7647E6E7746BC1018`，末行是正常清理。
 该会话状态为`passed_nonformal_dry_run`，只证明正式流程已具备运行条件，不计入E1的315次正式证据。
 
+2026-08-31正式E1供电身份已冻结为`E1-POWER-CHAIN-01`：UGREEN X336（SN
+`E78012001608`，输入100–240V AC、50/60Hz、500mA max，输出5V DC/3A）；输入线编号
+`E1-POWER-IN-01`，为15cm铜线，线体无线规标识，用户描述为普通规格；既有20AWG Type-C输出线编号
+`E1-POWER-OUT-01`。用户确认整个可比较E1批次不更换充电头、输入线、测量链和输出线。机器可读锁见
+`configs/E1_power_chain_lock_v1.0.json`；下一门槛只剩315次固定seed运行清单与盲法双审/仲裁材料冻结。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free
@@ -263,7 +269,6 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 
 ## 正式E1开始前仍需完成
 
-- 记录并冻结实际5V/3A充电头的标签型号、额定输出以及本批次输入线标识；
 - 冻结正式Dev-Temp查询清单、固定随机seed、315次运行清单与唯一输出路径；
 - 准备盲法双审与仲裁材料，确保每个C0/C1/C2输出都有两名独立审查者及仲裁入口；
 - 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
@@ -277,8 +282,8 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 
 ## 下一正式动作
 
-E0和018最终非正式dry-run均已通过，不再重做。先补记并冻结充电头/输入线身份，再生成正式E1 Dev-Temp
-315次运行清单及盲审材料；完成审计后才启动首个正式批次。正式运行必须使用全新run/session ID，保持
+E0、018最终非正式dry-run和`E1-POWER-CHAIN-01`供电身份冻结均已通过，不再重做。下一步生成正式E1
+Dev-Temp 315次运行清单及盲审材料；完成审计后才启动首个正式批次。正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
 和实验日志。

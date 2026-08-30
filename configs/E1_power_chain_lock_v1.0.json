@@ -1,0 +1,49 @@
+{
+  "schema_version": "e1-power-chain-lock-v1.0",
+  "lock_id": "E1-POWER-CHAIN-01",
+  "locked_on": "2026-08-31",
+  "timezone": "Asia/Shanghai",
+  "source": "user-reported charger label and physical cable description",
+  "power_supply": {
+    "id": "E1-PSU-01",
+    "brand": "UGREEN",
+    "model": "X336",
+    "serial_number": "E78012001608",
+    "input_rating": "100-240 V AC, 50/60 Hz, 500 mA max",
+    "output_rating": "5 V DC, 3 A"
+  },
+  "input_cable": {
+    "id": "E1-POWER-IN-01",
+    "route": "UGREEN X336 to INA226 input",
+    "conductor_material": "copper",
+    "length_cm": 15,
+    "wire_gauge": "not_marked",
+    "user_description": "ordinary specification"
+  },
+  "measurement_and_output_chain": {
+    "id": "E1-METER-OUT-01",
+    "meter": "ESP32-S3 + INA226 + R010 + SHT31",
+    "output_cable_id": "E1-POWER-OUT-01",
+    "output_cable": "existing 20AWG Type-C output cable to Radxa ZERO 3",
+    "calibration_inheritance": "E0 manufacturer-spec operational reference boundary",
+    "preflight_status": "passed_idle_and_short_high_load"
+  },
+  "preflight_evidence": {
+    "idle_raw": "D:\\sci-exp-data\\E1_preflight_20260828\\INA226_source_5V3A_radxa_idle_001.full.jsonl",
+    "idle_sha256": "53AADC2B8006DBB6F43E058241E25FA206414CF306E5EE5214603FA389920AC4",
+    "short_high_load_raw": "D:\\sci-exp-data\\E1_preflight_20260828\\INA226_source_5V3A_radxa_load_002.full.jsonl",
+    "short_high_load_sha256": "1414B8CDC3A2B2C28D5C2287081D57CDC91A1B9A0BE513C6678E07B29C7C8C63"
+  },
+  "invariance_rule": {
+    "user_confirmed": true,
+    "scope": "entire comparable formal E1 batch",
+    "must_not_change": [
+      "power_supply",
+      "input_cable",
+      "ESP32-S3/INA226/SHT31 measurement chain",
+      "20AWG Type-C output cable",
+      "Radxa power wiring"
+    ],
+    "on_change": "stop the comparable batch, assign a new power-chain lock ID, rerun source preflight, and record the boundary"
+  }
+}

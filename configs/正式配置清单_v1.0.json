@@ -1,7 +1,9 @@
 {
   "schema_version": "formal-config-manifest-v1.0",
   "frozen_on": "2026-07-28",
-  "research_status": "official_gguf_no_cache_runtime_and_power_dryrun_validated_pending_formal_E1_freeze",
+  "research_status": "runtime_power_dryrun_and_power_chain_validated_pending_E1_315_manifest_and_review_assets",
+  "power_chain_lock_file": "configs/E1_power_chain_lock_v1.0.json",
+  "power_chain_lock_id": "E1-POWER-CHAIN-01",
   "common_generation": {
     "model_family": "Qwen1.5-0.5B-Chat",
     "gguf_file": "models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",

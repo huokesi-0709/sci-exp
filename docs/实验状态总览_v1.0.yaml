@@ -882,9 +882,14 @@ stages:
     status: ready_for_formal_e1_dev_phase
     formal_pass: false
     power_source_preflight_20260828:
-      status: passed_idle_and_short_high_load_preflight_model_record_required_before_freeze
-      source: user_reported_5V_3A_charger_model_not_recorded
-      wiring: charger_to_INA226_input_plus_existing_20AWG_typec_output_to_Radxa
+      status: passed_and_frozen_for_comparable_formal_E1_batch
+      power_chain_lock_id: E1-POWER-CHAIN-01
+      power_chain_lock_file: configs/E1_power_chain_lock_v1.0.json
+      source: UGREEN_X336_SN_E78012001608_5V_3A
+      source_input_rating: 100-240_V_AC_50_or_60_Hz_500_mA_max
+      input_cable: E1-POWER-IN-01_15cm_copper_wire_gauge_not_marked
+      wiring: UGREEN_X336_to_INA226_input_plus_E1-POWER-OUT-01_existing_20AWG_typec_output_to_Radxa
+      user_confirmed_unchanged_for_entire_comparable_E1_batch: true
       collector_file: D:\sci-exp-data\E1_preflight_20260828\INA226_source_5V3A_radxa_idle_001.full.jsonl
       bytes: 25952865
       lines: 59448
@@ -915,7 +920,7 @@ stages:
         quality_flags: {undervoltage: 0, integration_gap: 0, current_saturated: 0}
         manual_vout_gnd_v: 5.00
         pass: true
-      interpretation: 空闲与60.936秒短时高负载均保持Vbus至少4.75V且无质量标志；不用重做E0或更改校准。E1开始前只需补记充电头型号/额定输出与输入线标识，然后固定该源和接线
+      interpretation: 空闲与60.936秒短时高负载均保持Vbus至少4.75V且无质量标志；不用重做E0或更改校准。充电头、输入线、测量链和输出线已冻结为E1-POWER-CHAIN-01；任一部件改变必须停止当前可比较批次并以新lock ID重做换源预检
     completed_preparation:
       - Radxa ZERO 3W aarch64、4核和内存状态已实机探测
       - llama.cpp b9627已在Radxa本机构建；bin/llama-server为aarch64 ELF，SHA-256为4d157af0eb8c136ffa845065c7ed8d749ce40b048037c19696254a6344ae16b9，ldd无缺失库
@@ -925,8 +930,8 @@ stages:
       - Windows采集器监听0.0.0.0:8765时，Radxa以SCI_EXP_METER_HOST=192.168.66.219发送idle_start并收到匹配marker ACK
       - E1分析入口和候选配置代码已建立
       - 018无缓存后台服务最终dry-run已通过：9/9 runner成功、0条marker错误、9/9设备时钟积分有效且external_meter_valid=true
+      - E1-POWER-CHAIN-01已冻结：UGREEN X336、E1-POWER-IN-01输入线、当前测量链与E1-POWER-OUT-01输出线在整个可比较E1批次保持不变
     remaining_preparation:
-      - 记录并冻结实际5V/3A充电头标签型号、额定输出与本批次输入线标识
       - 冻结正式Dev-Temp 35条查询、固定seed的315次运行清单、唯一输出路径及盲法双审/仲裁材料
     runtime_preparation_20260829:
       status: passed_nonformal_runtime_and_power_dryrun_ready_for_formal_e1_preflight_freeze
@@ -1167,7 +1172,7 @@ stages:
           status: passed_nonformal_dry_run
           disposition: workflow_ready_but_not_part_of_formal_E1_315_runs
         required_startup_evidence: prompt_cache_is_disabled
-        required_next_gate: freeze_power_source_identity_formal_315_run_manifest_and_blind_review_materials
+        required_next_gate: freeze_formal_315_run_manifest_and_blind_review_materials
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
@@ -1200,4 +1205,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 018最终非正式dry-run已通过；先补记并冻结5V/3A充电头标签型号、额定输出和输入线标识，再冻结Dev-Temp 35条查询、固定seed的315次运行清单及盲法双审/仲裁材料，随后以全新session开始正式E1并要求每条运行external_meter_valid=true
+  action: 018最终非正式dry-run和E1-POWER-CHAIN-01供电身份冻结均已通过；下一步冻结Dev-Temp 35条查询、固定seed的315次运行清单及盲法双审/仲裁材料，随后以全新session开始正式E1并要求每条运行external_meter_valid=true
