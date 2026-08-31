@@ -174,6 +174,15 @@ class LlamaServerGenerator:
         try:
             with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
                 value = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            try:
+                response_body = exc.read().decode("utf-8", errors="replace").strip()
+            except Exception:
+                response_body = ""
+            detail = f"HTTP {exc.code}: {exc.reason}"
+            if response_body:
+                detail += f"; response={response_body[:2000]}"
+            raise RuntimeError(f"llama-server request failed: {detail}") from exc
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise RuntimeError(f"llama-server request failed: {exc}") from exc
         usage = value.get("usage", {}) if isinstance(value.get("usage"), dict) else {}

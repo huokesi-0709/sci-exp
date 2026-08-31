@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import socket
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -32,6 +35,61 @@ from .validation import (
     validate_protocols,
     validate_queries,
 )
+
+
+def _send_collector_stop(args: argparse.Namespace) -> dict[str, Any]:
+    host = str(args.collector_host or os.environ.get("SCI_EXP_METER_HOST", ""))
+    if not host:
+        raise RuntimeError(
+            "--stop-collector-on-exit requires --collector-host or "
+            "SCI_EXP_METER_HOST"
+        )
+    event = "collector_stop"
+    run_key = str(args.session_id or "experiment_runner_exit")
+    value = {
+        "schema": "ina226-marker-v1.0",
+        "event": event,
+        "run_key": run_key,
+        "query_id": "",
+        "configuration": "",
+        "repetition": 0,
+        "sender_epoch_ns": time.time_ns(),
+        "sender_monotonic_ns": time.monotonic_ns(),
+        "reason": "experiment_runner_exit",
+    }
+    payload = json.dumps(value, ensure_ascii=False).encode("utf-8")
+    last_error: Exception | None = None
+    for attempt in range(1, int(args.collector_stop_retries) + 1):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client:
+                client.settimeout(float(args.collector_stop_timeout))
+                client.sendto(payload, (host, int(args.collector_port)))
+                acknowledgement, _ = client.recvfrom(4096)
+            ack = json.loads(acknowledgement.decode("utf-8"))
+            if (
+                not isinstance(ack, dict)
+                or ack.get("type") != "marker_ack"
+                or ack.get("event") != event
+                or ack.get("run_key") != run_key
+                or ack.get("collector_stopping") is not True
+            ):
+                raise RuntimeError("功率采集器返回了不匹配的停止ACK")
+            return {
+                "status": "acknowledged",
+                "attempt": attempt,
+                "host": host,
+                "port": int(args.collector_port),
+                "event": event,
+                "run_key": run_key,
+            }
+        except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+            last_error = exc
+            if attempt < int(args.collector_stop_retries):
+                time.sleep(1.0)
+    raise RuntimeError(
+        f"collector stop was not acknowledged after "
+        f"{args.collector_stop_retries} attempts: {last_error}"
+    )
 
 
 def _load_protocols(path: Path) -> list[ProtocolChunk]:
@@ -569,6 +627,15 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--run-order-start", type=int)
     run_parser.add_argument("--run-order-end", type=int)
     run_parser.add_argument("--session-id", default="")
+    run_parser.add_argument(
+        "--stop-collector-on-exit",
+        action="store_true",
+        help="always request a graceful Windows collector stop when this run exits",
+    )
+    run_parser.add_argument("--collector-host", default="")
+    run_parser.add_argument("--collector-port", type=int, default=8765)
+    run_parser.add_argument("--collector-stop-timeout", type=float, default=2.0)
+    run_parser.add_argument("--collector-stop-retries", type=int, default=3)
     run_parser.set_defaults(handler=command_run)
 
     route_parser = subparsers.add_parser("route")
@@ -702,7 +769,54 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    return int(args.handler(args))
+    try:
+        result = int(args.handler(args))
+    except BaseException:
+        if getattr(args, "stop_collector_on_exit", False):
+            try:
+                stop_result = _send_collector_stop(args)
+                print(
+                    json.dumps({"collector_stop": stop_result}, ensure_ascii=False),
+                    file=sys.stderr,
+                )
+            except Exception as stop_exc:
+                print(
+                    json.dumps(
+                        {
+                            "collector_stop": {
+                                "status": "error",
+                                "error_type": type(stop_exc).__name__,
+                                "error": str(stop_exc),
+                            }
+                        },
+                        ensure_ascii=False,
+                    ),
+                    file=sys.stderr,
+                )
+        raise
+    if getattr(args, "stop_collector_on_exit", False):
+        try:
+            stop_result = _send_collector_stop(args)
+            print(
+                json.dumps({"collector_stop": stop_result}, ensure_ascii=False),
+                file=sys.stderr,
+            )
+        except Exception as stop_exc:
+            print(
+                json.dumps(
+                    {
+                        "collector_stop": {
+                            "status": "error",
+                            "error_type": type(stop_exc).__name__,
+                            "error": str(stop_exc),
+                        }
+                    },
+                    ensure_ascii=False,
+                ),
+                file=sys.stderr,
+            )
+            return 4 if result == 0 else result
+    return result
 
 
 if __name__ == "__main__":

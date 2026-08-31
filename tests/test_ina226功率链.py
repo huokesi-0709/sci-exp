@@ -1,3 +1,4 @@
+import argparse
 import importlib.util
 import json
 import socket
@@ -9,6 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from sci_exp.cli import _send_collector_stop
 from sci_exp.telemetry import TelemetrySampler
 
 
@@ -24,7 +26,59 @@ def load_energy_module():
     return module
 
 
+def load_collector_module():
+    path = ROOT / "scripts" / "采集INA226串口功率.py"
+    spec = importlib.util.spec_from_file_location("ina226_collector", path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
 class Ina226PowerChainTests(unittest.TestCase):
+    def test_collector_stop_marker_requires_explicit_opt_in(self):
+        module = load_collector_module()
+        self.assertFalse(module.is_stop_marker("collector_stop", ""))
+        self.assertFalse(module.is_stop_marker("query_end", "collector_stop"))
+        self.assertTrue(module.is_stop_marker("collector_stop", "collector_stop"))
+
+    def test_cli_collector_stop_waits_for_stopping_ack(self):
+        server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        server.bind(("127.0.0.1", 0))
+        port = server.getsockname()[1]
+
+        def acknowledge():
+            packet, address = server.recvfrom(4096)
+            value = json.loads(packet.decode("utf-8"))
+            server.sendto(
+                json.dumps(
+                    {
+                        "type": "marker_ack",
+                        "event": value["event"],
+                        "run_key": value["run_key"],
+                        "collector_stopping": True,
+                    }
+                ).encode("utf-8"),
+                address,
+            )
+
+        thread = threading.Thread(target=acknowledge)
+        thread.start()
+        result = _send_collector_stop(
+            argparse.Namespace(
+                collector_host="127.0.0.1",
+                collector_port=port,
+                collector_stop_timeout=1.0,
+                collector_stop_retries=1,
+                session_id="E1-TEST-STOP-001",
+            )
+        )
+        thread.join(timeout=2)
+        server.close()
+        self.assertEqual(result["status"], "acknowledged")
+        self.assertEqual(result["event"], "collector_stop")
+        self.assertEqual(result["run_key"], "E1-TEST-STOP-001")
+
     def test_trapezoid_integration(self):
         module = load_energy_module()
         samples = [

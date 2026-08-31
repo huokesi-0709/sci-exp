@@ -11,7 +11,14 @@ def main() -> int:
     parser.add_argument(
         "--event",
         required=True,
-        choices=["query_start", "query_end", "idle_start", "idle_end", "note"],
+        choices=[
+            "query_start",
+            "query_end",
+            "idle_start",
+            "idle_end",
+            "note",
+            "collector_stop",
+        ],
     )
     parser.add_argument("--run-key", required=True)
     parser.add_argument("--query-id", default="")

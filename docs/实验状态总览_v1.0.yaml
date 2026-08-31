@@ -1325,7 +1325,68 @@ stages:
         cause: collector_stopped_during_pipeline_initialization_before_output_creation_then_background_runner_completed_one_query
         disposition: retain_as_aborted_formal_attempt_exclude_from_valid_physical_measurement_subset
         next_session_id: E1-DEVTEMP-FORMAL-B01-002
-      status: B01_attempt001_aborted_ready_for_attempt002
+      B01_attempt002_20260901:
+        formal_attempt: true
+        formal_evidence: false
+        status: failed_runtime_infrastructure_revision_required
+        session_id: E1-DEVTEMP-FORMAL-B01-002
+        intended_run_order: 1-63
+        completed_runner_rows: 63
+        successful: 48
+        failed: 15
+        timeout_failures: 13
+        http_500_failures: 2
+        failed_configuration_counts: {C1: 1, C2: 14}
+        runner_output: results/E1_devtemp_formal_v1_B01_attempt002.jsonl
+        runner_output_bytes: pending_radxa_final_hash_capture
+        runner_output_sha256: pending_radxa_final_hash_capture
+        runner_log: logs/runtime/E1_devtemp_formal_v1_B01_attempt002_runner.log
+        server_log: logs/runtime/llama_server_E1_formal_B01.log
+        server_health_after_batch: ok
+        server_runtime_diagnosis:
+          n_parallel: 4
+          kv_unified: true
+          runner_request_pattern: sequential
+          client_timeout_seconds: 180
+          observations:
+            - client_timeout_followed_by_cancel_task
+            - repeated_KV_cache_allocation_failures
+            - two_Context_size_has_been_exceeded_HTTP_500
+          cause: timeout_cancellation_overlap_and_unified_KV_contention
+        collector_file: D:\sci-exp-data\E1_20260901\INA226_E1_devtemp_formal_v1_B01_attempt002.full.jsonl
+        collector_bytes: 356922602
+        collector_lines: 809257
+        collector_sha256: 433689DED316003E10C826A45E616EF1797F0E0A8969347367989D739C0FEDE9
+        samples: 800189
+        environment_samples: 8002
+        marker_count: 128
+        expected_marker_count: 128
+        invalid: 0
+        invalid_serial: 0
+        invalid_marker: 0
+        partial_serial_at_shutdown: 1
+        measurement_chain_status: complete_clean_markers_pending_device_clock_integration
+        blind_review_eligible: false
+        disposition: retain_entire_attempt_do_not_fill_failed_rows_do_not_start_B02
+      runtime_revision_v2_20260901:
+        status: pending_targeted_nonformal_preflight
+        revision_lock: configs/E1_runtime_revision_v2_20260901.json
+        config: configs/E1_devtemp_v2.json
+        config_sha256_lf: A26776F7EB8798714250DDDDA93F69CDF3563C25AA94EDB9BADDA4647D3EAA6A
+        timeout_seconds: 300
+        llama_parallel: 1
+        task_manifest_changed: false
+        task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+        collector_autostop:
+          event: collector_stop
+          ack_required: true
+          local_COM18_smoke: passed
+          smoke_samples: 1622
+          smoke_environment: 17
+          smoke_control: 1
+          smoke_invalid: 0
+        next_gate: targeted_nonformal_long_C2_preflight
+      status: B01_attempt002_failed_runtime_revision_pending_preflight
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1356,4 +1417,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留并排除B01-001；使用全新session E1-DEVTEMP-FORMAL-B01-002、attempt002 runner/log/raw从global run order 1重新执行1-63，pipeline初始化期间不得因输出暂未创建而停止collector
+  action: 永久保留B01-001和B01-002并暂停B02；同步v2候选运行时，先执行parallel=1、300秒超时和collector_stop自动停止的长C2非正式预检；通过后再以全新session从global run order 1完整重跑B01

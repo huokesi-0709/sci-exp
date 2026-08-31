@@ -1,0 +1,60 @@
+{
+  "schema_version": "e1-runtime-revision-v1.0",
+  "revision_id": "E1-RUNTIME-REVISION-V2-20260901",
+  "created_at": "2026-09-01T03:45:05+08:00",
+  "formal_evidence": false,
+  "status": "pending_targeted_nonformal_preflight",
+  "trigger": {
+    "session_id": "E1-DEVTEMP-FORMAL-B01-002",
+    "runner_rows": 63,
+    "successful": 48,
+    "failed": 15,
+    "timeout_failures": 13,
+    "http_500_failures": 2,
+    "failure_configuration_counts": {"C1": 1, "C2": 14},
+    "server_evidence": [
+      "client timeout at 180 seconds followed by task cancellation",
+      "n_parallel=4 with unified KV despite a sequential runner",
+      "KV cache allocation retries",
+      "Context size has been exceeded for the two HTTP 500 responses"
+    ]
+  },
+  "superseded_runtime": {
+    "config": "configs/E1_devtemp_v1.json",
+    "config_sha256_lf": "C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729",
+    "timeout_seconds": 180,
+    "llama_parallel": 4,
+    "disposition": "retained_for_B01_attempt001_and_attempt002_audit_only"
+  },
+  "candidate_runtime": {
+    "config": "configs/E1_devtemp_v2.json",
+    "config_sha256_lf": "A26776F7EB8798714250DDDDA93F69CDF3563C25AA94EDB9BADDA4647D3EAA6A",
+    "timeout_seconds": 300,
+    "llama_parallel": 1,
+    "context_size": 4096,
+    "prompt_cache": "disabled_request_and_global",
+    "generation_and_retrieval_semantics_changed": false,
+    "only_config_changes": [
+      "generator.timeout_seconds: 180 -> 300",
+      "experiment.output: results/E1_devtemp_exhaustive_v1.jsonl -> results/E1_devtemp_exhaustive_v2.jsonl"
+    ]
+  },
+  "unchanged_design": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "global_order": "unchanged",
+    "model": "unchanged",
+    "power_chain": "E1-POWER-CHAIN-01",
+    "max_tokens_by_configuration": {"C0": 128, "C1": 256, "C2": 512},
+    "context_characters_by_configuration": {"C0": 0, "C1": 3000, "C2": 6000}
+  },
+  "collector_autostop": {
+    "event": "collector_stop",
+    "collector_flag": "--stop-on-marker-event collector_stop",
+    "runner_flag": "--stop-collector-on-exit",
+    "ack_required": true,
+    "retries": 3,
+    "smoke_test": "passed_local_COM18_control_1_invalid_0"
+  },
+  "next_gate": "targeted_nonformal_long_C2_preflight_before_any_new_formal_attempt"
+}

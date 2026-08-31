@@ -280,10 +280,20 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B01_attempt001_aborted_ready_for_attempt002`|B01-001仅完成run order 1且查询marker两次超时，不进入有效物理测量子集；下一合法session为B01-002|
+|E1 配置异质性正式运行|`B01_attempt002_failed_runtime_revision_pending_preflight`|B01-002完成63次尝试但仅48次成功；物理采集128个marker且三项invalid为0，失败集中于C2的180秒超时和parallel=4统一KV竞争；暂停B02|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
+
+- `E1-DEVTEMP-FORMAL-B01-002`已完成63次尝试，但13次HTTP请求超时、2次HTTP 500，CLI返回3；
+  14/15失败属于C2。服务日志显示parallel=4统一KV在客户端超时取消与下一任务交叠后反复分配失败，
+  两个500均为`Context size has been exceeded`。物理raw包含800,189个sample、8,002个environment和
+  正确的128个实验marker，三项invalid均为0；因此这是运行时基础设施失败，不是测量链失败。
+  B01-002永久保留且不能生成盲审包；不得只补跑15条或开始B02；
+- 版本化候选修订新增`configs/E1_devtemp_v2.json`（timeout 300秒）并将llama-server固定为
+  `--parallel 1`；生成/检索/token/上下文语义和seed42清单不变。采集器已增加经ACK确认的
+  `collector_stop`自动停止机制，本地COM18 smoke通过。以上修订必须先完成针对长C2的非正式预检，
+  才能冻结并以新session完整重跑B01；
 
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
@@ -310,9 +320,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`和
-`E1-BLIND-SALT-V1`均已冻结，不再重做。B01-001中止证据已经冻结，不能覆盖或计入有效子集；下一步
-使用全新session `E1-DEVTEMP-FORMAL-B01-002`从global run order 1重新执行完整1–63。
-正式运行必须使用全新run/session ID，保持
-Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
-后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
-和实验日志。
+`E1-BLIND-SALT-V1`均已冻结，不再重做。B01-001和B01-002证据已经冻结，不能覆盖；当前先同步
+`E1-RUNTIME-REVISION-V2-20260901`并对长C2案例执行非正式预检。只有parallel=1、300秒超时、无KV错误、
+无HTTP错误且`collector_stop`自动关闭采集器全部通过后，才能用全新session从global run order 1完整重跑
+B01。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest和实验日志。

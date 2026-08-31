@@ -1,6 +1,8 @@
 import json
 import sys
 import unittest
+import urllib.error
+from io import BytesIO
 from pathlib import Path
 from unittest.mock import patch
 
@@ -27,6 +29,28 @@ class _Response:
 
 
 class GenerationChatApiTests(unittest.TestCase):
+    def test_http_error_preserves_server_response_body(self):
+        generator = LlamaServerGenerator(
+            "http://127.0.0.1:8080/v1/chat/completions",
+            api_style="openai_chat",
+        )
+        query = QueryRecord(
+            "q", "怎么办", "fire", "single", 3, "zh", False
+        ).to_inference_query()
+        error = urllib.error.HTTPError(
+            generator.endpoint,
+            500,
+            "Internal Server Error",
+            {},
+            BytesIO(b'{"error":"Context size has been exceeded."}'),
+        )
+        with patch("urllib.request.urlopen", side_effect=error):
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "Context size has been exceeded",
+            ):
+                generator.generate(query, [], configuration="C2")
+
     def test_openai_chat_request_and_response(self):
         generator = LlamaServerGenerator(
             "http://127.0.0.1:8080/v1/chat/completions",

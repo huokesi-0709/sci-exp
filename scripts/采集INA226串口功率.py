@@ -19,6 +19,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--marker-port", type=int, default=8765)
     parser.add_argument("--sync-interval", type=float, default=10.0)
     parser.add_argument("--no-auto-start", action="store_true")
+    parser.add_argument(
+        "--stop-on-marker-event",
+        default="",
+        help=(
+            "收到并确认该UDP事件后正常结束采集；"
+            "例如collector_stop。默认禁用远程停止"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -49,6 +57,10 @@ def split_complete_lines(
         line, buffer = buffer.split(b"\n", 1)
         complete.append(line.rstrip(b"\r"))
     return complete, buffer
+
+
+def is_stop_marker(event: object, configured_event: str) -> bool:
+    return bool(configured_event and str(event) == configured_event)
 
 
 def main() -> int:
@@ -89,6 +101,7 @@ def main() -> int:
         "sample": 0,
         "environment": 0,
         "marker": 0,
+        "control": 0,
         "invalid": 0,
         "invalid_serial": 0,
         "invalid_marker": 0,
@@ -104,6 +117,7 @@ def main() -> int:
                 "baud": args.baud,
                 "marker_host": args.marker_host,
                 "marker_port": args.marker_port,
+                "stop_on_marker_event": args.stop_on_marker_event,
             }
         )
         handle.write(json.dumps(session, ensure_ascii=False) + "\n")
@@ -142,19 +156,30 @@ def main() -> int:
                     marker = json.loads(packet.decode("utf-8"))
                     if not isinstance(marker, dict):
                         raise ValueError("marker must be an object")
+                    marker_event = str(marker.get("event", "marker"))
+                    stop_requested = is_stop_marker(
+                        marker_event,
+                        args.stop_on_marker_event,
+                    )
                     marker = add_host_time(
                         {
                             **marker,
-                            "type": "marker",
+                            "type": (
+                                "collector_control" if stop_requested else "marker"
+                            ),
                             "marker_sender": f"{address[0]}:{address[1]}",
                         }
                     )
-                    marker_name = str(marker.get("event", "marker"))
+                    marker_name = marker_event
                     run_key = str(marker.get("run_key", ""))
-                    send(f"MARK {marker_name}:{run_key}")
+                    if not stop_requested:
+                        send(f"MARK {marker_name}:{run_key}")
                     handle.write(json.dumps(marker, ensure_ascii=False) + "\n")
                     handle.flush()
-                    counts["marker"] += 1
+                    if stop_requested:
+                        counts["control"] += 1
+                    else:
+                        counts["marker"] += 1
                     acknowledgement = json.dumps(
                         {
                             "type": "marker_ack",
@@ -162,12 +187,18 @@ def main() -> int:
                             "run_key": marker.get("run_key"),
                             "collector_epoch_ns": marker["host_epoch_ns"],
                             "collector_monotonic_ns": marker["host_monotonic_ns"],
+                            "collector_stopping": stop_requested,
                         },
                         ensure_ascii=False,
                     ).encode("utf-8")
                     marker_socket.sendto(acknowledgement, address)
+                    if stop_requested:
+                        running = False
                 except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
                     record_invalid("marker", packet, exc)
+
+            if not running:
+                break
 
             received = serial_port.read(serial_port.in_waiting or 1)
             if not received:
