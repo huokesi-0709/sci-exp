@@ -1,4 +1,5 @@
 /configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl text eol=lf
+/configs/E1_devtemp_v1.json text eol=lf
 /configs/E1_review_roles_lock_v1.0.json text eol=lf
 /configs/E1_blind_salt_manifest_v1.0.json text eol=lf
 /results/E1_devtemp_formal_v1_B*.jsonl text eol=lf

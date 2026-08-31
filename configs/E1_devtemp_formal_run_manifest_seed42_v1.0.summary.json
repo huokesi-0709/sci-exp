@@ -54,7 +54,7 @@
   "global_randomization": "Python random.Random(42).shuffle using sci_exp.runner task construction",
   "inputs": {
     "config": "configs/E1_devtemp_v1.json",
-    "config_sha256": "12AC88CDD2C694BD0413D59E33D58854487A1ECD5268AC6E95A61B121904170A",
+    "config_sha256": "C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729",
     "power_chain_lock": "configs/E1_power_chain_lock_v1.0.json",
     "power_chain_lock_sha256": "BFD63A6372266310C5E17E11326FF769822699F32B14979B0D8B1B8DA3C00A1F",
     "queries": "data/inference_splits_stratified_v2/valid.jsonl",

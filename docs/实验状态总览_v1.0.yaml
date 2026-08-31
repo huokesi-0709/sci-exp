@@ -879,7 +879,7 @@ stages:
 
   E1:
     name: 配置异质性
-    status: design_review_roles_and_private_salt_frozen_pending_B01_preflight
+    status: B01_preflight_measurement_passed_pending_LF_correction_sync
     formal_pass: false
     power_source_preflight_20260828:
       status: passed_and_frozen_for_comparable_formal_E1_batch
@@ -1213,6 +1213,10 @@ stages:
     formal_execution_design_20260831:
       formal_evidence: false
       freeze_id: E1-DEVTEMP-FORMAL-SEED42-V1
+      config: configs/E1_devtemp_v1.json
+      config_sha256_lf: C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729
+      config_sha256_original_windows_crlf_superseded: 12AC88CDD2C694BD0413D59E33D58854487A1ECD5268AC6E95A61B121904170A
+      config_hash_correction: line_endings_only_json_semantics_and_git_blob_unchanged
       queries: data/inference_splits_stratified_v2/valid.jsonl
       queries_sha256: 36B22783C08567361C8C8E82B31947BBE4BEC8AE13409116826F56A3C15EB50D
       query_count: 35
@@ -1255,7 +1259,27 @@ stages:
       blind_salt_file_mode: '600'
       blind_salt_file_sha256: E7781B8C83EA7D5DAF640E5587AA3D52203471250BAA0A3782654C863987FA62
       blind_salt_status: generated_and_locked_outside_Git
-      status: manifest_mechanics_review_roles_and_private_salt_frozen_pending_B01_preflight
+      B01_preflight_20260901:
+        formal_evidence: false
+        status: measurement_and_transport_passed_pending_LF_correction_sync
+        collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_formal_v1_B01_preflight_001.full.jsonl
+        collector_bytes: 4064050
+        collector_lines: 9362
+        collector_sha256: 22C8D34C5B5795944C5C97D1831435A5FA1205910813A0AB5C2ABE672EBF09F9
+        samples: 9251
+        environment_samples: 93
+        marker_count: 2
+        invalid: 0
+        invalid_serial: 0
+        invalid_marker: 0
+        partial_serial_at_shutdown: 1
+        marker_host: 192.168.10.11
+        runtime_pid: 35172
+        runtime_health: ok
+        prompt_cache_disabled: true
+        output_absent_before_preflight: true
+        runtime_log_absent_before_preflight: true
+      status: B01_preflight_measurement_passed_pending_LF_correction_sync
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1286,4 +1310,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 018、E1-POWER-CHAIN-01、E1-DEVTEMP-FORMAL-SEED42-V1、E1-REVIEW-ROLES-V1和E1-BLIND-SALT-V1均已冻结；下一步完成B01启动预检，随后仅运行global run order 1-63且每条要求external_meter_valid=true
+  action: B01测量与通信预检已通过；先同步并在Radxa复核E1_devtemp_v1.json的LF冻结哈希C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729，确认清单D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048不变后，仅运行global run order 1-63且每条要求external_meter_valid=true
