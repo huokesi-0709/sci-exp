@@ -879,7 +879,7 @@ stages:
 
   E1:
     name: 配置异质性
-    status: B01_preflight_measurement_passed_pending_LF_correction_sync
+    status: ready_for_formal_B01
     formal_pass: false
     power_source_preflight_20260828:
       status: passed_and_frozen_for_comparable_formal_E1_batch
@@ -1261,7 +1261,7 @@ stages:
       blind_salt_status: generated_and_locked_outside_Git
       B01_preflight_20260901:
         formal_evidence: false
-        status: measurement_and_transport_passed_pending_LF_correction_sync
+        status: passed_ready_for_formal_B01
         collector_file: D:\sci-exp-data\E1_20260831\INA226_E1_devtemp_formal_v1_B01_preflight_001.full.jsonl
         collector_bytes: 4064050
         collector_lines: 9362
@@ -1279,7 +1279,13 @@ stages:
         prompt_cache_disabled: true
         output_absent_before_preflight: true
         runtime_log_absent_before_preflight: true
-      status: B01_preflight_measurement_passed_pending_LF_correction_sync
+        correction_sync_commit: 647DDE3
+        correction_sync_verified_on_radxa: true
+        verified_config_sha256_lf: C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729
+        verified_task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+        git_worktree_clean_after_sync: true
+        runtime_healthy_after_sync: true
+      status: ready_for_formal_B01
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1310,4 +1316,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: B01测量与通信预检已通过；先同步并在Radxa复核E1_devtemp_v1.json的LF冻结哈希C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729，确认清单D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048不变后，仅运行global run order 1-63且每条要求external_meter_valid=true
+  action: B01全部启动门槛已通过；创建唯一session E1-DEVTEMP-FORMAL-B01-001和全新Git外raw后，仅运行global run order 1-63，保留全部失败且只有external_meter_valid=true进入有效物理测量子集

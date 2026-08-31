@@ -1,6 +1,6 @@
 # 当前实验状态
 
-更新时间：2026-08-31（Asia/Shanghai）
+更新时间：2026-09-01（Asia/Shanghai）
 
 权威机器可读账本：[`docs/实验状态总览_v1.0.yaml`](docs/实验状态总览_v1.0.yaml)
 
@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B01_preflight_measurement_passed_pending_LF_correction_sync`|尚未开始；B01预检通过，但须先同步并复核配置LF哈希勘误|
+|E1 配置异质性正式运行|`ready_for_formal_B01`|尚未开始；B01预检及配置LF勘误同步复核均已通过，可启动global run order 1–63|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -289,7 +289,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   无缓存llama-server PID、health和启动日志也通过。预检同时发现配置冻结哈希使用了Windows CRLF字节，
   而Radxa同一Git blob为LF字节。JSON语义、任务清单和顺序未变化；已将
   `configs/E1_devtemp_v1.json`锁定为LF并把跨平台冻结哈希勘误为
-  `C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729`。同步到Radxa并复核前不得启动B01；
+  `C95E890830FB34853DDA40D6E23B26F6C9AB25AB82E1C136B40D76B64FC85729`。Radxa已拉取提交`647dde3`并
+  复核该配置哈希和清单`D2BE...0048`均匹配，工作树干净，PID 35172及health仍正常；
 - Git外blind salt已冻结；不得覆盖、重生成或向Reviewer A/B暴露。盲审包只能在315条successful且
   `external_meter_valid=true`的merged结果齐全后生成；
 - 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
@@ -304,8 +305,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`和
-`E1-BLIND-SALT-V1`均已冻结，不再重做。B01测量与通信预检已通过；下一步先同步配置LF哈希勘误并在
-Radxa复核，之后才启动run order 1–63。
+`E1-BLIND-SALT-V1`均已冻结，不再重做。B01测量、通信预检及配置LF哈希勘误同步复核均已通过；
+下一步启动唯一session的global run order 1–63。
 正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
