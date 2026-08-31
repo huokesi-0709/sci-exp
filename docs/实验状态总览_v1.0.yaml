@@ -879,7 +879,7 @@ stages:
 
   E1:
     name: 配置异质性
-    status: ready_for_formal_e1_dev_phase
+    status: design_frozen_pending_reviewer_registration_and_B01_preflight
     formal_pass: false
     power_source_preflight_20260828:
       status: passed_and_frozen_for_comparable_formal_E1_batch
@@ -931,8 +931,10 @@ stages:
       - E1分析入口和候选配置代码已建立
       - 018无缓存后台服务最终dry-run已通过：9/9 runner成功、0条marker错误、9/9设备时钟积分有效且external_meter_valid=true
       - E1-POWER-CHAIN-01已冻结：UGREEN X336、E1-POWER-IN-01输入线、当前测量链与E1-POWER-OUT-01输出线在整个可比较E1批次保持不变
+      - E1-DEVTEMP-FORMAL-SEED42-V1已冻结：35条Dev-Temp、C0/C1/C2各3次、全局315次seed42顺序与5个连续63次批次
     remaining_preparation:
-      - 冻结正式Dev-Temp 35条查询、固定seed的315次运行清单、唯一输出路径及盲法双审/仲裁材料
+      - 登记独立reviewer A、reviewer B与adjudicator身份，并在Git外准备至少32字节private blind salt
+      - B01开始前核验manifest SHA、禁用两层prompt cache的服务参数、health、Windows marker ACK与唯一输出路径不存在
     runtime_preparation_20260829:
       status: passed_nonformal_runtime_and_power_dryrun_ready_for_formal_e1_preflight_freeze
       formal_evidence: false
@@ -1119,6 +1121,35 @@ stages:
           marker_count: 20
           invalid: 0
           disposition: diagnostic_only_no_integration
+        rejected_runner_archives:
+          dryrun_006:
+            file: results/E1_devtemp_dryrun_006.jsonl
+            lines: 9
+            bytes: 50336
+            sha256: 01BB4C3E23B7318170C10492E933C433E1A15799905EACE05481A865B0CBC8C0
+            status_counts: {ok: 0, error: 9}
+            disposition: diagnostic_only
+          dryrun_010:
+            file: results/E1_devtemp_dryrun_010.jsonl
+            lines: 9
+            bytes: 83281
+            sha256: 1B91CDC93195429C93790CF0EF1B3071368BF435CF94F13240F46CE6783EFBEE
+            status_counts: {ok: 9, error: 0}
+            disposition: runner_success_but_collector_invalid_34_no_energy_integration
+          dryrun_016:
+            file: results/E1_devtemp_dryrun_016.jsonl
+            lines: 9
+            bytes: 50204
+            sha256: FB73CF528360855D134BA40EB5D9C973932A2DA744C8FBC3C3909B3DB145F4A0
+            status_counts: {ok: 0, error: 9}
+            disposition: diagnostic_only
+          dryrun_017:
+            file: results/E1_devtemp_dryrun_017.jsonl
+            lines: 9
+            bytes: 50246
+            sha256: 0401AC2521286B3E08C59DCA0675A395CEEF937D252D4572AC226667BA270787
+            status_counts: {ok: 0, error: 9}
+            disposition: diagnostic_only
         dryrun_018_final:
           formal_evidence: false
           runtime_process_id: 33876
@@ -1172,15 +1203,49 @@ stages:
           status: passed_nonformal_dry_run
           disposition: workflow_ready_but_not_part_of_formal_E1_315_runs
         required_startup_evidence: prompt_cache_is_disabled
-        required_next_gate: freeze_formal_315_run_manifest_and_blind_review_materials
+        required_next_gate: register_reviewer_A_B_adjudicator_and_complete_B01_preflight
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
         local_bge_encode_shape: [1, 512]
         result: passed
+    formal_execution_design_20260831:
+      formal_evidence: false
+      freeze_id: E1-DEVTEMP-FORMAL-SEED42-V1
+      queries: data/inference_splits_stratified_v2/valid.jsonl
+      queries_sha256: 36B22783C08567361C8C8E82B31947BBE4BEC8AE13409116826F56A3C15EB50D
+      query_count: 35
+      configurations: [C0, C1, C2]
+      repetitions_per_configuration: 3
+      seed: 42
+      total_runs: 315
+      task_manifest: configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl
+      task_manifest_lines: 315
+      task_manifest_bytes: 88875
+      task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+      task_manifest_summary: configs/E1_devtemp_formal_run_manifest_seed42_v1.0.summary.json
+      batch_ranges:
+        - {batch_id: B01, run_order_start: 1, run_order_end: 63}
+        - {batch_id: B02, run_order_start: 64, run_order_end: 126}
+        - {batch_id: B03, run_order_start: 127, run_order_end: 189}
+        - {batch_id: B04, run_order_start: 190, run_order_end: 252}
+        - {batch_id: B05, run_order_start: 253, run_order_end: 315}
+      batch_rule: contiguous_slices_of_one_global_seeded_order_never_reshuffle
+      cli_guards:
+        - manifest_must_equal_seeded_runner_order_row_by_row
+        - run_order_range_requires_manifest
+        - formal_session_id_required
+        - existing_formal_output_refused
+      blind_review_generator: scripts/生成E1盲法双审材料.py
+      blind_review_rule: configuration_hidden_A_and_B_independent_315_each_all_disagreements_adjudicated
+      private_assets: blind_salt_and_crosswalk_must_stay_outside_Git
+      status: manifest_and_mechanics_frozen_pending_reviewer_registration_and_B01_preflight
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
+      - power_chain_lock必须为E1-POWER-CHAIN-01
+      - task_manifest SHA-256必须为D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+      - reviewer A/B与adjudicator必须预先登记且blind salt/crosswalk不得进入reviewer可见Git
 
   E2:
     name: Safety calibration
@@ -1205,4 +1270,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 018最终非正式dry-run和E1-POWER-CHAIN-01供电身份冻结均已通过；下一步冻结Dev-Temp 35条查询、固定seed的315次运行清单及盲法双审/仲裁材料，随后以全新session开始正式E1并要求每条运行external_meter_valid=true
+  action: 018、E1-POWER-CHAIN-01与E1-DEVTEMP-FORMAL-SEED42-V1全局315次清单均已冻结；下一步登记独立reviewer A/B与adjudicator、在Git外准备private blind salt并完成B01启动预检，随后仅运行global run order 1-63且每条要求external_meter_valid=true

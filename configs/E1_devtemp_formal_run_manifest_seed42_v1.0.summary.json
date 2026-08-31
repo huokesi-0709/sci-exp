@@ -1,0 +1,76 @@
+{
+  "acceptance_rule": "every run is retained; only external_meter_valid=true enters the valid physical-measurement subset",
+  "batch_plan": [
+    {
+      "batch_id": "B01",
+      "collector_pattern": "INA226_E1_devtemp_formal_v1_B01.full.jsonl",
+      "output_pattern": "results/E1_devtemp_formal_v1_B01.jsonl",
+      "run_count": 63,
+      "run_order_end": 63,
+      "run_order_start": 1
+    },
+    {
+      "batch_id": "B02",
+      "collector_pattern": "INA226_E1_devtemp_formal_v1_B02.full.jsonl",
+      "output_pattern": "results/E1_devtemp_formal_v1_B02.jsonl",
+      "run_count": 63,
+      "run_order_end": 126,
+      "run_order_start": 64
+    },
+    {
+      "batch_id": "B03",
+      "collector_pattern": "INA226_E1_devtemp_formal_v1_B03.full.jsonl",
+      "output_pattern": "results/E1_devtemp_formal_v1_B03.jsonl",
+      "run_count": 63,
+      "run_order_end": 189,
+      "run_order_start": 127
+    },
+    {
+      "batch_id": "B04",
+      "collector_pattern": "INA226_E1_devtemp_formal_v1_B04.full.jsonl",
+      "output_pattern": "results/E1_devtemp_formal_v1_B04.jsonl",
+      "run_count": 63,
+      "run_order_end": 252,
+      "run_order_start": 190
+    },
+    {
+      "batch_id": "B05",
+      "collector_pattern": "INA226_E1_devtemp_formal_v1_B05.full.jsonl",
+      "output_pattern": "results/E1_devtemp_formal_v1_B05.jsonl",
+      "run_count": 63,
+      "run_order_end": 315,
+      "run_order_start": 253
+    }
+  ],
+  "batch_rule": "batches are contiguous slices of one frozen global order; never reshuffle within a batch",
+  "configurations": [
+    "C0",
+    "C1",
+    "C2"
+  ],
+  "formal_evidence": false,
+  "freeze_id": "E1-DEVTEMP-FORMAL-SEED42-V1",
+  "frozen_on": "2026-08-31",
+  "global_randomization": "Python random.Random(42).shuffle using sci_exp.runner task construction",
+  "inputs": {
+    "config": "configs/E1_devtemp_v1.json",
+    "config_sha256": "12AC88CDD2C694BD0413D59E33D58854487A1ECD5268AC6E95A61B121904170A",
+    "power_chain_lock": "configs/E1_power_chain_lock_v1.0.json",
+    "power_chain_lock_sha256": "BFD63A6372266310C5E17E11326FF769822699F32B14979B0D8B1B8DA3C00A1F",
+    "queries": "data/inference_splits_stratified_v2/valid.jsonl",
+    "queries_sha256": "36B22783C08567361C8C8E82B31947BBE4BEC8AE13409116826F56A3C15EB50D",
+    "runner_source": "src/sci_exp/runner.py",
+    "runner_source_sha256": "F9E5994239E7785A140AD4EF106F00C3699DECCD73E03B56AAF8A761FF84F647"
+  },
+  "manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+  "manifest_sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+  "overwrite_rule": "formal batch output paths are immutable and the CLI refuses an existing output",
+  "query_count": 35,
+  "query_role": "Dev-Temp development_gold",
+  "repetitions_per_configuration": 3,
+  "review_rule": "every successful output requires independent blinded A/B review and adjudication before E1 analysis",
+  "role": "pre-registered Dev-Temp execution design; not an experiment result",
+  "schema_version": "e1-formal-run-freeze-v1.0",
+  "seed": 42,
+  "total_runs": 315
+}

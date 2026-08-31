@@ -57,7 +57,7 @@
     "lock_state": "built_live_api_and_no_cache_power_dryrun_validated"
   },
   "blocking_conditions": [
-    "正式E1前仍须生成并冻结固定seed的315次运行清单及盲法双审/仲裁材料",
+    "正式E1全局315次清单已冻结；首批前仍须登记独立reviewer A/B与adjudicator身份、准备Git外私有blind salt并完成B01启动预检",
     "llama-server加载时对token 128247 '</s>'打印control-type覆盖警告；须在dry-run和人工质量审查中保留该运行时观察",
     "正式E1仍须完成盲审、仲裁与每条external_meter_valid=true的穷举运行"
   ]

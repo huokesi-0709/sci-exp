@@ -175,6 +175,13 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 `E1-POWER-OUT-01`。用户确认整个可比较E1批次不更换充电头、输入线、测量链和输出线。机器可读锁见
 `configs/E1_power_chain_lock_v1.0.json`；下一门槛只剩315次固定seed运行清单与盲法双审/仲裁材料冻结。
 
+2026-08-31正式Dev-Temp执行设计已冻结为`E1-DEVTEMP-FORMAL-SEED42-V1`：35条query、C0/C1/C2、
+每配置3次，共315次；全局顺序由`random.Random(42).shuffle`一次性产生，manifest SHA-256为
+`D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048`。为降低7–8小时单会话
+中断风险，固定划分为5个连续区间批次，每批63次；批次之间不得重新随机。CLI现会逐行校验manifest、
+保留全局`run_order`、写入`session_id`并拒绝覆盖正式输出。盲审生成器已建立，但首批前仍须登记独立
+reviewer A/B与adjudicator身份，并准备Git外私有blind salt；清单冻结本身不是实验结果。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free
@@ -269,8 +276,8 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 
 ## 正式E1开始前仍需完成
 
-- 冻结正式Dev-Temp查询清单、固定随机seed、315次运行清单与唯一输出路径；
-- 准备盲法双审与仲裁材料，确保每个C0/C1/C2输出都有两名独立审查者及仲裁入口；
+- 登记独立reviewer A、reviewer B和adjudicator身份，准备Git外私有blind salt；盲审包只能在315条
+  successful且`external_meter_valid=true`的merged结果齐全后生成；
 - 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
 - 每条正式运行仅在`external_meter_valid=true`时进入有效物理测量子集，失败和无效运行仍须保留报告。
 
@@ -282,8 +289,9 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 
 ## 下一正式动作
 
-E0、018最终非正式dry-run和`E1-POWER-CHAIN-01`供电身份冻结均已通过，不再重做。下一步生成正式E1
-Dev-Temp 315次运行清单及盲审材料；完成审计后才启动首个正式批次。正式运行必须使用全新run/session ID，保持
+E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`和315次全局运行清单均已冻结，不再重做。下一步登记
+reviewer A/B与adjudicator身份、准备Git外blind salt并完成B01启动预检；之后才启动run order 1–63。
+正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
 和实验日志。

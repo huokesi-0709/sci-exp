@@ -118,7 +118,21 @@ def command_run(args: argparse.Namespace) -> int:
     if args.command == "route":
         rows = run_routed(config, protocols, queries, output_path=args.output)
     else:
-        rows = run_exhaustive(config, protocols, queries, output_path=args.output)
+        task_manifest = (
+            project_path(config, args.task_manifest)
+            if args.task_manifest
+            else None
+        )
+        rows = run_exhaustive(
+            config,
+            protocols,
+            queries,
+            output_path=args.output,
+            task_manifest_path=task_manifest,
+            run_order_start=args.run_order_start,
+            run_order_end=args.run_order_end,
+            session_id=args.session_id,
+        )
     success = sum(row["status"] == "ok" for row in rows)
     default_output = (
         config["experiment"].get("routed_output", "results/routed_runs.jsonl")
@@ -548,6 +562,13 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--output")
     run_parser.add_argument("--protocols")
     run_parser.add_argument("--queries")
+    run_parser.add_argument(
+        "--task-manifest",
+        help="frozen exhaustive task manifest; enables strict formal batch mode",
+    )
+    run_parser.add_argument("--run-order-start", type=int)
+    run_parser.add_argument("--run-order-end", type=int)
+    run_parser.add_argument("--session-id", default="")
     run_parser.set_defaults(handler=command_run)
 
     route_parser = subparsers.add_parser("route")

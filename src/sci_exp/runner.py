@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import platform
 import random
@@ -14,7 +16,7 @@ from .evaluation import evaluate_result
 from .energy_model import load_energy_predictor
 from .features import query_features
 from .generation import make_generator
-from .io_utils import read_json, write_jsonl
+from .io_utils import read_json, read_jsonl, write_jsonl
 from .pipelines import ConfigurationPipeline
 from .retrieval import BM25Index, HybridIndex, make_dense_encoder
 from .risk_model import LogisticRiskPredictor
@@ -58,9 +60,82 @@ def run_exhaustive(
     queries: Iterable[QueryRecord | InferenceQuery],
     *,
     output_path: str | Path | None = None,
+    task_manifest_path: str | Path | None = None,
+    run_order_start: int | None = None,
+    run_order_end: int | None = None,
+    session_id: str = "",
 ) -> list[dict[str, Any]]:
+    query_list = list(queries)
+    tasks = _seeded_exhaustive_tasks(config, query_list)
+    manifest_sha256 = ""
+    if task_manifest_path is not None:
+        manifest_path = Path(task_manifest_path)
+        _validate_exhaustive_task_manifest(config, query_list, manifest_path)
+        manifest_sha256 = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+        if not session_id.strip():
+            raise ValueError("--session-id is required with --task-manifest")
+    elif run_order_start is not None or run_order_end is not None:
+        raise ValueError("run-order slicing requires --task-manifest")
+
+    start = 1 if run_order_start is None else int(run_order_start)
+    end = len(tasks) if run_order_end is None else int(run_order_end)
+    if start < 1 or end < start or end > len(tasks):
+        raise ValueError(
+            f"invalid run-order range {start}..{end}; expected 1..{len(tasks)}"
+        )
+
     experiment = config.get("experiment", {})
-    configurations = [str(item) for item in experiment.get("configs", ["C0", "C1", "C2", "C3"])]
+    target = project_path(
+        config,
+        output_path or experiment.get("output", "results/runs.jsonl"),
+    )
+    if task_manifest_path is not None and target.exists():
+        raise FileExistsError(f"formal batch output already exists: {target}")
+
+    pipeline = build_pipeline(config, protocols)
+    telemetry_config = _resolved_telemetry_config(config.get("telemetry", {}))
+    if task_manifest_path is not None:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("x", encoding="utf-8", newline="\n"):
+            pass
+    rows: list[dict[str, Any]] = []
+    for run_order, (query, configuration, repetition) in enumerate(tasks, 1):
+        if run_order < start or run_order > end:
+            continue
+        row = _run_one(
+            pipeline,
+            query,
+            configuration,
+            repetition,
+            telemetry_config,
+            run_order=run_order,
+            session_id=session_id,
+        )
+        if task_manifest_path is not None:
+            row["formal_execution"] = {
+                "session_id": session_id,
+                "task_manifest": str(Path(task_manifest_path)),
+                "task_manifest_sha256": manifest_sha256.upper(),
+                "global_run_count": len(tasks),
+                "batch_run_order_start": start,
+                "batch_run_order_end": end,
+            }
+            _append_formal_result(target, row)
+        rows.append(row)
+    if task_manifest_path is None:
+        write_jsonl(target, rows)
+    return rows
+
+
+def _seeded_exhaustive_tasks(
+    config: dict[str, Any],
+    queries: list[QueryRecord | InferenceQuery],
+) -> list[tuple[QueryRecord | InferenceQuery, str, int]]:
+    experiment = config.get("experiment", {})
+    configurations = [
+        str(item)
+        for item in experiment.get("configs", ["C0", "C1", "C2", "C3"])
+    ]
     repetitions = int(experiment.get("repetitions", 1))
     seed = int(experiment.get("seed", 42))
     tasks = [
@@ -70,22 +145,68 @@ def run_exhaustive(
         for configuration in configurations
     ]
     random.Random(seed).shuffle(tasks)
-    pipeline = build_pipeline(config, protocols)
-    telemetry_config = _resolved_telemetry_config(config.get("telemetry", {}))
-    rows = [
-        _run_one(
-            pipeline,
-            query,
-            configuration,
-            repetition,
-            telemetry_config,
-            run_order=run_order,
+    return tasks
+
+
+def build_exhaustive_task_manifest_rows(
+    config: dict[str, Any],
+    queries: Iterable[QueryRecord | InferenceQuery],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for run_order, (query, configuration, repetition) in enumerate(
+        _seeded_exhaustive_tasks(config, list(queries)), 1
+    ):
+        rows.append(
+            {
+                "schema_version": "e1-formal-task-v1.0",
+                "run_order": run_order,
+                "query_id": query.query_id,
+                "source_group_id": query.source_group_id,
+                "split": query.split,
+                "configuration": configuration,
+                "repetition": repetition,
+                "run_key": f"{query.query_id}:{configuration}:{repetition}",
+            }
         )
-        for run_order, (query, configuration, repetition) in enumerate(tasks, 1)
-    ]
-    target = output_path or experiment.get("output", "results/runs.jsonl")
-    write_jsonl(project_path(config, target), rows)
     return rows
+
+
+def _validate_exhaustive_task_manifest(
+    config: dict[str, Any],
+    queries: list[QueryRecord | InferenceQuery],
+    manifest_path: Path,
+) -> None:
+    expected = build_exhaustive_task_manifest_rows(config, queries)
+    actual = read_jsonl(manifest_path)
+    if len(actual) != len(expected):
+        raise ValueError(
+            f"task manifest row count mismatch: {len(actual)} != {len(expected)}"
+        )
+    fields = (
+        "run_order",
+        "query_id",
+        "source_group_id",
+        "split",
+        "configuration",
+        "repetition",
+        "run_key",
+    )
+    for index, (observed, wanted) in enumerate(zip(actual, expected), 1):
+        observed_key = tuple(observed.get(field) for field in fields)
+        wanted_key = tuple(wanted.get(field) for field in fields)
+        if observed_key != wanted_key:
+            raise ValueError(
+                f"task manifest differs from seeded runner order at row {index}: "
+                f"{observed_key!r} != {wanted_key!r}"
+            )
+
+
+def _append_formal_result(target: Path, row: dict[str, Any]) -> None:
+    with target.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True))
+        handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
 
 
 def run_routed(
@@ -230,6 +351,7 @@ def _run_one(
     *,
     run_order: int,
     router: SafetyConstrainedRouter | None = None,
+    session_id: str = "",
 ) -> dict[str, Any]:
     annotated_query = query if isinstance(query, QueryRecord) else None
     inference_query = (
@@ -258,6 +380,8 @@ def _run_one(
         "repetition": repetition,
         "run_order": run_order,
     }
+    if session_id:
+        marker_payload["session_id"] = session_id
     sampler.start()
     sampler.mark("query_start", marker_payload)
     start = time.perf_counter()
@@ -287,6 +411,7 @@ def _run_one(
             "query_id": inference_query.query_id,
             "run_key": run_key,
             "run_order": run_order,
+            "session_id": session_id,
             "source_group_id": inference_query.source_group_id,
             "split": inference_query.split,
             "repetition": repetition,
@@ -316,6 +441,7 @@ def _run_one(
             "query_id": inference_query.query_id,
             "run_key": run_key,
             "run_order": run_order,
+            "session_id": session_id,
             "source_group_id": inference_query.source_group_id,
             "split": inference_query.split,
             "configuration": configuration,
