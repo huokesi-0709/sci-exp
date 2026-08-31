@@ -879,7 +879,7 @@ stages:
 
   E1:
     name: 配置异质性
-    status: ready_for_formal_B01
+    status: B01_attempt001_aborted_ready_for_attempt002
     formal_pass: false
     power_source_preflight_20260828:
       status: passed_and_frozen_for_comparable_formal_E1_batch
@@ -1285,7 +1285,47 @@ stages:
         verified_task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
         git_worktree_clean_after_sync: true
         runtime_healthy_after_sync: true
-      status: ready_for_formal_B01
+      B01_attempt001_20260901:
+        formal_attempt: true
+        formal_evidence: false
+        status: aborted_external_meter_invalid
+        session_id: E1-DEVTEMP-FORMAL-B01-001
+        intended_run_order: 1-63
+        completed_runner_rows: 1
+        runner_output: results/E1_devtemp_formal_v1_B01.jsonl
+        runner_output_bytes: 10144
+        runner_output_lines: 1
+        runner_output_sha256: 33B73A28D4DA781899E3617CD5C5C31868FB9B4835A05ED3CA53C14F49E66944
+        completed_run_order: 1
+        run_key: formal_exp_0170:C1:1
+        configuration: C1
+        repetition: 1
+        inference_status: ok
+        latency_ms: 96606.07663799965
+        marker_errors: [TimeoutError:timed_out, TimeoutError:timed_out]
+        external_meter_valid: false
+        invalid_reason: no_query_markers_in_collector_raw
+        task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+        runner_log: logs/runtime/E1_devtemp_formal_v1_B01_runner.log
+        runner_log_bytes: 22
+        runner_log_lines: 1
+        collector_file: D:\sci-exp-data\E1_20260901\INA226_E1_devtemp_formal_v1_B01.full.jsonl
+        collector_bytes: 12343500
+        collector_lines: 28273
+        collector_sha256: CCE24A81165B54E2D445D208BEE6D77370E6045770325BF9389576E81D5C9661
+        collector_duration_s: 281.485
+        samples: 27956
+        environment_samples: 280
+        sync_ack: 29
+        marker_count: 2
+        firmware_marker_count: 2
+        marker_scope: idle_baseline_only_no_query_boundaries
+        invalid_json: 0
+        partial_serial_at_shutdown: 1
+        cause: collector_stopped_during_pipeline_initialization_before_output_creation_then_background_runner_completed_one_query
+        disposition: retain_as_aborted_formal_attempt_exclude_from_valid_physical_measurement_subset
+        next_session_id: E1-DEVTEMP-FORMAL-B01-002
+      status: B01_attempt001_aborted_ready_for_attempt002
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1316,4 +1356,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: B01全部启动门槛已通过；创建唯一session E1-DEVTEMP-FORMAL-B01-001和全新Git外raw后，仅运行global run order 1-63，保留全部失败且只有external_meter_valid=true进入有效物理测量子集
+  action: 永久保留并排除B01-001；使用全新session E1-DEVTEMP-FORMAL-B01-002、attempt002 runner/log/raw从global run order 1重新执行1-63，pipeline初始化期间不得因输出暂未创建而停止collector

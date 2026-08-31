@@ -280,11 +280,16 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`ready_for_formal_B01`|尚未开始；B01预检及配置LF勘误同步复核均已通过，可启动global run order 1–63|
+|E1 配置异质性正式运行|`B01_attempt001_aborted_ready_for_attempt002`|B01-001仅完成run order 1且查询marker两次超时，不进入有效物理测量子集；下一合法session为B01-002|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
 
+- `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
+  `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
+  marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
+  输出文件误判为故障并停止Windows采集器；后台runner随后完成第一条推理。下一次必须使用全新
+  `E1-DEVTEMP-FORMAL-B01-002`及`attempt002`文件，初始化期间持续保持采集器运行；
 - 2026-09-01的B01预检采集得到9,251个sample、93个environment、2个marker，三项invalid均为0；
   无缓存llama-server PID、health和启动日志也通过。预检同时发现配置冻结哈希使用了Windows CRLF字节，
   而Radxa同一Git blob为LF字节。JSON语义、任务清单和顺序未变化；已将
@@ -305,8 +310,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`和
-`E1-BLIND-SALT-V1`均已冻结，不再重做。B01测量、通信预检及配置LF哈希勘误同步复核均已通过；
-下一步启动唯一session的global run order 1–63。
+`E1-BLIND-SALT-V1`均已冻结，不再重做。B01-001中止证据已经冻结，不能覆盖或计入有效子集；下一步
+使用全新session `E1-DEVTEMP-FORMAL-B01-002`从global run order 1重新执行完整1–63。
 正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
