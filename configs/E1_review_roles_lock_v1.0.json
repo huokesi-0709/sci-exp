@@ -1,0 +1,46 @@
+{
+  "schema_version": "e1-review-roles-lock-v1.0",
+  "lock_id": "E1-REVIEW-ROLES-V1",
+  "registered_on": "2026-08-31",
+  "timezone": "Asia/Shanghai",
+  "stage": "E1",
+  "scope": "Dev-Temp C0/C1/C2 output independent blinded review and adjudication",
+  "formal_evidence": false,
+  "status": "registered_pending_private_salt_and_B01_preflight",
+  "roles": {
+    "reviewer_A": {
+      "reviewer_id": "E1-REV-A-01",
+      "assignment": "independent_blinded_review_packet_A"
+    },
+    "reviewer_B": {
+      "reviewer_id": "E1-REV-B-01",
+      "assignment": "independent_blinded_review_packet_B"
+    },
+    "adjudicator": {
+      "adjudicator_id": "E1-ADJ-01",
+      "assignment": "adjudicate_all_A_B_disagreements_after_independent_review"
+    }
+  },
+  "role_ids_are_distinct": true,
+  "registration_basis": "user supplied three distinct stable aliases after the protocol explicitly required two independent human reviewers and a distinct adjudicator",
+  "identity_boundary": {
+    "public_repository_contains_real_names": false,
+    "private_identity_mapping_required": true,
+    "private_identity_mapping_location": "operator_managed_outside_Git",
+    "external_credential_verification_performed": false
+  },
+  "independence_rules": [
+    "reviewer_A and reviewer_B must be different human reviewers",
+    "reviewer_A and reviewer_B complete their packets independently before comparison",
+    "adjudicator must not expose the configuration crosswalk to reviewer_A or reviewer_B",
+    "one person must not complete both reviewer packets"
+  ],
+  "blind_assets": {
+    "salt_minimum_bytes": 32,
+    "salt_status": "pending_generation_outside_Git",
+    "salt_value_in_repository": false,
+    "crosswalk_in_reviewer_visible_repository": false,
+    "generator": "scripts/生成E1盲法双审材料.py"
+  },
+  "completion_rule": "315 A reviews + 315 B reviews + adjudication of every disagreement"
+}

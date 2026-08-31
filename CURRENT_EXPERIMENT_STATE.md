@@ -182,6 +182,10 @@ sample、20 marker与三项无效计数为0的raw仍只作失败诊断，不积�
 保留全局`run_order`、写入`session_id`并拒绝覆盖正式输出。盲审生成器已建立，但首批前仍须登记独立
 reviewer A/B与adjudicator身份，并准备Git外私有blind salt；清单冻结本身不是实验结果。
 
+2026-08-31用户已预登记三个互不相同的稳定匿名角色编号：Reviewer A=`E1-REV-A-01`、
+Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLES-V1`。Git仅保存
+匿名编号，不保存真实身份映射、blind salt或crosswalk；当前尚未生成私盐，也未执行B01预检或正式运行。
+
 ## 最近完成的跨阶段数据治理
 
 - `gold_label_inference_leakage`：**已解决**。推理端现只接受Gold-free
@@ -276,8 +280,8 @@ reviewer A/B与adjudicator身份，并准备Git外私有blind salt；清单冻�
 
 ## 正式E1开始前仍需完成
 
-- 登记独立reviewer A、reviewer B和adjudicator身份，准备Git外私有blind salt；盲审包只能在315条
-  successful且`external_meter_valid=true`的merged结果齐全后生成；
+- 在Git外生成并保管至少32 bytes私有blind salt；盲审包只能在315条successful且
+  `external_meter_valid=true`的merged结果齐全后生成；
 - 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
 - 每条正式运行仅在`external_meter_valid=true`时进入有效物理测量子集，失败和无效运行仍须保留报告。
 
@@ -289,8 +293,8 @@ reviewer A/B与adjudicator身份，并准备Git外私有blind salt；清单冻�
 
 ## 下一正式动作
 
-E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`和315次全局运行清单均已冻结，不再重做。下一步登记
-reviewer A/B与adjudicator身份、准备Git外blind salt并完成B01启动预检；之后才启动run order 1–63。
+E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单和`E1-REVIEW-ROLES-V1`均已
+冻结，不再重做。下一步在Git外生成blind salt并完成B01启动预检；之后才启动run order 1–63。
 正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest

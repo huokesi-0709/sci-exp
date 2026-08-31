@@ -59,6 +59,11 @@ coverage.xml
 .env
 .env.*
 !.env.example
+# E1盲审私盐、主持人交叉表和裁决工作区不得进入Git。
+**/E1_blind_salt*
+**/E1_blind_crosswalk.jsonl
+**/E1_adjudication_template.jsonl
+/review_private/
 
 # Operating-system/editor files
 .DS_Store

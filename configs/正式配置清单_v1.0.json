@@ -1,9 +1,12 @@
 {
   "schema_version": "formal-config-manifest-v1.0",
   "frozen_on": "2026-07-28",
-  "research_status": "E1_315_global_manifest_frozen_pending_reviewer_identity_and_batch_B01_preflight",
+  "research_status": "E1_manifest_and_review_roles_frozen_pending_private_salt_and_batch_B01_preflight",
   "power_chain_lock_file": "configs/E1_power_chain_lock_v1.0.json",
   "power_chain_lock_id": "E1-POWER-CHAIN-01",
+  "review_roles_lock_file": "configs/E1_review_roles_lock_v1.0.json",
+  "review_roles_lock_id": "E1-REVIEW-ROLES-V1",
+  "review_roles_lock_sha256": "D456D4E0F8C2C113ED8B54FBBB3DF293D696E3F8CC377764AF7F92A7C87BB7B2",
   "formal_e1_execution_design": {
     "freeze_id": "E1-DEVTEMP-FORMAL-SEED42-V1",
     "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
@@ -17,7 +20,11 @@
     "formal_output_overwrite_allowed": false,
     "blind_review_generator": "scripts/生成E1盲法双审材料.py",
     "blind_review_completion": "315 independent A reviews + 315 independent B reviews + adjudication of every disagreement",
-    "blind_crosswalk_visibility": "host_and_adjudicator_only"
+    "blind_crosswalk_visibility": "host_and_adjudicator_only",
+    "reviewer_A_id": "E1-REV-A-01",
+    "reviewer_B_id": "E1-REV-B-01",
+    "adjudicator_id": "E1-ADJ-01",
+    "blind_salt_status": "pending_generation_outside_Git"
   },
   "common_generation": {
     "model_family": "Qwen1.5-0.5B-Chat",
