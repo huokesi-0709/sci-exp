@@ -61,6 +61,7 @@ coverage.xml
 !.env.example
 # E1盲审私盐、主持人交叉表和裁决工作区不得进入Git。
 **/E1_blind_salt*
+!/configs/E1_blind_salt_manifest_v1.0.json
 **/E1_blind_crosswalk.jsonl
 **/E1_adjudication_template.jsonl
 /review_private/

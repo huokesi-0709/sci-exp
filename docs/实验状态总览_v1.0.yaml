@@ -879,7 +879,7 @@ stages:
 
   E1:
     name: 配置异质性
-    status: design_and_review_roles_frozen_pending_private_salt_and_B01_preflight
+    status: design_review_roles_and_private_salt_frozen_pending_B01_preflight
     formal_pass: false
     power_source_preflight_20260828:
       status: passed_and_frozen_for_comparable_formal_E1_batch
@@ -933,8 +933,8 @@ stages:
       - E1-POWER-CHAIN-01已冻结：UGREEN X336、E1-POWER-IN-01输入线、当前测量链与E1-POWER-OUT-01输出线在整个可比较E1批次保持不变
       - E1-DEVTEMP-FORMAL-SEED42-V1已冻结：35条Dev-Temp、C0/C1/C2各3次、全局315次seed42顺序与5个连续63次批次
       - E1-REVIEW-ROLES-V1已冻结：Reviewer A=E1-REV-A-01、Reviewer B=E1-REV-B-01、Adjudicator=E1-ADJ-01
+      - E1-BLIND-SALT-V1已在Git外冻结：65 bytes、mode 600、SHA-256=E7781B8C83EA7D5DAF640E5587AA3D52203471250BAA0A3782654C863987FA62
     remaining_preparation:
-      - 在Git外准备至少32字节private blind salt，并只记录路径、权限与SHA-256，不记录或提交正文
       - B01开始前核验manifest SHA、禁用两层prompt cache的服务参数、health、Windows marker ACK与唯一输出路径不存在
     runtime_preparation_20260829:
       status: passed_nonformal_runtime_and_power_dryrun_ready_for_formal_e1_preflight_freeze
@@ -1204,7 +1204,7 @@ stages:
           status: passed_nonformal_dry_run
           disposition: workflow_ready_but_not_part_of_formal_E1_315_runs
         required_startup_evidence: prompt_cache_is_disabled
-        required_next_gate: generate_private_blind_salt_outside_Git_and_complete_B01_preflight
+        required_next_gate: complete_B01_preflight
       dense_runtime:
         sentence_transformers_version: 3.4.1
         torch_version: 2.13.0+cu130
@@ -1247,8 +1247,15 @@ stages:
       reviewer_B_id: E1-REV-B-01
       adjudicator_id: E1-ADJ-01
       reviewer_role_ids_distinct: true
-      blind_salt_status: pending_generation_outside_Git
-      status: manifest_mechanics_and_review_roles_frozen_pending_private_salt_and_B01_preflight
+      blind_salt_manifest: configs/E1_blind_salt_manifest_v1.0.json
+      blind_salt_manifest_id: E1-BLIND-SALT-V1
+      blind_salt_manifest_sha256: BD799E2620840FA3E2923D86EBC6A10889C3260EE636016B6B0930C55D62E580
+      blind_salt_file_path: /home/radxa/e1-private/E1_blind_salt_v1.hex
+      blind_salt_file_bytes: 65
+      blind_salt_file_mode: '600'
+      blind_salt_file_sha256: E7781B8C83EA7D5DAF640E5587AA3D52203471250BAA0A3782654C863987FA62
+      blind_salt_status: generated_and_locked_outside_Git
+      status: manifest_mechanics_review_roles_and_private_salt_frozen_pending_B01_preflight
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1279,4 +1286,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 018、E1-POWER-CHAIN-01、E1-DEVTEMP-FORMAL-SEED42-V1和E1-REVIEW-ROLES-V1均已冻结；下一步在Git外生成private blind salt并完成B01启动预检，随后仅运行global run order 1-63且每条要求external_meter_valid=true
+  action: 018、E1-POWER-CHAIN-01、E1-DEVTEMP-FORMAL-SEED42-V1、E1-REVIEW-ROLES-V1和E1-BLIND-SALT-V1均已冻结；下一步完成B01启动预检，随后仅运行global run order 1-63且每条要求external_meter_valid=true

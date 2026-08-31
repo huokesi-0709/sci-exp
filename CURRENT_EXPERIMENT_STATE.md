@@ -184,7 +184,12 @@ reviewer A/B与adjudicator身份，并准备Git外私有blind salt；清单冻�
 
 2026-08-31用户已预登记三个互不相同的稳定匿名角色编号：Reviewer A=`E1-REV-A-01`、
 Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLES-V1`。Git仅保存
-匿名编号，不保存真实身份映射、blind salt或crosswalk；当前尚未生成私盐，也未执行B01预检或正式运行。
+匿名编号，不保存真实身份映射、blind salt或crosswalk；角色登记完成时尚未生成私盐，也未执行B01预检。
+
+2026-08-31用户已在`/home/radxa/e1-private/`生成Git外私盐`E1_blind_salt_v1.hex`：65 bytes、
+权限`600`、属主`radxa:radxa`，SHA-256为
+`E7781B8C83EA7D5DAF640E5587AA3D52203471250BAA0A3782654C863987FA62`；仓库`git status --short`
+为空。正文未进入聊天或Git，清单为`E1-BLIND-SALT-V1`。当前只剩B01启动预检，尚未执行正式运行。
 
 ## 最近完成的跨阶段数据治理
 
@@ -280,7 +285,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 ## 正式E1开始前仍需完成
 
-- 在Git外生成并保管至少32 bytes私有blind salt；盲审包只能在315条successful且
+- Git外blind salt已冻结；不得覆盖、重生成或向Reviewer A/B暴露。盲审包只能在315条successful且
   `external_meter_valid=true`的merged结果齐全后生成；
 - 正式批次使用与018一致的官方Q4_K_M、禁用两层prompt cache的启动参数、`nohup`服务日志和明确PID；
 - 每条正式运行仅在`external_meter_valid=true`时进入有效物理测量子集，失败和无效运行仍须保留报告。
@@ -293,8 +298,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 ## 下一正式动作
 
-E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单和`E1-REVIEW-ROLES-V1`均已
-冻结，不再重做。下一步在Git外生成blind salt并完成B01启动预检；之后才启动run order 1–63。
+E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`和
+`E1-BLIND-SALT-V1`均已冻结，不再重做。下一步只完成B01启动预检；之后才启动run order 1–63。
 正式运行必须使用全新run/session ID，保持
 Windows collector全程监听`0.0.0.0:8765`，Radxa使用当前Windows地址，并将llama-server以`nohup`
 后台常驻、保存独立日志。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、manifest
