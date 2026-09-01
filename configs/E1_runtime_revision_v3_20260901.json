@@ -1,0 +1,67 @@
+{
+  "schema_version": "e1-runtime-revision-v1.0",
+  "revision_id": "E1-RUNTIME-REVISION-V3-20260901",
+  "created_at": "2026-09-01T04:30:00+08:00",
+  "formal_evidence": false,
+  "status": "pending_single_long_c2_nonformal_preflight",
+  "trigger": {
+    "session_id": "E1-RUNTIME-V2-PREFLIGHT-001",
+    "runner_rows": 10,
+    "successful": 9,
+    "failed": 1,
+    "failed_run_order": 21,
+    "failed_run_key": "formal_exp_0171:C2:2",
+    "failed_configuration": "C2",
+    "client_timeout_seconds": 300,
+    "observed_latency_ms": 300395.3211830012,
+    "server_task_id": 1423,
+    "server_evidence": [
+      "parallel=1 produced no KV-cache or HTTP-500 errors",
+      "task 1423 reached 500 decoded tokens at 2.58 tokens/s",
+      "the client cancelled the task about 1.5 seconds before a 512-token cap could complete",
+      "server log ended after all slots became idle; later process absence is not attributed to an inference error without kernel evidence"
+    ]
+  },
+  "superseded_candidate": {
+    "revision_lock": "configs/E1_runtime_revision_v2_20260901.json",
+    "config": "configs/E1_devtemp_v2.json",
+    "config_sha256_lf": "A26776F7EB8798714250DDDDA93F69CDF3563C25AA94EDB9BADDA4647D3EAA6A",
+    "timeout_seconds": 300,
+    "llama_parallel": 1,
+    "disposition": "retain_v2_preflight_as_nonformal_runtime_evidence"
+  },
+  "candidate_runtime": {
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "timeout_seconds": 420,
+    "llama_parallel": 1,
+    "context_size": 4096,
+    "prompt_cache": "disabled_request_and_global",
+    "generation_and_retrieval_semantics_changed": false,
+    "only_config_changes_from_v2": [
+      "generator.timeout_seconds: 300 -> 420",
+      "experiment.output: results/E1_devtemp_exhaustive_v2.jsonl -> results/E1_devtemp_exhaustive_v3.jsonl"
+    ]
+  },
+  "unchanged_design": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "model": "unchanged",
+    "power_chain": "E1-POWER-CHAIN-01",
+    "max_tokens_by_configuration": {"C0": 128, "C1": 256, "C2": 512},
+    "context_characters_by_configuration": {"C0": 0, "C1": 3000, "C2": 6000}
+  },
+  "preflight_gate": {
+    "run_order": 21,
+    "run_key": "formal_exp_0171:C2:2",
+    "expected_runner_rows": 1,
+    "required": [
+      "one successful runner row",
+      "no timeout, HTTP error, KV-cache error, or context-size error",
+      "llama-server health is ok after the runner exits",
+      "collector_stop acknowledgement and automatic collector exit",
+      "all collector invalid counters are zero"
+    ],
+    "formal_next_step_if_passed": "freeze v3 runtime and start a new full B01 session from global run order 1"
+  }
+}

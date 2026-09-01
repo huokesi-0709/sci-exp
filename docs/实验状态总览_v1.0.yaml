@@ -1338,10 +1338,16 @@ stages:
         http_500_failures: 2
         failed_configuration_counts: {C1: 1, C2: 14}
         runner_output: results/E1_devtemp_formal_v1_B01_attempt002.jsonl
-        runner_output_bytes: pending_radxa_final_hash_capture
-        runner_output_sha256: pending_radxa_final_hash_capture
+        runner_output_bytes: 490755
+        runner_output_sha256: 6942EE603B876C4C248F852ED06E41AC2BF5574DA7DD2F4A52447119B9D7331B
         runner_log: logs/runtime/E1_devtemp_formal_v1_B01_attempt002_runner.log
+        runner_log_lines: 7
+        runner_log_bytes: 160
+        runner_log_sha256: 716D375B7BEF98673C5A57F9D14A74314BE923EFA5E5EC51D38EDE8C466F2820
         server_log: logs/runtime/llama_server_E1_formal_B01.log
+        server_log_lines_before_shutdown: 1250
+        server_log_bytes_before_shutdown: 121442
+        server_log_final_sha256: 67EB9BECC105F8EC9E467EFE13DA8E76E6006E123AF9A7BF943F66B61B8266D6
         server_health_after_batch: ok
         server_runtime_diagnosis:
           n_parallel: 4
@@ -1369,7 +1375,7 @@ stages:
         blind_review_eligible: false
         disposition: retain_entire_attempt_do_not_fill_failed_rows_do_not_start_B02
       runtime_revision_v2_20260901:
-        status: pending_targeted_nonformal_preflight
+        status: failed_single_long_c2_timeout_v3_required
         revision_lock: configs/E1_runtime_revision_v2_20260901.json
         config: configs/E1_devtemp_v2.json
         config_sha256_lf: A26776F7EB8798714250DDDDA93F69CDF3563C25AA94EDB9BADDA4647D3EAA6A
@@ -1385,8 +1391,47 @@ stages:
           smoke_environment: 17
           smoke_control: 1
           smoke_invalid: 0
-        next_gate: targeted_nonformal_long_C2_preflight
-      status: B01_attempt002_failed_runtime_revision_pending_preflight
+        preflight_result:
+          session_id: E1-RUNTIME-V2-PREFLIGHT-001
+          formal_evidence: false
+          run_order_range: 12-21
+          runner_rows: 10
+          successful: 9
+          failed: 1
+          failed_run_order: 21
+          failed_run_key: formal_exp_0171:C2:2
+          failed_configuration: C2
+          observed_latency_ms: 300395.3211830012
+          runner_sha256: 6E9F37D2116B6E845E7F5B9907F6DEC713C69862BFEF868781EF98C482C0D52A
+          runner_log_sha256: A21D42DA6D87F088A5093723BB5CFB25B839DF4F59CC10698C19238F37675631
+          collector_file: D:\sci-exp-data\E1_20260901\INA226_E1_runtime_v2_preflight_001.full.jsonl
+          collector_bytes: 57640823
+          collector_lines: 131150
+          collector_sha256: 8A0172D586DA918473EE664090303F7DC28E10ECE9190CD656956C7667BFFD0D
+          samples: 129671
+          environment_samples: 1297
+          marker_count: 23
+          marker_count_explained: 20_query_boundaries_plus_2_idle_boundaries_plus_1_duplicate_idle_end
+          control_count: 1
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          no_KV_or_HTTP500_or_context_error: true
+          server_lifecycle_after_runner: unresolved_process_absent_after_normal_idle_log
+      runtime_revision_v3_20260901:
+        status: pending_single_long_c2_nonformal_preflight
+        revision_lock: configs/E1_runtime_revision_v3_20260901.json
+        config: configs/E1_devtemp_v3.json
+        config_sha256_lf: 9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999
+        timeout_seconds: 420
+        llama_parallel: 1
+        task_manifest_changed: false
+        task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
+        target_run_order: 21
+        target_run_key: formal_exp_0171:C2:2
+        next_gate: one_successful_long_C2_with_postrun_server_health_and_collector_autostop
+      status: B01_attempt002_failed_runtime_revision_v3_preflight_pending
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1417,4 +1462,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001和B01-002并暂停B02；同步v2候选运行时，先执行parallel=1、300秒超时和collector_stop自动停止的长C2非正式预检；通过后再以全新session从global run order 1完整重跑B01
+  action: 永久保留B01-001、B01-002和v2预检并暂停B02；同步v3候选运行时，只对run order 21执行parallel=1、420秒超时和collector_stop自动停止的非正式预检；1/1成功且post-run server health正常后，才以全新session从global run order 1完整重跑B01
