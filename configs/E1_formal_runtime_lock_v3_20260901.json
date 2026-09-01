@@ -1,0 +1,58 @@
+{
+  "schema_version": "e1-formal-runtime-lock-v1.0",
+  "lock_id": "E1-FORMAL-RUNTIME-V3-20260901",
+  "locked_at": "2026-09-01T23:15:00+08:00",
+  "formal_evidence": false,
+  "status": "locked_ready_for_new_formal_B01_003",
+  "runtime_revision": {
+    "revision_lock": "configs/E1_runtime_revision_v3_20260901.json",
+    "revision_id": "E1-RUNTIME-REVISION-V3-20260901",
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "llama_parallel": 1,
+    "context_size": 4096,
+    "request_timeout_seconds": 420,
+    "prompt_cache": "disabled_request_and_global"
+  },
+  "unchanged_method": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "model": "models/qwen1_5-0_5b-chat-official-4d14e384-q4_k_m-r2.gguf",
+    "power_chain_lock": "configs/E1_power_chain_lock_v1.0.json",
+    "power_chain_lock_id": "E1-POWER-CHAIN-01",
+    "seed": 42,
+    "max_tokens_by_configuration": {"C0": 128, "C1": 256, "C2": 512},
+    "context_characters_by_configuration": {"C0": 0, "C1": 3000, "C2": 6000}
+  },
+  "preflight_qualification": {
+    "session_id": "E1-RUNTIME-V3-PREFLIGHT-001",
+    "status": "passed",
+    "target": "formal_exp_0171:C2:2",
+    "latency_ms": 306933.50505499984,
+    "runner_successful": 1,
+    "runner_failed": 0,
+    "collector_invalid": 0,
+    "collector_control": 1,
+    "server_health_after_runner": "ok_http_200"
+  },
+  "new_formal_batch": {
+    "session_id": "E1-DEVTEMP-FORMAL-B01-003",
+    "run_order_start": 1,
+    "run_order_end": 63,
+    "runner_output": "results/E1_devtemp_formal_v3_B01_attempt003.jsonl",
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B01_attempt003_runner.log",
+    "server_log": "logs/runtime/llama_server_E1_formal_B01_003.log",
+    "collector_file": "D:\\sci-exp-data\\E1_20260901\\INA226_E1_devtemp_formal_v3_B01_attempt003.full.jsonl",
+    "overwrite_allowed": false,
+    "collector_autostop_required": true,
+    "idle_marker_pair_required": true
+  },
+  "acceptance_after_batch": [
+    "exactly 63 runner rows and all successful",
+    "every runner row has valid external-meter boundaries after integration",
+    "collector invalid, invalid_serial and invalid_marker counters are all zero",
+    "collector_stop is acknowledged and produces one control record",
+    "server log is sealed after an operator-requested shutdown",
+    "no missing or overwritten artifact"
+  ]
+}

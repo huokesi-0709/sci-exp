@@ -27,6 +27,18 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(revision["preflight_gate"]["run_key"], "formal_exp_0171:C2:2")
         self.assertEqual(revision["candidate_runtime"]["timeout_seconds"], 420)
 
+    def test_formal_v3_runtime_lock_references_the_qualified_candidate(self) -> None:
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_runtime_lock_v3_20260901.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(lock["status"], "locked_ready_for_new_formal_B01_003")
+        self.assertEqual(lock["runtime_revision"]["request_timeout_seconds"], 420)
+        self.assertEqual(lock["new_formal_batch"]["run_order_start"], 1)
+        self.assertEqual(lock["new_formal_batch"]["run_order_end"], 63)
+        self.assertFalse(lock["new_formal_batch"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()

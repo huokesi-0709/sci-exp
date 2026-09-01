@@ -1420,7 +1420,7 @@ stages:
           no_KV_or_HTTP500_or_context_error: true
           server_lifecycle_after_runner: unresolved_process_absent_after_normal_idle_log
       runtime_revision_v3_20260901:
-        status: pending_single_long_c2_nonformal_preflight
+        status: preflight_passed_ready_for_formal_B01_003
         revision_lock: configs/E1_runtime_revision_v3_20260901.json
         config: configs/E1_devtemp_v3.json
         config_sha256_lf: 9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999
@@ -1430,8 +1430,37 @@ stages:
         task_manifest_sha256: D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048
         target_run_order: 21
         target_run_key: formal_exp_0171:C2:2
-        next_gate: one_successful_long_C2_with_postrun_server_health_and_collector_autostop
-      status: B01_attempt002_failed_runtime_revision_v3_preflight_pending
+        preflight_evidence:
+          session_id: E1-RUNTIME-V3-PREFLIGHT-001
+          formal_evidence: false
+          runner_output: results/E1_runtime_v3_preflight_001.jsonl
+          runner_rows: 1
+          successful: 1
+          failed: 0
+          run_order: 21
+          run_key: formal_exp_0171:C2:2
+          configuration: C2
+          latency_ms: 306933.50505499984
+          runner_sha256: 996DCDEC4593BEDAAAE5430D5F38491EB11FE00B7E9C27E2165A13A4CF72D64C
+          runner_log_sha256: 9C8269BA70A40CAD7A4A4C4F33F0ADE72F09C58660FEBAAA1CE1D6145C7AB941
+          server_log_sha256: 4624B9706F893425ECFD6D8BB4E2065F9351C4F7DE91B6EFFB5249AA8E7C769C
+          server_health_after_runner: ok_http_200
+          server_shutdown: operator_requested_graceful_cleanup_logged
+          collector_file: D:\sci-exp-data\E1_20260901\INA226_E1_runtime_v3_preflight_001.full.jsonl
+          collector_bytes: 24154097
+          collector_lines: 55343
+          collector_sha256: A61FB487016087B175B13C88954CBF55E7ED3558F31544727D0640CDAB5ECA46
+          samples: 54726
+          environment_samples: 548
+          marker_count: 4
+          control_count: 1
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+        formal_runtime_lock: configs/E1_formal_runtime_lock_v3_20260901.json
+        next_gate: full_new_B01_003_global_run_order_1_to_63
+      status: B01_attempt003_ready_runtime_v3_locked
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1462,4 +1491,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002和v2预检并暂停B02；同步v3候选运行时，只对run order 21执行parallel=1、420秒超时和collector_stop自动停止的非正式预检；1/1成功且post-run server health正常后，才以全新session从global run order 1完整重跑B01
+  action: 永久保留B01-001、B01-002及v2/v3预检并暂停B02；使用已锁定的E1-FORMAL-RUNTIME-V3-20260901，以全新B01-003会话执行global run order 1-63，collector_stop自动停止后封存和积分物理raw；63/63成功及有效物理测量后才可进入B02

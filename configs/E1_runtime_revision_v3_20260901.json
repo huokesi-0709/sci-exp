@@ -3,7 +3,7 @@
   "revision_id": "E1-RUNTIME-REVISION-V3-20260901",
   "created_at": "2026-09-01T04:30:00+08:00",
   "formal_evidence": false,
-  "status": "pending_single_long_c2_nonformal_preflight",
+  "status": "preflight_passed_ready_for_formal_B01_003",
   "trigger": {
     "session_id": "E1-RUNTIME-V2-PREFLIGHT-001",
     "runner_rows": 10,
@@ -63,5 +63,36 @@
       "all collector invalid counters are zero"
     ],
     "formal_next_step_if_passed": "freeze v3 runtime and start a new full B01 session from global run order 1"
+  },
+  "preflight_evidence": {
+    "session_id": "E1-RUNTIME-V3-PREFLIGHT-001",
+    "formal_evidence": false,
+    "runner_output": "results/E1_runtime_v3_preflight_001.jsonl",
+    "runner_rows": 1,
+    "successful": 1,
+    "failed": 0,
+    "run_order": 21,
+    "run_key": "formal_exp_0171:C2:2",
+    "configuration": "C2",
+    "latency_ms": 306933.50505499984,
+    "runner_sha256": "996DCDEC4593BEDAAAE5430D5F38491EB11FE00B7E9C27E2165A13A4CF72D64C",
+    "runner_log_sha256": "9C8269BA70A40CAD7A4A4C4F33F0ADE72F09C58660FEBAAA1CE1D6145C7AB941",
+    "server_log_sha256": "4624B9706F893425ECFD6D8BB4E2065F9351C4F7DE91B6EFFB5249AA8E7C769C",
+    "server_health_after_runner": "ok_http_200",
+    "server_shutdown": "operator_requested_graceful_cleanup_logged",
+    "collector_file": "D:\\sci-exp-data\\E1_20260901\\INA226_E1_runtime_v3_preflight_001.full.jsonl",
+    "collector_bytes": 24154097,
+    "collector_lines": 55343,
+    "collector_sha256": "A61FB487016087B175B13C88954CBF55E7ED3558F31544727D0640CDAB5ECA46",
+    "collector_counts": {
+      "sample": 54726,
+      "environment": 548,
+      "marker": 4,
+      "control": 1,
+      "invalid": 0,
+      "invalid_serial": 0,
+      "invalid_marker": 0,
+      "partial_serial_at_shutdown": 1
+    }
   }
 }

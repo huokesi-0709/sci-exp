@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B01_attempt002_failed_runtime_revision_v3_preflight_pending`|B01-002保留为失败正式尝试；v2定向预检已消除KV/HTTP 500但在同一长C2的300秒尾部超时，暂停B02及新的正式B01|
+|E1 配置异质性正式运行|`B01_attempt003_ready_runtime_v3_locked`|B01-001、B01-002及v2预检均保留；v3对最慢C2预检1/1成功、采集自动停止和服务健康均通过，允许启动新的B01-003|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -302,6 +302,12 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   非正式证据。新增v3候选将超时提高到420秒，其他方法语义不变；必须先对同一run order 21完成1/1预检，
   同时验证runner结束后服务health仍可用，才可冻结v3。记录见
   [`SCER-E1-260901-009_V2预检超时与V3候选运行时.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260901-009_V2预检超时与V3候选运行时.md)。
+
+- v3非正式预检`E1-RUNTIME-V3-PREFLIGHT-001`对同一run order 21获得1/1成功，C2耗时306.934秒并完整
+  生成512 token；runner无marker错误、Windows collector自动停止（`control=1`）、三项invalid均为0，
+  runner结束后服务health为HTTP 200。预检专用服务由操作者停止并正常收尾。`E1-FORMAL-RUNTIME-V3-20260901`
+  已锁定，允许以全新`E1-DEVTEMP-FORMAL-B01-003`从global run order 1运行至63。记录见
+  [`SCER-E1-260901-010_V3预检通过与B01-003锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260901-010_V3预检通过与B01-003锁定.md)。
 
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
@@ -327,9 +333,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 ## 下一正式动作
 
-E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`和
-`E1-BLIND-SALT-V1`均已冻结，不再重做。B01-001、B01-002和v2预检证据已经冻结，不能覆盖；当前同步
-`E1-RUNTIME-REVISION-V3-20260901`，只对run order 21执行420秒非正式预检。只有1/1成功、无超时/KV/HTTP/
-context错误、runner结束后server health正常且`collector_stop`自动关闭采集器全部通过后，才能用全新session
-从global run order 1完整重跑B01。完整高频raw继续保存在Git外，Git只提交runner、积分/merged派生结果、
-manifest和实验日志。
+E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
+`E1-BLIND-SALT-V1`和`E1-FORMAL-RUNTIME-V3-20260901`均已冻结。B01-001、B01-002和v2/v3预检证据
+不能覆盖；现在允许使用全新session `E1-DEVTEMP-FORMAL-B01-003`，以v3从global run order 1完整执行到63。
+必须保持采集器直到runner发送`collector_stop`；完整高频raw继续保存在Git外，Git只提交runner、积分/merged
+派生结果、manifest和实验日志。
