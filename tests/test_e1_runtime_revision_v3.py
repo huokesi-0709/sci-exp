@@ -186,6 +186,27 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
             preflight["acceptance"],
         )
 
+    def test_recovery_preflight_passes_and_locks_new_full_b05_attempt(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_serial_collector_recovery_preflight_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt002_lock_v3_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertFalse(result["formal_evidence"])
+        self.assertTrue(result["acceptance"]["passed"])
+        self.assertEqual(result["collector_raw_outside_git"]["invalid_serial"], 0)
+        self.assertEqual(result["device_clock_quality"]["missing_sequence_samples"], 0)
+        self.assertLessEqual(result["device_clock_quality"]["maximum_device_gap_ms"], 30.0)
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-002")
+        self.assertEqual(lock["design"]["global_run_order_start"], 253)
+        self.assertEqual(lock["design"]["global_run_order_end"], 315)
+        self.assertFalse(lock["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()

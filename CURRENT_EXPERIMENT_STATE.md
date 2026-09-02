@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B05-001_rejected_serial_recovery_preflight_required`|B01-003至B04-001均已封存；B05-001推理63/63成功但26条串口损坏，物理证据无效，须先通过串口恢复预检再以新session全批重跑|
+|E1 配置异质性正式运行|`B05-002_locked_after_serial_recovery_preflight`|B01-003至B04-001均已封存；B05-001保留为串口损坏诊断，30分钟恢复预检通过，B05-002须以新session全批重跑|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -339,6 +339,13 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   smoke和30分钟连续预检，只有通过后才可创建全新B05-002锁并完整重跑253–315。记录见
   [`SCER-E1-260902-016_B05-001串口损坏诊断与恢复预检.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-016_B05-001串口损坏诊断与恢复预检.md)。
 
+- 串口恢复预检`E1-B05-SERIAL-RECOVERY-PREFLIGHT-001`已通过：Windows collector在RX=1MiB、
+  `status=configured`下连续约30分钟记录179,645 sample，三项invalid=0、sequence gap/缺失/回退均为0、
+  最大`device_us`间隔16.825 ms（≤30 ms），并收到一个`collector_stop`。该预检仅解除B05重跑的串口
+  阻塞，`formal_evidence=false`。B05-002现已锁定为全新session `E1-DEVTEMP-FORMAL-B05-002`，必须完整
+  重跑global order 253–315；详细记录见
+  [`SCER-E1-260902-017_串口恢复预检通过与B05-002锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-017_串口恢复预检通过与B05-002锁定.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -365,8 +372,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
-推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑。下一步先以
-`E1_serial_collector_recovery_preflight_v1_20260902.json`执行“短buffer smoke + 30分钟连续串口预检”；
-预检通过后才可用全新B05-002 session完整执行global run order 253–315。采集器必须运行至接收
-`collector_stop`；恢复预检的UDP端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
+推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
+下一步按`E1_formal_batch_B05_attempt002_lock_v3_20260902.json`在全新session完整执行global order 253–315。
+采集器必须运行至接收`collector_stop`；端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
 继续保存在Git外，Git只提交派生证据、manifest和实验日志。

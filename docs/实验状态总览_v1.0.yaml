@@ -1707,13 +1707,23 @@ stages:
         B05_serial_recovery_preflight_20260902:
           lock: configs/E1_serial_collector_recovery_preflight_v1_20260902.json
           formal_evidence: false
-          status: required_before_new_B05_attempt002_lock
+          status: passed_required_recovery_gate
           required_commit: afcb093
           windows_collector_host: 192.168.10.11
           radxa_host: 192.168.10.13
           duration_seconds: 1800
           acceptance: serial_buffer_configured_and_zero_invalid_zero_sequence_gap_max_device_gap_le_30ms
-      status: B05_attempt001_rejected_serial_recovery_preflight_required
+          result: configs/E1_serial_collector_recovery_preflight_001_result_v1.0.json
+        B05_attempt002_lock_20260902:
+          lock: configs/E1_formal_batch_B05_attempt002_lock_v3_20260902.json
+          status: locked_ready_for_full_rerun_after_passed_serial_recovery_gate
+          session_id: E1-DEVTEMP-FORMAL-B05-002
+          global_run_order_start: 253
+          global_run_order_end: 315
+          expected_run_count: 63
+          replaces_rejected_attempt: B05-001
+          collector_autostop_required: true
+      status: B05_attempt002_locked_after_serial_recovery_preflight
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1744,4 +1754,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-001虽runner 63/63成功，但26条串口损坏及17个sequence gap使物理证据无效。先以afcb093采集器进行buffer smoke和30分钟连续串口恢复预检；仅通过后创建全新B05-002锁，以新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05串口恢复预检已通过（configured RX buffer、零invalid、零sequence gap、最大16.825ms）。下一步按B05-002锁用新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包

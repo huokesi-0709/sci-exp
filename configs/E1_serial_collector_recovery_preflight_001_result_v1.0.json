@@ -1,0 +1,58 @@
+{
+  "schema_version": "e1-serial-collector-recovery-preflight-result-v1.0",
+  "preflight_id": "E1-B05-SERIAL-RECOVERY-PREFLIGHT-001",
+  "formal_evidence": false,
+  "status": "passed_required_recovery_gate",
+  "source_lock": "configs/E1_serial_collector_recovery_preflight_v1_20260902.json",
+  "collector_revision_commit": "afcb093",
+  "transport": {
+    "windows_collector_host": "192.168.10.11",
+    "radxa_host": "192.168.10.13",
+    "port": 8765
+  },
+  "collector_session": {
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "serial_buffer_configuration": {
+      "status": "configured",
+      "requested_rx_size": 1048576,
+      "requested_tx_size": 16384
+    }
+  },
+  "idle": {
+    "run_key": "E1_B05_serial_recovery_preflight_001_idle",
+    "duration_seconds_from_markers": 1800.364272437,
+    "marker_count": 2
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_B05_serial_recovery_preflight_001.full.jsonl",
+    "bytes": 79225490,
+    "lines": 181632,
+    "sha256": "89F2EF609B0DF0D121CEA2DABCDE949142AA4DD8BBF77850C9274B4D84731486",
+    "sample": 179645,
+    "environment": 1797,
+    "marker": 2,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "device_clock_quality": {
+    "sequence_gap_events": 0,
+    "missing_sequence_samples": 0,
+    "sequence_regressions": 0,
+    "maximum_device_gap_ms": 16.825,
+    "maximum_device_gap_gate_ms": 30.0
+  },
+  "acceptance": {
+    "serial_buffer_configured": true,
+    "all_invalid_counters_zero": true,
+    "one_collector_stop_control": true,
+    "zero_sequence_gap_or_regression": true,
+    "maximum_device_gap_within_gate": true,
+    "passed": true
+  },
+  "interpretation_boundary": "This is a nonformal serial-path recovery gate. It establishes eligibility for a new full B05 attempt002, not physical energy evidence for E1."
+}
