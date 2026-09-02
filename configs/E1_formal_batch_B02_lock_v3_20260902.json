@@ -1,0 +1,51 @@
+{
+  "schema_version": "e1-formal-batch-lock-v1.0",
+  "lock_id": "E1-FORMAL-B02-V3-20260902",
+  "locked_at": "2026-09-02T08:00:00+08:00",
+  "formal_evidence": false,
+  "status": "locked_ready_for_execution",
+  "prerequisite": {
+    "batch_result": "configs/E1_formal_batch_B01_003_result_v1.0.json",
+    "required_status": "passed_runner_and_physical_energy_integration"
+  },
+  "runtime": {
+    "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "llama_parallel": 1,
+    "context_size": 4096,
+    "request_timeout_seconds": 420,
+    "prompt_cache": "disabled_request_and_global"
+  },
+  "design": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "seed": 42,
+    "global_run_order_start": 64,
+    "global_run_order_end": 126,
+    "expected_run_count": 63,
+    "previous_batch_range": [1, 63],
+    "next_batch_range": [127, 189],
+    "model_or_method_change": false,
+    "power_chain_lock": "configs/E1_power_chain_lock_v1.0.json",
+    "power_chain_lock_id": "E1-POWER-CHAIN-01"
+  },
+  "artifacts": {
+    "session_id": "E1-DEVTEMP-FORMAL-B02-001",
+    "runner_output": "results/E1_devtemp_formal_v3_B02_attempt001.jsonl",
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B02_attempt001_runner.log",
+    "server_log": "logs/runtime/llama_server_E1_formal_B02_001.log",
+    "collector_raw_outside_git": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B02_attempt001.full.jsonl",
+    "overwrite_allowed": false,
+    "idle_marker_pair_required": true,
+    "collector_autostop_required": true
+  },
+  "acceptance": [
+    "exactly 63 runner rows with status ok",
+    "all 63 integrated external meter rows valid",
+    "exactly 128 experiment markers and one collector_stop control record",
+    "collector invalid, invalid_serial and invalid_marker counters are zero",
+    "no server error, timeout, KV-cache or context-size error",
+    "seal raw, runner, server log, energy output and merged output before B03"
+  ]
+}

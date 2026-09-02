@@ -61,6 +61,19 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
             all((row.get("telemetry") or {}).get("external_meter_valid") for row in runs)
         )
 
+    def test_b02_lock_is_contiguous_and_does_not_overlap_b01(self) -> None:
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B02_lock_v3_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        design = lock["design"]
+        self.assertEqual(design["previous_batch_range"], [1, 63])
+        self.assertEqual(design["global_run_order_start"], 64)
+        self.assertEqual(design["global_run_order_end"], 126)
+        self.assertEqual(design["expected_run_count"], 63)
+        self.assertFalse(lock["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()
