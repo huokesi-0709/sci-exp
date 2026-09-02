@@ -39,6 +39,28 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["new_formal_batch"]["run_order_end"], 63)
         self.assertFalse(lock["new_formal_batch"]["overwrite_allowed"])
 
+    def test_b01_result_is_complete_and_has_valid_external_meter_rows(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B01_003_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        runs = [
+            json.loads(line)
+            for line in (ROOT / result["energy_integration"]["merged_output"])
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+        self.assertTrue(result["formal_evidence"])
+        self.assertEqual(result["runner"]["successful"], 63)
+        self.assertEqual(result["energy_integration"]["valid_count"], 63)
+        self.assertEqual(len(runs), 63)
+        self.assertTrue(all(row["status"] == "ok" for row in runs))
+        self.assertTrue(
+            all((row.get("telemetry") or {}).get("external_meter_valid") for row in runs)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

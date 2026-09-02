@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B01_attempt003_ready_runtime_v3_locked`|B01-001、B01-002及v2预检均保留；v3对最慢C2预检1/1成功、采集自动停止和服务健康均通过，允许启动新的B01-003|
+|E1 配置异质性正式运行|`B01_attempt003_passed_B02_freeze_required`|B01-003完成63/63推理与63/63有效INA226积分；B02须以同一v3锁定条件、全新会话与global order 64–126执行|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -309,6 +309,11 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   已锁定，允许以全新`E1-DEVTEMP-FORMAL-B01-003`从global run order 1运行至63。记录见
   [`SCER-E1-260901-010_V3预检通过与B01-003锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260901-010_V3预检通过与B01-003锁定.md)。
 
+- 正式B01-003已完成global run order 1–63：runner 63/63成功，INA226以`device_us`积分后63/63有效；
+  raw marker=128、control=1、三项invalid=0，idle power为1.350479 W。该批次是有效正式E1切片，
+  但尚非完整315次E1结论；下一步须先冻结B02（run order 64–126）。完整证据见
+  [`SCER-E1-260902-011_B01-003通过与物理能耗合并.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-011_B01-003通过与物理能耗合并.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -334,7 +339,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
-`E1-BLIND-SALT-V1`和`E1-FORMAL-RUNTIME-V3-20260901`均已冻结。B01-001、B01-002和v2/v3预检证据
-不能覆盖；现在允许使用全新session `E1-DEVTEMP-FORMAL-B01-003`，以v3从global run order 1完整执行到63。
+`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`和B01-003结果均已冻结。B01-001、B01-002和
+v2/v3预检证据不能覆盖；下一步先冻结B02的新会话与global run order 64–126，再以同一v3条件运行。
 必须保持采集器直到runner发送`collector_stop`；完整高频raw继续保存在Git外，Git只提交runner、积分/merged
 派生结果、manifest和实验日志。

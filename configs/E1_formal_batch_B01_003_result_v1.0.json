@@ -1,0 +1,62 @@
+{
+  "schema_version": "e1-formal-batch-result-v1.0",
+  "batch_id": "B01-003",
+  "session_id": "E1-DEVTEMP-FORMAL-B01-003",
+  "formal_evidence": true,
+  "status": "passed_runner_and_physical_energy_integration",
+  "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+  "runtime_lock_sha256_lf": "1FB424595CC517CA307A025BC6E0A7885812608CB3E694CEB13052352F89EFE6",
+  "config": "configs/E1_devtemp_v3.json",
+  "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+  "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+  "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+  "run_order": {"start": 1, "end": 63, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B01_attempt003.jsonl",
+    "canonical_lf_sha256": "7D673429EAAB07D5AF249FF544EF1A203945B0E0C172DBC9F639BCE463BE94D1",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "configuration_counts": {"C0": 19, "C1": 19, "C2": 25},
+    "runner_log_sha256": "BD806112B1CDDfe2BAF023DF9988B1B3668E07AD20254F4D98897F6E32286C0A"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B01_003.log",
+    "log_sha256": "2186AF6E3AB5A0B7D04C2E0DBBFCB39E10A7BDC2FB48D53BA1854471E3B4660C",
+    "errors_observed": false,
+    "health_after_runner": "ok_http_200",
+    "shutdown": "operator_requested_graceful_cleanup_logged"
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260901\\INA226_E1_devtemp_formal_v3_B01_attempt003.full.jsonl",
+    "bytes": 343950340,
+    "lines": 782499,
+    "sha256": "70DC28342ABB7ACEB09A9A9948E087D6B3EA0218D40387C9225289254BDED8F0",
+    "sample": 773720,
+    "environment": 7738,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "energy_integration": {
+    "timing_source": "device_us",
+    "maximum_gap_ms_gate": 30.0,
+    "idle_power_w": 1.3504792712294513,
+    "idle_baseline_duration_s": 65.5,
+    "idle_baseline_sample_count": 6506,
+    "idle_baseline_maximum_device_gap_ms": 16.021,
+    "energy_output": "results/E1_devtemp_formal_v3_B01_attempt003.deviceclock.energy.jsonl",
+    "energy_output_sha256": "45042B476ACEC8E1235869E7D0B67A034880C39F60DA7297FFE89427CD981AF0",
+    "merged_output": "results/E1_devtemp_formal_v3_B01_attempt003.deviceclock.meter_merged.jsonl",
+    "merged_output_sha256": "FF77C575CF0ED2490F09BE5DFB101F4FF283734B4068ED375503DB8F151DDB0B",
+    "run_count": 63,
+    "valid_count": 63,
+    "invalid_count": 0,
+    "merged_run_count": 63
+  },
+  "interpretation_boundary": "B01-003 is a valid formal batch slice. Per-configuration means are descriptive within this slice only; no final E1 Oracle, Pareto, safety, or cross-batch inference is authorized until all frozen batches and downstream gates are complete.",
+  "next_gate": "freeze and execute B02 as a new session for global run order 64-126"
+}

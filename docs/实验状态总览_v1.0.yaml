@@ -1459,8 +1459,50 @@ stages:
           invalid_marker: 0
           partial_serial_at_shutdown: 1
         formal_runtime_lock: configs/E1_formal_runtime_lock_v3_20260901.json
-        next_gate: full_new_B01_003_global_run_order_1_to_63
-      status: B01_attempt003_ready_runtime_v3_locked
+        B01_attempt003_20260902:
+          formal_attempt: true
+          formal_evidence: true
+          status: passed_runner_and_physical_energy_integration
+          session_id: E1-DEVTEMP-FORMAL-B01-003
+          run_order_start: 1
+          run_order_end: 63
+          runner_output: results/E1_devtemp_formal_v3_B01_attempt003.jsonl
+          runner_canonical_lf_sha256: 7D673429EAAB07D5AF249FF544EF1A203945B0E0C172DBC9F639BCE463BE94D1
+          runner_rows: 63
+          successful: 63
+          failed: 0
+          configuration_counts: {C0: 19, C1: 19, C2: 25}
+          runner_log_sha256: BD806112B1CDDFE2BAF023DF9988B1B3668E07AD20254F4D98897F6E32286C0A
+          server_log_sha256: 2186AF6E3AB5A0B7D04C2E0DBBFCB39E10A7BDC2FB48D53BA1854471E3B4660C
+          server_health_after_runner: ok_http_200
+          server_shutdown: operator_requested_graceful_cleanup_logged
+          collector_file: D:\sci-exp-data\E1_20260901\INA226_E1_devtemp_formal_v3_B01_attempt003.full.jsonl
+          collector_bytes: 343950340
+          collector_lines: 782499
+          collector_sha256: 70DC28342ABB7ACEB09A9A9948E087D6B3EA0218D40387C9225289254BDED8F0
+          samples: 773720
+          environment_samples: 7738
+          marker_count: 128
+          control_count: 1
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          idle_power_w: 1.3504792712294513
+          idle_baseline_duration_s: 65.5
+          idle_baseline_sample_count: 6506
+          maximum_device_gap_ms: 16.021
+          energy_output: results/E1_devtemp_formal_v3_B01_attempt003.deviceclock.energy.jsonl
+          energy_output_sha256: 45042B476ACEC8E1235869E7D0B67A034880C39F60DA7297FFE89427CD981AF0
+          merged_output: results/E1_devtemp_formal_v3_B01_attempt003.deviceclock.meter_merged.jsonl
+          merged_output_sha256: FF77C575CF0ED2490F09BE5DFB101F4FF283734B4068ED375503DB8F151DDB0B
+          energy_run_count: 63
+          energy_valid_count: 63
+          energy_invalid_count: 0
+          result_lock: configs/E1_formal_batch_B01_003_result_v1.0.json
+          disposition: valid_formal_batch_slice_not_full_E1_conclusion
+        next_gate: freeze_B02_global_run_order_64_to_126
+      status: B01_attempt003_passed_B02_freeze_required
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1491,4 +1533,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002及v2/v3预检并暂停B02；使用已锁定的E1-FORMAL-RUNTIME-V3-20260901，以全新B01-003会话执行global run order 1-63，collector_stop自动停止后封存和积分物理raw；63/63成功及有效物理测量后才可进入B02
+  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003已63/63成功且物理积分有效。下一步冻结B02为全新会话，执行global run order 64-126；collector_stop自动停止后封存和积分物理raw，完成前不启动B03

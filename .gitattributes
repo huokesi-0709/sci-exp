@@ -6,3 +6,10 @@
 /results/E1_devtemp_formal_v1_B*.jsonl text eol=lf
 /results/E1_devtemp_formal_v1_B*.deviceclock.energy.jsonl text eol=lf
 /results/E1_devtemp_formal_v1_B*.deviceclock.meter_merged.jsonl text eol=lf
+/configs/E1_devtemp_v3.json text eol=lf
+/configs/E1_runtime_revision_v3_20260901.json text eol=lf
+/configs/E1_formal_runtime_lock_v3_20260901.json text eol=lf
+/configs/E1_formal_batch_B01_003_result_v1.0.json text eol=lf
+/results/E1_devtemp_formal_v3_B*.jsonl text eol=lf
+/results/E1_devtemp_formal_v3_B*.deviceclock.energy.jsonl text eol=lf
+/results/E1_devtemp_formal_v3_B*.deviceclock.meter_merged.jsonl text eol=lf
