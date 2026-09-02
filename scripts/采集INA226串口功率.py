@@ -18,6 +18,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--marker-host", default="127.0.0.1")
     parser.add_argument("--marker-port", type=int, default=8765)
     parser.add_argument("--sync-interval", type=float, default=10.0)
+    parser.add_argument(
+        "--flush-interval-seconds",
+        type=float,
+        default=1.0,
+        help="功率记录的最长缓冲落盘间隔；marker与异常仍立即落盘",
+    )
     parser.add_argument("--no-auto-start", action="store_true")
     parser.add_argument(
         "--stop-on-marker-event",
@@ -63,12 +69,47 @@ def is_stop_marker(event: object, configured_event: str) -> bool:
     return bool(configured_event and str(event) == configured_event)
 
 
+def configure_serial_receive_buffer(
+    serial_port: Any, *, rx_size: int = 1_048_576, tx_size: int = 16_384
+) -> dict[str, Any]:
+    """Best-effort enlargement of the Windows serial driver queues.
+
+    A short host scheduling pause at 921600 baud can overflow the small default
+    receive queue.  pyserial exposes ``set_buffer_size`` on Windows but not on
+    every platform/backend, so retain compatibility and persist the outcome.
+    """
+    setter = getattr(serial_port, "set_buffer_size", None)
+    if not callable(setter):
+        return {
+            "status": "unsupported",
+            "requested_rx_size": rx_size,
+            "requested_tx_size": tx_size,
+        }
+    try:
+        setter(rx_size=rx_size, tx_size=tx_size)
+    except Exception as exc:  # optional driver tuning must not block collection
+        return {
+            "status": "rejected",
+            "requested_rx_size": rx_size,
+            "requested_tx_size": tx_size,
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }
+    return {
+        "status": "configured",
+        "requested_rx_size": rx_size,
+        "requested_tx_size": tx_size,
+    }
+
+
 def main() -> int:
     args = parse_args()
     try:
         import serial
     except ImportError as exc:
         raise SystemExit("缺少pyserial：请安装项目hardware可选依赖") from exc
+    if args.flush_interval_seconds <= 0:
+        raise SystemExit("--flush-interval-seconds 必须大于0")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     running = True
@@ -84,6 +125,7 @@ def main() -> int:
     marker_socket.setblocking(False)
     marker_socket.bind((args.marker_host, args.marker_port))
     serial_port = serial.Serial(args.serial, args.baud, timeout=0.05)
+    serial_buffer_configuration = configure_serial_receive_buffer(serial_port)
     time.sleep(1.5)
     serial_port.reset_input_buffer()
 
@@ -118,10 +160,13 @@ def main() -> int:
                 "marker_host": args.marker_host,
                 "marker_port": args.marker_port,
                 "stop_on_marker_event": args.stop_on_marker_event,
+                "flush_interval_seconds": args.flush_interval_seconds,
+                "serial_buffer_configuration": serial_buffer_configuration,
             }
         )
         handle.write(json.dumps(session, ensure_ascii=False) + "\n")
         handle.flush()
+        next_output_flush = time.monotonic() + args.flush_interval_seconds
 
         def record_invalid(source: str, raw: bytes, exc: Exception) -> None:
             """Preserve bounded diagnostics instead of silently discarding bad input."""
@@ -217,8 +262,11 @@ def main() -> int:
                         counts["sample"] += 1
                     elif value.get("type") == "environment":
                         counts["environment"] += 1
-                    if counts["sample"] % 20 == 0:
+                    if time.monotonic() >= next_output_flush:
                         handle.flush()
+                        next_output_flush = (
+                            time.monotonic() + args.flush_interval_seconds
+                        )
                 except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
                     record_invalid("serial", raw, exc)
 

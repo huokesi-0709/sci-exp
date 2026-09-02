@@ -121,6 +121,27 @@ class ExperimentAnalysisTests(unittest.TestCase):
         self.assertEqual(records, [b'{"type":"sample","seq":1}'])
         self.assertEqual(pending, b"")
 
+    def test_collector_requests_large_receive_buffer_when_supported(self):
+        module = load_script("collector_serial_buffer", "采集INA226串口功率.py")
+
+        class SerialWithBufferSizing:
+            def __init__(self):
+                self.calls = []
+
+            def set_buffer_size(self, **kwargs):
+                self.calls.append(kwargs)
+
+        serial_port = SerialWithBufferSizing()
+        outcome = module.configure_serial_receive_buffer(serial_port)
+        self.assertEqual(outcome["status"], "configured")
+        self.assertEqual(outcome["requested_rx_size"], 1_048_576)
+        self.assertEqual(serial_port.calls, [{"rx_size": 1_048_576, "tx_size": 16_384}])
+
+    def test_collector_records_unsupported_receive_buffer_backend(self):
+        module = load_script("collector_serial_buffer_fallback", "采集INA226串口功率.py")
+        outcome = module.configure_serial_receive_buffer(object())
+        self.assertEqual(outcome["status"], "unsupported")
+
     def test_e2_uar_and_ser_definitions(self):
         module = load_script("e2_analysis", "分析E2安全校准.py")
         result = module.metrics([1, 1, 0, 0], [0.9, 0.2, 0.1, 0.3], 0.25)
