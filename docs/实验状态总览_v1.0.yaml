@@ -1504,15 +1504,69 @@ stages:
         B02_lock_20260902:
           lock: configs/E1_formal_batch_B02_lock_v3_20260902.json
           lock_id: E1-FORMAL-B02-V3-20260902
-          status: locked_ready_for_execution
+          status: superseded_by_passed_B02_001_result
           session_id: E1-DEVTEMP-FORMAL-B02-001
           global_run_order_start: 64
           global_run_order_end: 126
           expected_run_count: 63
           runtime_config: configs/E1_devtemp_v3.json
           collector_autostop_required: true
-          next_gate: B02_runner_and_physical_energy_integration
-      status: B02_locked_ready_for_execution
+          result_lock: configs/E1_formal_batch_B02_001_result_v1.0.json
+        B02_attempt001_20260902:
+          formal_attempt: true
+          formal_evidence: true
+          status: passed_runner_and_physical_energy_integration
+          session_id: E1-DEVTEMP-FORMAL-B02-001
+          run_order_start: 64
+          run_order_end: 126
+          runner_output: results/E1_devtemp_formal_v3_B02_attempt001.jsonl
+          runner_canonical_lf_sha256: 4771323F7B92B72250D9442675E07868C2A7E866573593A454E5BB8BA3985784
+          runner_rows: 63
+          successful: 63
+          failed: 0
+          configuration_counts: {C0: 22, C1: 22, C2: 19}
+          runner_log_sha256: AA6DFD7E54FA9DC7C72F16C8495346632F1522844EC3F01AADD05D6692A6C28A
+          server_log_sha256: 69ABA3E44E570E7F773AFCD75459E2681468518CECBCA1D9495B44E4675E2BC1
+          server_health_after_runner: ok_http_200
+          server_shutdown: operator_requested_graceful_cleanup_logged
+          marker_transport: {windows_collector_host: 192.168.1.24, radxa_host: 192.168.1.29, port: 8765, wifi_precheck_passed: true}
+          collector_file: D:\sci-exp-data\E1_20260902\INA226_E1_devtemp_formal_v3_B02_attempt001.full.jsonl
+          collector_bytes: 309253778
+          collector_lines: 704775
+          collector_sha256: CB109B06A1E1D6100B4F65443530EE00C05167E466B4D7260667A03598266215
+          samples: 696843
+          environment_samples: 6969
+          marker_count: 128
+          control_count: 1
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          idle_power_w: 1.2747446950221448
+          idle_baseline_duration_s: 65.39
+          idle_baseline_sample_count: 6495
+          maximum_device_gap_ms: 16.021
+          energy_output: results/E1_devtemp_formal_v3_B02_attempt001.deviceclock.energy.jsonl
+          energy_output_sha256: C09E37CD897AF57899A29363F07399224F773B1A0CD7528F889765A34B089BDE
+          merged_output: results/E1_devtemp_formal_v3_B02_attempt001.deviceclock.meter_merged.jsonl
+          merged_output_sha256: C38128816D5F13D4C617A4F0F880CA0E16B1695B0B95A3253B886604BC735EE6
+          energy_run_count: 63
+          energy_valid_count: 63
+          energy_invalid_count: 0
+          result_lock: configs/E1_formal_batch_B02_001_result_v1.0.json
+          disposition: valid_formal_batch_slice_not_full_E1_conclusion
+        B03_lock_20260902:
+          lock: configs/E1_formal_batch_B03_lock_v3_20260902.json
+          lock_id: E1-FORMAL-B03-V3-20260902
+          status: locked_ready_for_execution
+          session_id: E1-DEVTEMP-FORMAL-B03-001
+          global_run_order_start: 127
+          global_run_order_end: 189
+          expected_run_count: 63
+          runtime_config: configs/E1_devtemp_v3.json
+          collector_autostop_required: true
+          next_gate: B03_runner_and_physical_energy_integration
+      status: B03_locked_ready_for_execution
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1543,4 +1597,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003已63/63成功且物理积分有效，B02已锁定为全新会话执行global run order 64-126；collector_stop自动停止后封存和积分物理raw，完成前不启动B03
+  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003与B02-001均已63/63成功且物理积分有效；B03已锁定为全新会话执行global run order 127-189；collector_stop自动停止后封存和积分物理raw，完成前不启动B04

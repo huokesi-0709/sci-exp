@@ -1,0 +1,70 @@
+{
+  "schema_version": "e1-formal-batch-result-v1.0",
+  "batch_id": "B02-001",
+  "session_id": "E1-DEVTEMP-FORMAL-B02-001",
+  "formal_evidence": true,
+  "status": "passed_runner_and_physical_energy_integration",
+  "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+  "runtime_lock_sha256_lf": "1FB424595CC517CA307A025BC6E0A7885812608CB3E694CEB13052352F89EFE6",
+  "config": "configs/E1_devtemp_v3.json",
+  "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+  "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+  "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+  "run_order": {"start": 64, "end": 126, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B02_attempt001.jsonl",
+    "canonical_lf_sha256": "4771323F7B92B72250D9442675E07868C2A7E866573593A454E5BB8BA3985784",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "configuration_counts": {"C0": 22, "C1": 22, "C2": 19},
+    "runner_log_sha256": "AA6DFD7E54FA9DC7C72F16C8495346632F1522844EC3F01AADD05D6692A6C28A"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B02_001.log",
+    "log_sha256": "69ABA3E44E570E7F773AFCD75459E2681468518CECBCA1D9495B44E4675E2BC1",
+    "errors_observed": false,
+    "health_after_runner": "ok_http_200",
+    "shutdown": "operator_requested_graceful_cleanup_logged"
+  },
+  "marker_transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765,
+    "wifi_change_precheck_run_key": "E1_B02_wifi_marker_precheck_001",
+    "wifi_change_precheck": {"marker": 1, "control": 1, "invalid": 0, "invalid_serial": 0, "invalid_marker": 0},
+    "formal_runner_collector_stop_acknowledged": true
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B02_attempt001.full.jsonl",
+    "bytes": 309253778,
+    "lines": 704775,
+    "sha256": "CB109B06A1E1D6100B4F65443530EE00C05167E466B4D7260667A03598266215",
+    "sample": 696843,
+    "environment": 6969,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "energy_integration": {
+    "timing_source": "device_us",
+    "maximum_gap_ms_gate": 30.0,
+    "idle_power_w": 1.2747446950221448,
+    "idle_baseline_duration_s": 65.39,
+    "idle_baseline_sample_count": 6495,
+    "idle_baseline_maximum_device_gap_ms": 16.021,
+    "energy_output": "results/E1_devtemp_formal_v3_B02_attempt001.deviceclock.energy.jsonl",
+    "energy_output_sha256": "C09E37CD897AF57899A29363F07399224F773B1A0CD7528F889765A34B089BDE",
+    "merged_output": "results/E1_devtemp_formal_v3_B02_attempt001.deviceclock.meter_merged.jsonl",
+    "merged_output_sha256": "C38128816D5F13D4C617A4F0F880CA0E16B1695B0B95A3253B886604BC735EE6",
+    "run_count": 63,
+    "valid_count": 63,
+    "invalid_count": 0,
+    "merged_run_count": 63
+  },
+  "interpretation_boundary": "B02-001 is a valid formal batch slice. It does not authorize final E1 Oracle, Pareto, safety, or cross-batch inference before all frozen batches and downstream gates are complete.",
+  "next_gate": "freeze and execute B03 as a new session for global run order 127-189"
+}

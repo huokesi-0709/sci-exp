@@ -1,6 +1,6 @@
 # 当前实验状态
 
-更新时间：2026-09-01（Asia/Shanghai）
+更新时间：2026-09-02（Asia/Shanghai）
 
 权威机器可读账本：[`docs/实验状态总览_v1.0.yaml`](docs/实验状态总览_v1.0.yaml)
 
@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B02_locked_ready_for_execution`|B01-003已完整封存；B02已冻结为同一v3条件下的global order 64–126，等待全新会话执行|
+|E1 配置异质性正式运行|`B03_locked_ready_for_execution`|B01-003、B02-001均已完整封存；B03已冻结为同一v3条件下的global order 127–189|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -314,10 +314,11 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   但尚非完整315次E1结论；下一步须先冻结B02（run order 64–126）。完整证据见
   [`SCER-E1-260902-011_B01-003通过与物理能耗合并.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-011_B01-003通过与物理能耗合并.md)。
 
-- B02已锁定为`E1-FORMAL-B02-V3-20260902`：同一v3 runtime与功率链、全新会话
-  `E1-DEVTEMP-FORMAL-B02-001`，仅执行冻结清单global order 64–126。B02必须重新采集并完成
-  63/63有效能耗积分后才可启动B03。记录见
-  [`SCER-E1-260902-012_B02锁定与执行准备.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-012_B02锁定与执行准备.md)。
+- B02-001已完成global order 64–126：runner 63/63成功，`device_us`物理积分63/63有效；Git外raw
+  的marker=128、control=1、三项invalid=0。运行前Wi-Fi切换后的UDP预检通过，正式端点为
+  Windows `192.168.1.24:8765`、Radxa `192.168.1.29`；这只改变传输端点，不改变冻结配置。B02是第二个
+  有效正式E1切片，仍不是完整315次结论。B03已锁定为global order 127–189。记录见
+  [`SCER-E1-260902-013_B02通过与物理能耗合并.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-013_B02通过与物理能耗合并.md)。
 
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
@@ -344,7 +345,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
-`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`、B01-003结果与B02锁均已冻结。B01-001、
-B01-002和v2/v3预检证据不能覆盖；下一步运行B02的global run order 64–126，再完成物理积分。
+`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003/B02-001结果均已封存。B01-001、
+B01-002和v2/v3预检证据不能覆盖；下一步执行已锁定B03的global run order 127–189，再完成物理积分。
 必须保持采集器直到runner发送`collector_stop`；完整高频raw继续保存在Git外，Git只提交runner、积分/merged
 派生结果、manifest和实验日志。

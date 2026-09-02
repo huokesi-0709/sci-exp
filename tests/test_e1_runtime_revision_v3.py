@@ -74,6 +74,36 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(design["expected_run_count"], 63)
         self.assertFalse(lock["artifacts"]["overwrite_allowed"])
 
+    def test_b02_result_is_complete_and_b03_lock_is_contiguous(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B02_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        merged = [
+            json.loads(line)
+            for line in (ROOT / result["energy_integration"]["merged_output"])
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+        b03 = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B03_lock_v3_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(result["formal_evidence"])
+        self.assertEqual(result["run_order"], {"start": 64, "end": 126, "count": 63})
+        self.assertEqual(result["energy_integration"]["valid_count"], 63)
+        self.assertEqual(len(merged), 63)
+        self.assertTrue(
+            all((row.get("telemetry") or {}).get("external_meter_valid") for row in merged)
+        )
+        self.assertEqual(b03["design"]["previous_batch_range"], [64, 126])
+        self.assertEqual(b03["design"]["global_run_order_start"], 127)
+        self.assertEqual(b03["design"]["global_run_order_end"], 189)
+        self.assertFalse(b03["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()
