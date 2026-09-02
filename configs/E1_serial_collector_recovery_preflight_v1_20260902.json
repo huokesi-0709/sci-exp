@@ -1,0 +1,37 @@
+{
+  "schema_version": "e1-serial-collector-recovery-preflight-v1.0",
+  "preflight_id": "E1-B05-SERIAL-RECOVERY-PREFLIGHT-001",
+  "date": "2026-09-02",
+  "formal_evidence": false,
+  "purpose": "validate the Windows collector buffering revision after B05-001 serial corruption before a new full B05 attempt",
+  "prerequisite_commit": "afcb093",
+  "collector": {
+    "script": "scripts/采集INA226串口功率.py",
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "requested_rx_buffer_bytes": 1048576,
+    "requested_tx_buffer_bytes": 16384,
+    "required_session_metadata": "serial_buffer_configuration.status=configured",
+    "stop_event": "collector_stop"
+  },
+  "transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765
+  },
+  "two_stage_protocol": {
+    "stage_1": "short collector session to confirm serial_buffer_configuration before the long test",
+    "stage_2_duration_seconds": 1800,
+    "stage_2_marker_pair": ["idle_start", "idle_end"]
+  },
+  "acceptance": [
+    "collector_session serial_buffer_configuration.status is configured",
+    "invalid=0, invalid_serial=0, invalid_marker=0",
+    "zero sequence gaps and zero missing sequence samples",
+    "maximum device_us sample gap is at most 30 ms",
+    "exactly one collector_stop control record is received"
+  ],
+  "failure_disposition": "If any criterion fails, preserve the raw file and diagnostics, do not launch B05 attempt002, and investigate the serial path again.",
+  "success_disposition": "Passing this preflight is necessary but not sufficient for formal evidence. Create a new B05 attempt002 execution lock and rerun all global orders 253-315 without overwriting attempt001."
+}

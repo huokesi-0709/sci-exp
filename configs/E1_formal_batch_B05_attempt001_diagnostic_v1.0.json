@@ -1,0 +1,73 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "batch_id": "B05-001",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-001",
+  "formal_attempt": true,
+  "formal_evidence": false,
+  "status": "rejected_serial_corruption",
+  "runtime": {
+    "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "llama_parallel": 1,
+    "request_timeout_seconds": 420
+  },
+  "run_order": {"start": 253, "end": 315, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B05_attempt001.jsonl",
+    "canonical_lf_sha256": "CF30AB0F1696810719A4340F67FBEECB394F2ABB5AADCFDAF72AA9945EFC5B74",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "configuration_counts": {"C0": 21, "C1": 20, "C2": 22},
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B05_attempt001_runner.log",
+    "runner_log_sha256": "3C29B2C0701E10D46C5339AE75E59B71462E12B23D3CA141FCC517F0C0BB3693"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B05_001.log",
+    "log_sha256": "56D79A9A77F11ED0BB81DF8AF1CAE64C4B458F8DF4796CCEA16865A8FA06ADA4",
+    "errors_observed": false,
+    "shutdown": "operator_requested_graceful_cleanup_logged"
+  },
+  "marker_transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765,
+    "collector_stop_acknowledged": true
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B05_attempt001.full.jsonl",
+    "bytes": 328993300,
+    "lines": 746229,
+    "sha256": "DF5EFCA8CE15A7AC61934C39FBFB72483F6344F2F76D1D8FED30B9021EFAD6F7",
+    "sample": 737819,
+    "environment": 7379,
+    "marker": 128,
+    "control": 1,
+    "invalid": 26,
+    "invalid_serial": 26,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "serial_corruption_analysis": {
+    "invalid_record_count": 26,
+    "all_invalid_source": "serial",
+    "sequence_gap_count": 17,
+    "missing_sequence_samples": 113,
+    "observed_window_local": "2026-09-02T18:09:27-18:09:28+08:00",
+    "affected_run_key": "formal_exp_0172:C2:1",
+    "affected_configuration": "C2",
+    "affected_query_interval_local": "2026-09-02T18:07:50-18:13:08+08:00",
+    "cause_assessment": "host-side serial receive buffering overflow or scheduling stall is the leading inference; this is not proven as a sole root cause",
+    "not_attributed_to": ["SSH disconnection", "UDP marker transport", "ESP32 JSON schema change"]
+  },
+  "disposition": {
+    "preserve_all_artifacts": true,
+    "do_not_integrate_as_formal_physical_energy": true,
+    "do_not_rerun_only_failed_or_affected_rows": true,
+    "do_not_overwrite_attempt001": true,
+    "required_next_gate": "pass E1 serial collector recovery preflight, then lock and execute a new full B05 attempt002 for global run order 253-315"
+  }
+}

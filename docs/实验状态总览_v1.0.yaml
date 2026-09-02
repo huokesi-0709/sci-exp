@@ -1669,15 +1669,49 @@ stages:
         B05_lock_20260902:
           lock: configs/E1_formal_batch_B05_lock_v3_20260902.json
           lock_id: E1-FORMAL-B05-V3-20260902
-          status: locked_ready_for_execution_with_strict_clean_remote_preflight_required
+          status: superseded_by_rejected_B05_attempt001_serial_corruption
           session_id: E1-DEVTEMP-FORMAL-B05-001
           global_run_order_start: 253
           global_run_order_end: 315
           expected_run_count: 63
           runtime_config: configs/E1_devtemp_v3.json
           collector_autostop_required: true
-          next_gate: B05_runner_and_physical_energy_integration
-      status: B05_locked_ready_for_execution_with_strict_clean_remote_preflight_required
+          next_gate: preserve_B05_attempt001_and_pass_serial_recovery_preflight
+        B05_attempt001_20260902:
+          formal_attempt: true
+          formal_evidence: false
+          status: rejected_serial_corruption
+          session_id: E1-DEVTEMP-FORMAL-B05-001
+          run_order_start: 253
+          run_order_end: 315
+          runner_output: results/E1_devtemp_formal_v3_B05_attempt001.jsonl
+          runner_canonical_lf_sha256: CF30AB0F1696810719A4340F67FBEECB394F2ABB5AADCFDAF72AA9945EFC5B74
+          runner_rows: 63
+          successful: 63
+          failed: 0
+          configuration_counts: {C0: 21, C1: 20, C2: 22}
+          collector_file: D:\sci-exp-data\E1_20260902\INA226_E1_devtemp_formal_v3_B05_attempt001.full.jsonl
+          collector_bytes: 328993300
+          collector_lines: 746229
+          collector_sha256: DF5EFCA8CE15A7AC61934C39FBFB72483F6344F2F76D1D8FED30B9021EFAD6F7
+          marker_count: 128
+          control_count: 1
+          invalid: 26
+          invalid_serial: 26
+          invalid_marker: 0
+          sequence_gap_count: 17
+          missing_sequence_samples: 113
+          affected_run_key: formal_exp_0172:C2:1
+          anomaly: ANOM-E1-20260902-006
+          disposition: preserve_rejected_diagnostic_do_not_integrate_or_partial_rerun
+        B05_serial_recovery_preflight_20260902:
+          lock: configs/E1_serial_collector_recovery_preflight_v1_20260902.json
+          formal_evidence: false
+          status: required_before_new_B05_attempt002_lock
+          required_commit: afcb093
+          duration_seconds: 1800
+          acceptance: serial_buffer_configured_and_zero_invalid_zero_sequence_gap_max_device_gap_le_30ms
+      status: B05_attempt001_rejected_serial_recovery_preflight_required
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1708,4 +1742,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003至B04-001均已63/63成功且物理积分有效；B03/B04发布控制偏差均已记录。B05为最后一批global run order 253-315，启动前必须验证锁提交同步、Radxa工作树完全干净、短HEAD哈希精确匹配、配置/清单哈希和服务健康；collector_stop自动停止后封存和积分物理raw，完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-001虽runner 63/63成功，但26条串口损坏及17个sequence gap使物理证据无效。先以afcb093采集器进行buffer smoke和30分钟连续串口恢复预检；仅通过后创建全新B05-002锁，以新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包

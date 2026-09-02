@@ -161,6 +161,31 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(b05["design"]["global_run_order_end"], 315)
         self.assertIn("git status --porcelain is empty", b05["preflight"]["mandatory_before_start"])
 
+    def test_b05_attempt001_is_rejected_and_recovery_preflight_is_nonformal(self) -> None:
+        diagnostic = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt001_diagnostic_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        preflight = json.loads(
+            (ROOT / "configs" / "E1_serial_collector_recovery_preflight_v1_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["status"], "rejected_serial_corruption")
+        self.assertEqual(diagnostic["runner"]["successful"], 63)
+        self.assertEqual(diagnostic["collector_raw_outside_git"]["invalid_serial"], 26)
+        self.assertEqual(diagnostic["serial_corruption_analysis"]["missing_sequence_samples"], 113)
+        self.assertEqual(diagnostic["serial_corruption_analysis"]["affected_run_key"], "formal_exp_0172:C2:1")
+        self.assertFalse(preflight["formal_evidence"])
+        self.assertEqual(preflight["two_stage_protocol"]["stage_2_duration_seconds"], 1800)
+        self.assertIn(
+            "collector_session serial_buffer_configuration.status is configured",
+            preflight["acceptance"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
