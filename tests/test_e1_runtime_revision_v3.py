@@ -104,6 +104,34 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(b03["design"]["global_run_order_end"], 189)
         self.assertFalse(b03["artifacts"]["overwrite_allowed"])
 
+    def test_b03_result_is_complete_and_b04_requires_remote_sync_preflight(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B03_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        merged = [
+            json.loads(line)
+            for line in (ROOT / result["energy_integration"]["merged_output"])
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+        b04 = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B04_lock_v3_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        deviation = result["release_control_deviation"]
+        self.assertTrue(result["formal_evidence"])
+        self.assertEqual(result["run_order"], {"start": 127, "end": 189, "count": 63})
+        self.assertEqual(result["energy_integration"]["valid_count"], 63)
+        self.assertTrue(all((row.get("telemetry") or {}).get("external_meter_valid") for row in merged))
+        self.assertEqual(deviation["time_order_verified"], "local_lock_precedes_first_runner_start")
+        self.assertEqual(b04["design"]["previous_batch_range"], [127, 189])
+        self.assertEqual(b04["design"]["global_run_order_start"], 190)
+        self.assertIn("git pull --ff-only succeeds", b04["preflight"]["mandatory_before_start"])
+
 
 if __name__ == "__main__":
     unittest.main()

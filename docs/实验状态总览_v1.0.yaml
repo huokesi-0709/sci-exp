@@ -1558,15 +1558,72 @@ stages:
         B03_lock_20260902:
           lock: configs/E1_formal_batch_B03_lock_v3_20260902.json
           lock_id: E1-FORMAL-B03-V3-20260902
-          status: locked_ready_for_execution
+          status: superseded_by_passed_B03_001_result
           session_id: E1-DEVTEMP-FORMAL-B03-001
           global_run_order_start: 127
           global_run_order_end: 189
           expected_run_count: 63
           runtime_config: configs/E1_devtemp_v3.json
           collector_autostop_required: true
-          next_gate: B03_runner_and_physical_energy_integration
-      status: B03_locked_ready_for_execution
+          result_lock: configs/E1_formal_batch_B03_001_result_v1.0.json
+        B03_attempt001_20260902:
+          formal_attempt: true
+          formal_evidence: true
+          status: passed_runner_and_physical_energy_integration_with_sync_deviation_logged
+          session_id: E1-DEVTEMP-FORMAL-B03-001
+          run_order_start: 127
+          run_order_end: 189
+          runner_output: results/E1_devtemp_formal_v3_B03_attempt001.jsonl
+          runner_canonical_lf_sha256: 549BE3952A8B75816F8680BFDBD70D0677EF2BC366815CB1827C5EDD89EF53A0
+          runner_rows: 63
+          successful: 63
+          failed: 0
+          configuration_counts: {C0: 25, C1: 22, C2: 16}
+          runner_log_sha256: 7FAD6220F246E7D43B9806A17CA051B7AD27D1532BBA2D3A3B5AA6ED3E6B622F
+          server_log_sha256: EB303C03A6C413058B569076F84F29B7C5950DCAC3C1E33F2B83713EEE63F442
+          server_health_after_runner: ok_http_200
+          server_shutdown: operator_requested_graceful_cleanup_logged
+          release_control_deviation: ANOM-E1-20260902-004
+          local_lock_commit_time: '2026-09-02T12:38:59+08:00'
+          first_runner_start_local: '2026-09-02T12:43:52.696348+08:00'
+          radxa_head_at_preflight: 6C0F50FAEFCB577250374F57177FDC9C8F627CB
+          collector_file: D:\sci-exp-data\E1_20260902\INA226_E1_devtemp_formal_v3_B03_attempt001.full.jsonl
+          collector_bytes: 276485279
+          collector_lines: 627394
+          collector_sha256: DFE4CE3C88E67C465709F304D58C5F1D2008F13EF423F63D586D408C2C6D72C5
+          samples: 620304
+          environment_samples: 6204
+          marker_count: 128
+          control_count: 1
+          invalid: 0
+          invalid_serial: 0
+          invalid_marker: 0
+          partial_serial_at_shutdown: 1
+          idle_power_w: 1.2815393294287785
+          idle_baseline_duration_s: 65.438
+          idle_baseline_sample_count: 6500
+          maximum_device_gap_ms: 16.022000000000002
+          energy_output: results/E1_devtemp_formal_v3_B03_attempt001.deviceclock.energy.jsonl
+          energy_output_sha256: F10F3A53D177E4B4ADB175D1F120877D108C992E04FFF7F3778DD7D862AFD4A2
+          merged_output: results/E1_devtemp_formal_v3_B03_attempt001.deviceclock.meter_merged.jsonl
+          merged_output_sha256: 2075BDDF959283630924264B7AC102FAE124EEDC0972C23ABE5D9EE2035000EF
+          energy_run_count: 63
+          energy_valid_count: 63
+          energy_invalid_count: 0
+          result_lock: configs/E1_formal_batch_B03_001_result_v1.0.json
+          disposition: valid_formal_batch_slice_with_release_control_deviation_not_full_E1_conclusion
+        B04_lock_20260902:
+          lock: configs/E1_formal_batch_B04_lock_v3_20260902.json
+          lock_id: E1-FORMAL-B04-V3-20260902
+          status: locked_ready_for_execution_with_remote_sync_preflight_required
+          session_id: E1-DEVTEMP-FORMAL-B04-001
+          global_run_order_start: 190
+          global_run_order_end: 252
+          expected_run_count: 63
+          runtime_config: configs/E1_devtemp_v3.json
+          collector_autostop_required: true
+          next_gate: B04_runner_and_physical_energy_integration
+      status: B04_locked_ready_for_execution_with_remote_sync_preflight_required
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1597,4 +1654,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003与B02-001均已63/63成功且物理积分有效；B03已锁定为全新会话执行global run order 127-189；collector_stop自动停止后封存和积分物理raw，完成前不启动B04
+  action: 永久保留B01-001、B01-002及v2/v3预检；B01-003、B02-001与B03-001均已63/63成功且物理积分有效；B03同步偏差已记录；B04已锁定为全新会话执行global run order 190-252，但启动前必须验证锁提交已同步到Radxa HEAD；collector_stop自动停止后封存和积分物理raw，完成前不启动B05

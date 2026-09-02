@@ -1,0 +1,81 @@
+{
+  "schema_version": "e1-formal-batch-result-v1.0",
+  "batch_id": "B03-001",
+  "session_id": "E1-DEVTEMP-FORMAL-B03-001",
+  "formal_evidence": true,
+  "status": "passed_runner_and_physical_energy_integration_with_sync_deviation_logged",
+  "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+  "runtime_lock_sha256_lf": "1FB424595CC517CA307A025BC6E0A7885812608CB3E694CEB13052352F89EFE6",
+  "config": "configs/E1_devtemp_v3.json",
+  "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+  "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+  "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+  "run_order": {"start": 127, "end": 189, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B03_attempt001.jsonl",
+    "canonical_lf_sha256": "549BE3952A8B75816F8680BFDBD70D0677EF2BC366815CB1827C5EDD89EF53A0",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "configuration_counts": {"C0": 25, "C1": 22, "C2": 16},
+    "runner_log_sha256": "7FAD6220F246E7D43B9806A17CA051B7AD27D1532BBA2D3A3B5AA6ED3E6B622F"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B03_001.log",
+    "log_sha256": "EB303C03A6C413058B569076F84F29B7C5950DCAC3C1E33F2B83713EEE63F442",
+    "errors_observed": false,
+    "health_after_runner": "ok_http_200",
+    "shutdown": "operator_requested_graceful_cleanup_logged"
+  },
+  "release_control_deviation": {
+    "id": "ANOM-E1-20260902-004",
+    "type": "preexecution_lock_remote_sync_not_verified",
+    "local_lock_commit": "16D9469A3AEF852F768E95F3845DA9FDFF61AE02",
+    "local_lock_commit_time": "2026-09-02T12:38:59+08:00",
+    "first_runner_start_utc": "2026-09-02T04:43:52.696348+00:00",
+    "first_runner_start_local": "2026-09-02T12:43:52.696348+08:00",
+    "time_order_verified": "local_lock_precedes_first_runner_start",
+    "radxa_head_at_preflight": "6C0F50FAEFCB577250374F57177FDC9C8F627CB",
+    "exact_config_and_manifest_hashes_recorded_by_runner": true,
+    "model_method_or_power_chain_change": false,
+    "disposition": "retain_as_formal_physical_evidence_with_explicit_release_control_deviation; B04_requires_remote_lock_commit_verification_before_launch"
+  },
+  "marker_transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765,
+    "formal_runner_collector_stop_acknowledged": true
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B03_attempt001.full.jsonl",
+    "bytes": 276485279,
+    "lines": 627394,
+    "sha256": "DFE4CE3C88E67C465709F304D58C5F1D2008F13EF423F63D586D408C2C6D72C5",
+    "sample": 620304,
+    "environment": 6204,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "energy_integration": {
+    "timing_source": "device_us",
+    "maximum_gap_ms_gate": 30.0,
+    "idle_power_w": 1.2815393294287785,
+    "idle_baseline_duration_s": 65.438,
+    "idle_baseline_sample_count": 6500,
+    "idle_baseline_maximum_device_gap_ms": 16.022000000000002,
+    "energy_output": "results/E1_devtemp_formal_v3_B03_attempt001.deviceclock.energy.jsonl",
+    "energy_output_sha256": "F10F3A53D177E4B4ADB175D1F120877D108C992E04FFF7F3778DD7D862AFD4A2",
+    "merged_output": "results/E1_devtemp_formal_v3_B03_attempt001.deviceclock.meter_merged.jsonl",
+    "merged_output_sha256": "2075BDDF959283630924264B7AC102FAE124EEDC0972C23ABE5D9EE2035000EF",
+    "run_count": 63,
+    "valid_count": 63,
+    "invalid_count": 0,
+    "merged_run_count": 63
+  },
+  "interpretation_boundary": "B03-001 is a valid formal batch slice with an explicit release-control deviation. No final E1 Oracle, Pareto, safety, or cross-batch inference is authorized before all frozen batches and downstream gates are complete.",
+  "next_gate": "freeze and execute B04 as a new session for global run order 190-252 after verifying the pushed lock commit on Radxa"
+}

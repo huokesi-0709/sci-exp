@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B03_locked_ready_for_execution`|B01-003、B02-001均已完整封存；B03已冻结为同一v3条件下的global order 127–189|
+|E1 配置异质性正式运行|`B04_locked_ready_for_execution_with_remote_sync_preflight_required`|B01-003、B02-001、B03-001均已封存；B03带有已记录同步偏差，B04必须先验证远端锁提交|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -320,6 +320,11 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   有效正式E1切片，仍不是完整315次结论。B03已锁定为global order 127–189。记录见
   [`SCER-E1-260902-013_B02通过与物理能耗合并.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-013_B02通过与物理能耗合并.md)。
 
+- B03-001已完成global order 127–189：runner 63/63成功，物理积分63/63有效，raw的marker=128、control=1、
+  三项invalid=0。B03锁的Windows本地提交早于首条运行约4分54秒，但未在运行前成功推送到Radxa；该发布控制
+  偏差已登记为`ANOM-E1-20260902-004`，不隐去也不重跑。B04必须先核验锁提交已在Radxa HEAD。记录见
+  [`SCER-E1-260902-014_B03通过与同步偏差审计.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-014_B03通过与同步偏差审计.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -345,7 +350,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 下一正式动作
 
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
-`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003/B02-001结果均已封存。B01-001、
-B01-002和v2/v3预检证据不能覆盖；下一步执行已锁定B03的global run order 127–189，再完成物理积分。
+`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003/B02-001/B03-001结果均已封存。B01-001、
+B01-002和v2/v3预检证据不能覆盖；下一步在Radxa确认B04锁已同步后，执行global run order 190–252，再完成物理积分。
 必须保持采集器直到runner发送`collector_stop`；完整高频raw继续保存在Git外，Git只提交runner、积分/merged
 派生结果、manifest和实验日志。
