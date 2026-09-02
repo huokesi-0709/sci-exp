@@ -207,6 +207,36 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["design"]["global_run_order_end"], 315)
         self.assertFalse(lock["artifacts"]["overwrite_allowed"])
 
+    def test_b05_attempt002_is_rejected_and_attempt003_requires_server_preflight(self) -> None:
+        diagnostic = json.loads(
+            (
+                ROOT
+                / "configs"
+                / "E1_formal_batch_B05_attempt002_diagnostic_v1.0.json"
+            ).read_text(encoding="utf-8")
+        )
+        lock = json.loads(
+            (
+                ROOT
+                / "configs"
+                / "E1_formal_batch_B05_attempt003_lock_v3_20260903.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertTrue(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["status"], "rejected_llama_server_not_running")
+        self.assertEqual(diagnostic["runner"]["rows"], 63)
+        self.assertEqual(diagnostic["runner"]["successful"], 0)
+        self.assertEqual(diagnostic["runner"]["failed"], 63)
+        self.assertEqual(diagnostic["server_preflight"]["health"], "connection_refused_http_000")
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-003")
+        self.assertEqual(lock["design"]["global_run_order_start"], 253)
+        self.assertEqual(lock["design"]["global_run_order_end"], 315)
+        self.assertIn(
+            "verify the exact server PID, HTTP 200 health response, and no-cache startup-log lines",
+            lock["mandatory_execution_order"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

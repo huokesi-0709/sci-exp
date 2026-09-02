@@ -1,0 +1,78 @@
+{
+  "schema_version": "e1-formal-batch-lock-v1.0",
+  "lock_id": "E1-FORMAL-B05-ATTEMPT003-V3-20260903",
+  "formal_evidence": false,
+  "status": "locked_ready_for_execution_after_server_preflight",
+  "prerequisite": {
+    "rejected_attempts": [
+      "configs/E1_formal_batch_B05_attempt001_diagnostic_v1.0.json",
+      "configs/E1_formal_batch_B05_attempt002_diagnostic_v1.0.json"
+    ],
+    "serial_recovery_preflight_result": "configs/E1_serial_collector_recovery_preflight_001_result_v1.0.json",
+    "required_status": "passed_required_recovery_gate"
+  },
+  "runtime": {
+    "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "llama_parallel": 1,
+    "context_size": 4096,
+    "request_timeout_seconds": 420,
+    "prompt_cache": "disabled_request_and_global"
+  },
+  "design": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "seed": 42,
+    "global_run_order_start": 253,
+    "global_run_order_end": 315,
+    "expected_run_count": 63,
+    "replaces_rejected_attempts": ["B05-001", "B05-002"],
+    "model_or_method_change": false,
+    "power_chain_lock_id": "E1-POWER-CHAIN-01"
+  },
+  "transport": {
+    "windows_collector_host": "192.168.10.11",
+    "radxa_host": "192.168.10.13",
+    "port": 8765,
+    "collector_autostop_required": true,
+    "collector_flush_interval_seconds": 1.0
+  },
+  "mandatory_execution_order": [
+    "Radxa pull and clean-worktree/config-manifest checks",
+    "start llama-server into the unique attempt003 server log",
+    "verify the exact server PID, HTTP 200 health response, and no-cache startup-log lines",
+    "start Windows collector and confirm its new output path is absent before launch",
+    "send 65-second paired idle markers",
+    "launch the full 63-row runner and do not manually stop collector or runner",
+    "only after runner exits, validate all runner, raw, and physical-integration acceptance gates"
+  ],
+  "preflight": {
+    "mandatory_before_start": [
+      "git pull --ff-only succeeds and git status --porcelain is empty",
+      "config and task-manifest SHA-256 values match this lock",
+      "attempt003 runner output and server log paths are absent",
+      "pgrep -a llama-server returns the newly started attempt003 process",
+      "curl http://127.0.0.1:8080/health returns HTTP 200",
+      "attempt003 server log records prompt cache disabled and server listening",
+      "Windows collector session records serial_buffer_configuration.status=configured"
+    ]
+  },
+  "artifacts": {
+    "session_id": "E1-DEVTEMP-FORMAL-B05-003",
+    "runner_output": "results/E1_devtemp_formal_v3_B05_attempt003.jsonl",
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B05_attempt003_runner.log",
+    "server_log": "logs/runtime/llama_server_E1_formal_B05_003.log",
+    "collector_raw_outside_git": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_devtemp_formal_v3_B05_attempt003.full.jsonl",
+    "idle_run_key": "E1_devtemp_formal_v3_B05_attempt003_idle",
+    "overwrite_allowed": false
+  },
+  "acceptance": [
+    "exactly 63 runner rows with status ok",
+    "all 63 integrated external meter rows valid",
+    "exactly 128 experiment markers and one collector_stop control record",
+    "collector invalid, invalid_serial and invalid_marker counters are zero",
+    "zero sequence gaps and zero missing sequence samples in raw collector stream",
+    "no server error, timeout, KV-cache or context-size error"
+  ]
+}

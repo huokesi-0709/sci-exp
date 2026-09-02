@@ -1716,14 +1716,36 @@ stages:
           result: configs/E1_serial_collector_recovery_preflight_001_result_v1.0.json
         B05_attempt002_lock_20260902:
           lock: configs/E1_formal_batch_B05_attempt002_lock_v3_20260902.json
-          status: locked_ready_for_full_rerun_after_passed_serial_recovery_gate
+          status: superseded_by_rejected_B05_attempt002_server_not_running
           session_id: E1-DEVTEMP-FORMAL-B05-002
           global_run_order_start: 253
           global_run_order_end: 315
           expected_run_count: 63
           replaces_rejected_attempt: B05-001
           collector_autostop_required: true
-      status: B05_attempt002_locked_after_serial_recovery_preflight
+        B05_attempt002_20260902:
+          formal_attempt: true
+          formal_evidence: false
+          status: rejected_llama_server_not_running
+          session_id: E1-DEVTEMP-FORMAL-B05-002
+          runner_output: results/E1_devtemp_formal_v3_B05_attempt002.jsonl
+          runner_sha256: 831CC0EAD2406542119A523996355463725C6AD0749E078F577DA548E493DD04
+          runner_rows: 63
+          successful: 0
+          failed: 63
+          collector_file: D:\sci-exp-data\E1_20260902\INA226_E1_devtemp_formal_v3_B05_attempt002.full.jsonl
+          collector_sha256: 4DCF251F461229F711F7FB41FA3AD8B228F24F873B43C82F76BEABE6ABA5039F
+          anomaly: ANOM-E1-20260903-007
+          disposition: preserve_rejected_diagnostic_do_not_integrate_or_partial_rerun
+        B05_attempt003_lock_20260903:
+          lock: configs/E1_formal_batch_B05_attempt003_lock_v3_20260903.json
+          status: locked_ready_after_explicit_server_preflight
+          session_id: E1-DEVTEMP-FORMAL-B05-003
+          global_run_order_start: 253
+          global_run_order_end: 315
+          expected_run_count: 63
+          collector_autostop_required: true
+      status: B05_attempt003_locked_after_server_start_failure
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1754,4 +1776,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05串口恢复预检已通过（configured RX buffer、零invalid、零sequence gap、最大16.825ms）。下一步按B05-002锁用新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05串口恢复预检已通过（configured RX buffer、零invalid、零sequence gap、最大16.825ms）；B05-002因未启动服务63/63连接拒绝。下一步按B05-003锁先核验服务PID、HTTP 200和独立启动日志，再用新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包

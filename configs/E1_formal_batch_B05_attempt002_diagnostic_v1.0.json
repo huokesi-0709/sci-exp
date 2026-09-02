@@ -1,0 +1,52 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "batch_id": "B05-002",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-002",
+  "formal_attempt": true,
+  "formal_evidence": false,
+  "status": "rejected_llama_server_not_running",
+  "runtime": {
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "request_timeout_seconds": 420
+  },
+  "run_order": {"start": 253, "end": 315, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B05_attempt002.jsonl",
+    "sha256": "831CC0EAD2406542119A523996355463725C6AD0749E078F577DA548E493DD04",
+    "rows": 63,
+    "successful": 0,
+    "failed": 63,
+    "error": "llama-server request failed: <urlopen error [Errno 111] Connection refused>",
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B05_attempt002_runner.log",
+    "runner_log_sha256": "F0495D25D08C1DFADB2E1702D27AA97B47150EEE2F60694E7E0B30D468FC4156"
+  },
+  "server_preflight": {
+    "llama_server_running": false,
+    "health": "connection_refused_http_000",
+    "root_cause": "runner was started before llama-server was started and verified"
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B05_attempt002.full.jsonl",
+    "bytes": 13375883,
+    "lines": 30834,
+    "sha256": "4DCF251F461229F711F7FB41FA3AD8B228F24F873B43C82F76BEABE6ABA5039F",
+    "sample": 30239,
+    "environment": 303,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "disposition": {
+    "preserve_all_artifacts": true,
+    "do_not_integrate_as_physical_energy": true,
+    "do_not_overwrite_attempt002": true,
+    "do_not_partial_rerun": true,
+    "required_next_gate": "new B05-003 lock, verified llama-server process/health/log, then complete rerun of global orders 253-315"
+  }
+}

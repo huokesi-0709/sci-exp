@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B05-002_locked_after_serial_recovery_preflight`|B01-003至B04-001均已封存；B05-001保留为串口损坏诊断，30分钟恢复预检通过，B05-002须以新session全批重跑|
+|E1 配置异质性正式运行|`B05-003_locked_after_server-start_failure`|B01-003至B04-001均已封存；B05-001为串口损坏诊断、B05-002为未启动服务诊断；B05-003须先验证服务后全批重跑|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -346,6 +346,12 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   重跑global order 253–315；详细记录见
   [`SCER-E1-260902-017_串口恢复预检通过与B05-002锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260902-017_串口恢复预检通过与B05-002锁定.md)。
 
+- B05-002尝试已永久保留但被拒绝：服务未启动导致runner 63/63为连接拒绝、0成功，`ANOM-E1-20260903-007`
+  已登记。其raw的串口传输质量正常但没有有效推理区间，不能积分。B05-003现已锁定为全新session
+  `E1-DEVTEMP-FORMAL-B05-003`，仍完整执行global order 253–315；必须先用独立服务日志核验PID、HTTP 200、
+  禁用cache和监听成功，才允许启动collector。完整记录见
+  [`SCER-E1-260903-018_B05-002服务未启动诊断与B05-003锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-018_B05-002服务未启动诊断与B05-003锁定.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -373,6 +379,6 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-下一步按`E1_formal_batch_B05_attempt002_lock_v3_20260902.json`在全新session完整执行global order 253–315。
+下一步按`E1_formal_batch_B05_attempt003_lock_v3_20260903.json`在全新session完整执行global order 253–315，且必须先验证服务PID、HTTP 200与独立启动日志。
 采集器必须运行至接收`collector_stop`；端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
 继续保存在Git外，Git只提交派生证据、manifest和实验日志。
