@@ -1,0 +1,81 @@
+{
+  "schema_version": "e1-formal-batch-result-v1.0",
+  "batch_id": "B04-001",
+  "session_id": "E1-DEVTEMP-FORMAL-B04-001",
+  "formal_evidence": true,
+  "status": "passed_runner_and_physical_energy_integration_with_preflight_deviation_logged",
+  "runtime_lock": "configs/E1_formal_runtime_lock_v3_20260901.json",
+  "runtime_lock_sha256_lf": "1FB424595CC517CA307A025BC6E0A7885812608CB3E694CEB13052352F89EFE6",
+  "config": "configs/E1_devtemp_v3.json",
+  "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+  "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+  "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+  "run_order": {"start": 190, "end": 252, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B04_attempt001.jsonl",
+    "canonical_lf_sha256": "7B4A09D16F9C7B8E0E18D756710CAAE6112206B66643E2CB7BF7F7E2149E41B3",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "configuration_counts": {"C0": 18, "C1": 22, "C2": 23},
+    "runner_log_sha256": "BBE778BE23478C819D3976EECF970D38BD47FAEE12738C961743A8899B371410"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B04_001.log",
+    "log_sha256": "E6FAA8E3CA93174DEE7D27167D7A5F079214F8A334F18633A150877641A6C173",
+    "errors_observed": false,
+    "health_after_runner": "ok_http_200",
+    "shutdown": "operator_requested_graceful_cleanup_logged"
+  },
+  "release_control_deviation": {
+    "id": "ANOM-E1-20260902-005",
+    "type": "preflight_hash_comparison_false_negative_and_preexisting_untracked_diagnostics",
+    "required_remote_lock_commit": "115296AC4180FCA660029B5FE5FB5A2D483DDCC7",
+    "observed_remote_head": "115296AC4180FCA660029B5FE5FB5A2D483DDCC7",
+    "guard_error": "a full git rev-parse HEAD value was compared with the short literal 115296a, producing a false STOP result",
+    "preexisting_untracked_diagnostics": [
+      "results/E1_devtemp_formal_v1_B01_attempt002.jsonl",
+      "results/E1_runtime_v2_preflight_001.jsonl"
+    ],
+    "subsequent_disposition": "both diagnostics were audited, preserved, and committed in 345f588; no model, method, task manifest, configuration, power-chain, or run-order change occurred during B04",
+    "disposition": "retain_as_formal_physical_evidence_with_explicit_release_control_deviation; B05_requires_clean_worktree_and_short_hash_remote_preflight"
+  },
+  "marker_transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765,
+    "formal_runner_collector_stop_acknowledged": true
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260902\\INA226_E1_devtemp_formal_v3_B04_attempt001.full.jsonl",
+    "bytes": 332156829,
+    "lines": 753424,
+    "sha256": "3C8642540F87EAB70CC9099A1333176C0CD9D6D3FFDA476A776D5679BD597BBF",
+    "sample": 744962,
+    "environment": 7450,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "energy_integration": {
+    "timing_source": "device_us",
+    "maximum_gap_ms_gate": 30.0,
+    "idle_power_w": 1.2818726958214623,
+    "idle_baseline_duration_s": 65.407,
+    "idle_baseline_sample_count": 6496,
+    "idle_baseline_maximum_device_gap_ms": 16.019,
+    "energy_output": "results/E1_devtemp_formal_v3_B04_attempt001.deviceclock.energy.jsonl",
+    "energy_output_sha256": "32AB9BA398E95A16938463BFC0B8FE5660B2E982A95E122A75B9353C4B4F8595",
+    "merged_output": "results/E1_devtemp_formal_v3_B04_attempt001.deviceclock.meter_merged.jsonl",
+    "merged_output_sha256": "9A002C642A85E162A84939E739B64CCA669D33B24FAD79D205B49C2C88784969",
+    "run_count": 63,
+    "valid_count": 63,
+    "invalid_count": 0,
+    "merged_run_count": 63
+  },
+  "interpretation_boundary": "B04-001 is a valid formal batch slice with an explicit release-control deviation. It does not authorize final E1 Oracle, Pareto, safety, or cross-batch inference before all frozen batches and downstream gates are complete.",
+  "next_gate": "freeze and execute B05 as a new session for global run order 253-315 after strict clean-worktree and short-hash remote preflight"
+}

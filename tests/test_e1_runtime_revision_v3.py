@@ -132,6 +132,35 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(b04["design"]["global_run_order_start"], 190)
         self.assertIn("git pull --ff-only succeeds", b04["preflight"]["mandatory_before_start"])
 
+    def test_b04_result_is_complete_and_b05_requires_clean_remote_preflight(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B04_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        merged = [
+            json.loads(line)
+            for line in (ROOT / result["energy_integration"]["merged_output"])
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+        b05 = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_lock_v3_20260902.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(result["formal_evidence"])
+        self.assertEqual(result["run_order"], {"start": 190, "end": 252, "count": 63})
+        self.assertEqual(result["energy_integration"]["valid_count"], 63)
+        self.assertEqual(len(merged), 63)
+        self.assertTrue(all((row.get("telemetry") or {}).get("external_meter_valid") for row in merged))
+        self.assertEqual(result["release_control_deviation"]["id"], "ANOM-E1-20260902-005")
+        self.assertEqual(b05["design"]["previous_batch_range"], [190, 252])
+        self.assertEqual(b05["design"]["global_run_order_start"], 253)
+        self.assertEqual(b05["design"]["global_run_order_end"], 315)
+        self.assertIn("git status --porcelain is empty", b05["preflight"]["mandatory_before_start"])
+
 
 if __name__ == "__main__":
     unittest.main()
