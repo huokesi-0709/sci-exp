@@ -368,4 +368,5 @@ E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单�
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑。下一步先以
 `E1_serial_collector_recovery_preflight_v1_20260902.json`执行“短buffer smoke + 30分钟连续串口预检”；
 预检通过后才可用全新B05-002 session完整执行global run order 253–315。采集器必须运行至接收
-`collector_stop`；完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。
+`collector_stop`；恢复预检的UDP端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
+继续保存在Git外，Git只提交派生证据、manifest和实验日志。

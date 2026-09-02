@@ -16,8 +16,8 @@
     "stop_event": "collector_stop"
   },
   "transport": {
-    "windows_collector_host": "192.168.1.24",
-    "radxa_host": "192.168.1.29",
+    "windows_collector_host": "192.168.10.11",
+    "radxa_host": "192.168.10.13",
     "port": 8765
   },
   "two_stage_protocol": {

@@ -1709,6 +1709,8 @@ stages:
           formal_evidence: false
           status: required_before_new_B05_attempt002_lock
           required_commit: afcb093
+          windows_collector_host: 192.168.10.11
+          radxa_host: 192.168.10.13
           duration_seconds: 1800
           acceptance: serial_buffer_configured_and_zero_invalid_zero_sequence_gap_max_device_gap_le_30ms
       status: B05_attempt001_rejected_serial_recovery_preflight_required
