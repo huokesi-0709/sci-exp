@@ -1804,7 +1804,7 @@ stages:
           serial_buffer_configuration: configured_rx_1048576_tx_16384
         B05_attempt005_lock_20260903:
           lock: configs/E1_formal_batch_B05_attempt005_lock_v3_20260903.json
-          status: locked_ready_for_execution_after_power_and_current_network_preflights
+          status: superseded_by_rejected_B05_attempt005_collector_interruption
           session_id: E1-DEVTEMP-FORMAL-B05-005
           global_run_order_start: 253
           global_run_order_end: 315
@@ -1814,7 +1814,47 @@ stages:
           collector_autostop_required: true
           replaces_rejected_attempts: [B05-001, B05-002, B05-003]
           supersedes_unused_lock: B05-004
-      status: locked_ready_for_B05_attempt005_after_power_and_current_network_preflights
+        B05_attempt005_20260904:
+          formal_attempt: true
+          formal_evidence: false
+          status: rejected_incomplete_after_collector_read_permission_error
+          session_id: E1-DEVTEMP-FORMAL-B05-005
+          runner_output: results/E1_devtemp_formal_v3_B05_attempt005.jsonl
+          runner_sha256: 06ECB6BF461210402328651C849CE2BB57241FCD8AF8DC92CFA1B7FAFA8716A0
+          runner_rows: 33
+          successful: 33
+          failed: 0
+          collector_file: D:\sci-exp-data\E1_20260903\INA226_E1_devtemp_formal_v3_B05_attempt005.full.jsonl
+          collector_sha256: 8D4C61D833BDFC5103D16167F4486343E138D38B7CDF736A7720A85DD08441B2
+          marker_count: 67
+          control_count: 0
+          collector_invalid: 0
+          undervoltage_samples: 0
+          anomaly: ANOM-E1-20260904-001
+          disposition: preserve_partial_attempt_do_not_integrate_or_combine
+        B05_com18_recovery_preflight_20260904:
+          result: configs/E1_com18_recovery_preflight_001_result_v1.0.json
+          formal_evidence: false
+          status: passed_required_collector_recovery_gate
+          windows_collector_host: 192.168.10.11
+          radxa_host: 192.168.10.13
+          direct_serial_read_bytes_15s: 515071
+          marker_count: 2
+          control_count: 1
+          collector_invalid: 0
+          serial_buffer_configuration: configured_rx_1048576_tx_16384
+        B05_attempt006_lock_20260904:
+          lock: configs/E1_formal_batch_B05_attempt006_lock_v3_20260904.json
+          status: locked_ready_for_execution_after_collector_recovery
+          session_id: E1-DEVTEMP-FORMAL-B05-006
+          global_run_order_start: 253
+          global_run_order_end: 315
+          expected_run_count: 63
+          windows_collector_host: 192.168.10.11
+          radxa_host: 192.168.10.13
+          collector_autostop_required: true
+          replaces_rejected_attempts: [B05-001, B05-002, B05-003, B05-005]
+      status: locked_ready_for_B05_attempt006_after_collector_recovery
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1845,4 +1885,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003全raw欠压已由空载与真实负载供电复检解除：负载预检9/9成功、Vbus最低5.00375V、零欠压。B05-004因锁定的192.168.1.0/24端点与实测192.168.10.0/24端点冲突而未执行且不可修改；当前192.168.10.11:8765 UDP标记/自动停止预检已经通过。B05-005已锁定，下一步以新session完整执行253–315并要求63/63有效物理积分；完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003全raw欠压已由空载与真实负载供电复检解除：负载预检9/9成功、Vbus最低5.00375V、零欠压。B05-004因锁定的192.168.1.0/24端点与实测192.168.10.0/24端点冲突而未执行且不可修改；B05-005因COM18读取权限异常而仅完成33/63条。当前192.168.10.11:8765 UDP和COM18恢复预检均通过。B05-006已锁定，下一步以新session完整执行253–315并要求63/63有效物理积分；完成前不生成盲审包

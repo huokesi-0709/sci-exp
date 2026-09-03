@@ -1,0 +1,49 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "diagnostic_id": "E1-FORMAL-B05-ATTEMPT005-INTERRUPTION-20260904",
+  "formal_attempt": true,
+  "formal_evidence": false,
+  "status": "rejected_incomplete_after_collector_read_permission_error",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-005",
+  "run_order": {"start": 253, "end": 315, "expected_count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B05_attempt005.jsonl",
+    "sha256": "06ECB6BF461210402328651C849CE2BB57241FCD8AF8DC92CFA1B7FAFA8716A0",
+    "rows": 33,
+    "successful": 33,
+    "failed": 0,
+    "first_run_order": 253,
+    "last_run_order": 285,
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B05_attempt005_runner.log",
+    "runner_log_sha256": "0EA7CF1D885AD4976E0150DF9DCE6FFC37F00CF7DB07E24B2B2E886AD0493C46"
+  },
+  "server": {
+    "log": "logs/runtime/llama_server_E1_formal_B05_005.log",
+    "sha256": "76CF38FDE183245A4B65B1920C17270105F1682F5EF4E82B6D54B91DEB0CA63C"
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_devtemp_formal_v3_B05_attempt005.full.jsonl",
+    "bytes": 195329847,
+    "lines": 445515,
+    "sha256": "8D4C61D833BDFC5103D16167F4486343E138D38B7CDF736A7720A85DD08441B2",
+    "sample": 440528,
+    "environment": 4406,
+    "marker": 67,
+    "collector_control": 0,
+    "invalid": 0,
+    "undervoltage_samples": 0,
+    "bus_v": {"min": 4.795, "mean": 5.049984748416335, "max": 5.115},
+    "serial_buffer_configuration": {"status": "configured", "requested_rx_size": 1048576, "requested_tx_size": 16384}
+  },
+  "failure": {
+    "observed_exception": "serial.serialutil.SerialException: GetOverlappedResult failed (PermissionError(13, '拒绝访问。', None, 5))",
+    "effect": "The collector did not complete a controlled collector_stop shutdown, and the operator terminated the runner after 33 of 63 runs.",
+    "quality_interpretation": "The captured partial raw has zero invalid records and zero undervoltage flags, but it is not a complete batch and cannot be merged with a future rerun."
+  },
+  "disposition": [
+    "Preserve all runner, server-log, and external raw artifacts without overwriting or partial rerun.",
+    "Exclude the 33 partial rows from formal E1 physical-energy evidence.",
+    "Use the independently passed COM18 recovery preflight before creating a new complete B05 attempt."
+  ],
+  "anomaly_id": "ANOM-E1-20260904-001"
+}

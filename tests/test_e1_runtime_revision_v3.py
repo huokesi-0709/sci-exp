@@ -319,6 +319,34 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["design"]["global_run_order_end"], 315)
         self.assertFalse(lock["artifacts"]["overwrite_allowed"])
 
+    def test_b05_attempt005_is_rejected_and_com18_recovery_locks_attempt006(self) -> None:
+        diagnostic = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt005_diagnostic_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        recovery = json.loads(
+            (ROOT / "configs" / "E1_com18_recovery_preflight_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt006_lock_v3_20260904.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["runner"]["rows"], 33)
+        self.assertEqual(diagnostic["runner"]["last_run_order"], 285)
+        self.assertEqual(diagnostic["collector_raw_outside_git"]["collector_control"], 0)
+        self.assertTrue(recovery["acceptance"]["passed"])
+        self.assertEqual(recovery["direct_serial_read_smoke"]["bytes_received"], 515071)
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-006")
+        self.assertEqual(lock["design"]["global_run_order_start"], 253)
+        self.assertEqual(lock["design"]["global_run_order_end"], 315)
+        self.assertFalse(lock["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()

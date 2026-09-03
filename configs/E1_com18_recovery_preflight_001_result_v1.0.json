@@ -1,0 +1,54 @@
+{
+  "schema_version": "e1-com18-recovery-preflight-result-v1.0",
+  "preflight_id": "E1-B05-COM18-RECOVERY-PREFLIGHT-001",
+  "formal_evidence": false,
+  "status": "passed_required_collector_recovery_gate",
+  "purpose": "Verify that the Windows COM18 collector is again stable after B05-005 was interrupted by a serial read PermissionError.",
+  "transport": {
+    "windows_collector_host": "192.168.10.11",
+    "radxa_host": "192.168.10.13",
+    "port": 8765
+  },
+  "collector_session": {
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "serial_buffer_configuration": {
+      "status": "configured",
+      "requested_rx_size": 1048576,
+      "requested_tx_size": 16384
+    }
+  },
+  "direct_serial_read_smoke": {
+    "duration_seconds": 15,
+    "bytes_received": 515071,
+    "status": "ok"
+  },
+  "collector_marker_preflight": {
+    "run_key": "E1_B05_com18_recovery_preflight_001",
+    "idle_run_key": "E1_B05_com18_recovery_preflight_001_idle",
+    "collector_raw_outside_git": {
+      "path": "D:\\sci-exp-data\\E1_20260904\\INA226_E1_B05_com18_recovery_preflight_001.full.jsonl",
+      "bytes": 1766322,
+      "lines": 4072,
+      "sha256": "6C0B0B511043E0AB6087CB3ADC34971DAD00730F8E7DFB30EEAB8C0EDB756C22",
+      "sample": 4017,
+      "environment": 41,
+      "marker": 2,
+      "control": 1,
+      "invalid": 0,
+      "invalid_serial": 0,
+      "invalid_marker": 0,
+      "partial_serial_at_shutdown": 1
+    }
+  },
+  "acceptance": {
+    "direct_serial_read_passed": true,
+    "two_idle_markers_received": true,
+    "one_collector_stop_control_record": true,
+    "all_collector_invalid_counters_zero": true,
+    "serial_buffer_configured": true,
+    "passed": true
+  },
+  "interpretation_boundary": "This is a nonformal collector-recovery gate. It does not contribute query-level physical-energy evidence and does not make the interrupted B05-005 partial run acceptable."
+}
