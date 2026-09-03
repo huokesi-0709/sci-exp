@@ -1,0 +1,33 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "diagnostic_id": "E1-FORMAL-B05-ATTEMPT004-ENDPOINT-CONFLICT-20260903",
+  "formal_attempt": false,
+  "formal_evidence": false,
+  "status": "not_executed_transport_endpoint_conflict",
+  "affected_lock": "configs/E1_formal_batch_B05_attempt004_lock_v3_20260903.json",
+  "affected_session_id": "E1-DEVTEMP-FORMAL-B05-004",
+  "observed_on": "2026-09-03",
+  "locked_transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765
+  },
+  "currently_observed_transport": {
+    "windows_wlan_host": "192.168.10.11",
+    "radxa_wlan_host": "192.168.10.13",
+    "prefix_length": 24,
+    "port": 8765,
+    "evidence": [
+      "Windows Get-NetIPAddress reports WLAN 192.168.10.11/24.",
+      "Radxa hostname -I and wlan0 report 192.168.10.13/24."
+    ]
+  },
+  "reason": "The immutable B05-004 transport fields name an unavailable former 192.168.1.0/24 network. Changing those fields would modify a released lock, while executing it as written would send markers to the wrong collector endpoint.",
+  "required_disposition": [
+    "Do not execute, modify, or reuse B05-004.",
+    "Run a new nonformal UDP marker and collector-stop preflight on 192.168.10.11:8765.",
+    "Only after that gate passes, create a new immutable B05-005 lock for a complete 253-315 rerun.",
+    "Do not overwrite any existing B05 raw, runner, or log artifact."
+  ],
+  "anomaly_id": "ANOM-E1-20260903-009"
+}

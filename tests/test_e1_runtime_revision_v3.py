@@ -278,6 +278,25 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["design"]["global_run_order_end"], 315)
         self.assertFalse(lock["artifacts"]["overwrite_allowed"])
 
+    def test_b05_attempt004_is_not_executed_when_its_locked_network_is_unavailable(self) -> None:
+        diagnostic = json.loads(
+            (
+                ROOT
+                / "configs"
+                / "E1_formal_batch_B05_attempt004_endpoint_conflict_diagnostic_v1.0.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertFalse(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["status"], "not_executed_transport_endpoint_conflict")
+        self.assertEqual(
+            diagnostic["locked_transport"]["windows_collector_host"], "192.168.1.24"
+        )
+        self.assertEqual(
+            diagnostic["currently_observed_transport"]["windows_wlan_host"], "192.168.10.11"
+        )
+        self.assertIn("Do not execute", diagnostic["required_disposition"][0])
+
 
 if __name__ == "__main__":
     unittest.main()
