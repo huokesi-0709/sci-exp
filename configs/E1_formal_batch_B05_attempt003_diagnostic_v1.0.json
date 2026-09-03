@@ -1,0 +1,69 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "batch_id": "B05-003",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-003",
+  "formal_attempt": true,
+  "formal_evidence": false,
+  "status": "rejected_power_chain_undervoltage",
+  "runtime": {
+    "config": "configs/E1_devtemp_v3.json",
+    "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999",
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "llama_server_preflight": "passed_pid_http_200_prompt_cache_disabled_server_listening",
+    "request_timeout_seconds": 420
+  },
+  "run_order": {"start": 253, "end": 315, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B05_attempt003.jsonl",
+    "sha256": "C1FE3C10CE71B69694B857BBEAD9FDB173DDCDEB68C29C22FE0B90926147C8AD",
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "runner_log": "logs/runtime/E1_devtemp_formal_v3_B05_attempt003_runner.log",
+    "runner_log_sha256": "DBF3C41C6365B2B5932ED2C85D2961C0EF52EBA41C8FA17A570A665F030DCA79",
+    "server_log": "logs/runtime/llama_server_E1_formal_B05_003.log",
+    "server_log_sha256": "70F21E1B3629004329BA800970029A3400D9B9E2F6D9ADB16B3748948ABCBA41"
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_devtemp_formal_v3_B05_attempt003.full.jsonl",
+    "bytes": 328360454,
+    "lines": 745577,
+    "sha256": "613970F1C132411D98786FFA78C6AD55026408B408313B7E7934A6413527346E",
+    "sample": 737200,
+    "environment": 7373,
+    "marker": 128,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "physical_energy_integration": {
+    "energy_output": "results/E1_devtemp_formal_v3_B05_attempt003.deviceclock.energy.jsonl",
+    "merged_output": "results/E1_devtemp_formal_v3_B05_attempt003.deviceclock.meter_merged.jsonl",
+    "run_count": 63,
+    "valid_count": 0,
+    "invalid_count": 63,
+    "idle_power_w": 1.2071400936372636,
+    "maximum_query_sample_gap_ms_max": 16.836,
+    "failure_flag": "undervoltage"
+  },
+  "power_quality": {
+    "firmware_undervoltage_threshold_v": 4.75,
+    "undervoltage_sample_count": 737200,
+    "bus_v_min": 3.81875,
+    "bus_v_max": 4.5375,
+    "bus_v_mean": 4.106368229448884,
+    "comparison_b04_bus_v_min": 4.995,
+    "comparison_b04_bus_v_mean": 5.055775214038722,
+    "interpretation": "A real power-chain undervoltage was present throughout this session; integration is correctly rejecting every query."
+  },
+  "disposition": {
+    "preserve_all_artifacts": true,
+    "do_not_integrate_as_formal_energy": true,
+    "do_not_overwrite_attempt003": true,
+    "do_not_partial_rerun": true,
+    "required_next_gate": "inspect and reverify the locked E1 power chain before creating any new B05 rerun lock"
+  }
+}

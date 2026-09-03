@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`B05-003_locked_after_server-start_failure`|B01-003至B04-001均已封存；B05-001为串口损坏诊断、B05-002为未启动服务诊断；B05-003须先验证服务后全批重跑|
+|E1 配置异质性正式运行|`blocked_power_chain_reverification_after_B05-003_undervoltage`|B01-003至B04-001均已封存；B05-001为串口损坏、B05-002为服务未启动、B05-003为全程欠压诊断；须先复核锁定供电链|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -352,6 +352,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
   禁用cache和监听成功，才允许启动collector。完整记录见
   [`SCER-E1-260903-018_B05-002服务未启动诊断与B05-003锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-018_B05-002服务未启动诊断与B05-003锁定.md)。
 
+- B05-003已完整执行global order 253–315且runner 63/63成功，服务、标记、串口和设备时钟连续性也均通过；但raw全部737,200个sample为`undervoltage=true`，`bus_v`最低/均值为`3.81875/4.106368V`，低于冻结4.75V阈值，故物理积分0/63有效。该失败登记为`ANOM-E1-20260903-008`，所有工件永久保留、不积分、不覆盖、不局部补跑。必须先检查并重新预检`E1-POWER-CHAIN-01`，才可创建新的B05重跑锁；详见[`SCER-E1-260903-019_B05-003全程欠压诊断.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-019_B05-003全程欠压诊断.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -379,6 +381,6 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-下一步按`E1_formal_batch_B05_attempt003_lock_v3_20260903.json`在全新session完整执行global order 253–315，且必须先验证服务PID、HTTP 200与独立启动日志。
+下一步先检查并以新run ID复核`E1-POWER-CHAIN-01`的5V输出及连接，确认无欠压后才锁定下一次完整B05重跑；不得降低4.75V质量阈值、覆盖B05-003或局部补跑。
 采集器必须运行至接收`collector_stop`；端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
 继续保存在Git外，Git只提交派生证据、manifest和实验日志。

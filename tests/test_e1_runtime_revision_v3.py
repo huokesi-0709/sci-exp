@@ -237,6 +237,25 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
             lock["mandatory_execution_order"],
         )
 
+    def test_b05_attempt003_is_rejected_for_observed_undervoltage(self) -> None:
+        diagnostic = json.loads(
+            (
+                ROOT
+                / "configs"
+                / "E1_formal_batch_B05_attempt003_diagnostic_v1.0.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertTrue(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["status"], "rejected_power_chain_undervoltage")
+        self.assertEqual(diagnostic["runner"]["successful"], 63)
+        self.assertEqual(diagnostic["physical_energy_integration"]["valid_count"], 0)
+        self.assertEqual(diagnostic["power_quality"]["undervoltage_sample_count"], 737200)
+        self.assertLess(
+            diagnostic["power_quality"]["bus_v_max"],
+            diagnostic["power_quality"]["firmware_undervoltage_threshold_v"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

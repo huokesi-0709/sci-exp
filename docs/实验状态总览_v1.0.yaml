@@ -1739,13 +1739,30 @@ stages:
           disposition: preserve_rejected_diagnostic_do_not_integrate_or_partial_rerun
         B05_attempt003_lock_20260903:
           lock: configs/E1_formal_batch_B05_attempt003_lock_v3_20260903.json
-          status: locked_ready_after_explicit_server_preflight
+          status: superseded_by_rejected_B05_attempt003_power_chain_undervoltage
           session_id: E1-DEVTEMP-FORMAL-B05-003
           global_run_order_start: 253
           global_run_order_end: 315
           expected_run_count: 63
           collector_autostop_required: true
-      status: B05_attempt003_locked_after_server_start_failure
+        B05_attempt003_20260903:
+          formal_attempt: true
+          formal_evidence: false
+          status: rejected_power_chain_undervoltage
+          session_id: E1-DEVTEMP-FORMAL-B05-003
+          runner_output: results/E1_devtemp_formal_v3_B05_attempt003.jsonl
+          runner_sha256: C1FE3C10CE71B69694B857BBEAD9FDB173DDCDEB68C29C22FE0B90926147C8AD
+          runner_rows: 63
+          successful: 63
+          failed: 0
+          collector_file: D:\sci-exp-data\E1_20260903\INA226_E1_devtemp_formal_v3_B05_attempt003.full.jsonl
+          collector_sha256: 613970F1C132411D98786FFA78C6AD55026408B408313B7E7934A6413527346E
+          collector_invalid: 0
+          energy_valid_count: 0
+          power_quality_failure: all_samples_undervoltage_bus_v_mean_4.106368_min_3.81875_below_4.75V
+          anomaly: ANOM-E1-20260903-008
+          disposition: preserve_rejected_diagnostic_do_not_integrate_or_partial_rerun
+      status: blocked_power_chain_reverification_after_B05_attempt003_undervoltage
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1776,4 +1793,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05串口恢复预检已通过（configured RX buffer、零invalid、零sequence gap、最大16.825ms）；B05-002因未启动服务63/63连接拒绝。下一步按B05-003锁先核验服务PID、HTTP 200和独立启动日志，再用新session完整重跑global order 253-315，随后封存和积分物理raw，完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003虽服务和runner成功，但全raw欠压（bus_v均值4.106368V、最低3.81875V）导致物理积分0/63有效。下一步检查并以新run ID复核E1-POWER-CHAIN-01的供电与接触；预检无欠压后才可创建新的全批B05锁，完成前不生成盲审包
