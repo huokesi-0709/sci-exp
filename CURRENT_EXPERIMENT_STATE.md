@@ -280,7 +280,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 |阶段|状态|是否允许作为正式证据|
 |---|---|---|
 |E0 功率测量链|`formal_pass_with_operational_reference_limitations`|是，限厂家指标运行参考边界；不得表述为计量溯源|
-|E1 配置异质性正式运行|`blocked_power_chain_reverification_after_B05-003_undervoltage`|B01-003至B04-001均已封存；B05-001为串口损坏、B05-002为服务未启动、B05-003为全程欠压诊断；须先复核锁定供电链|
+|E1 配置异质性正式运行|`locked_ready_for_B05-004_after_passed_power_reverification`|B01-003至B04-001均已封存；B05-001/002/003均为永久保留的拒绝诊断。供电空载和真实负载复检均已通过，B05-004已锁定为完整重跑253–315|
 |E2–E8正式运行|`blocked_by_sequence`|否，须按冻结协议等待E1及后续前置阶段|
 
 ## 正式E1开始前仍需完成
@@ -354,6 +354,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 - B05-003已完整执行global order 253–315且runner 63/63成功，服务、标记、串口和设备时钟连续性也均通过；但raw全部737,200个sample为`undervoltage=true`，`bus_v`最低/均值为`3.81875/4.106368V`，低于冻结4.75V阈值，故物理积分0/63有效。该失败登记为`ANOM-E1-20260903-008`，所有工件永久保留、不积分、不覆盖、不局部补跑。必须先检查并重新预检`E1-POWER-CHAIN-01`，才可创建新的B05重跑锁；详见[`SCER-E1-260903-019_B05-003全程欠压诊断.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-019_B05-003全程欠压诊断.md)。
 
+- B05-003 后的供电复检已经通过。空载 raw 记录12,825个sample，`Vbus`最低/均值/最高为`5.055/5.081063/5.095V`；真实负载预检以一个query的C0/C1/C2各3次完成9/9成功，135,946个sample中无欠压，`Vbus`最低/均值/最高为`5.00375/5.064831/5.11625V`。两份raw均为`invalid=invalid_serial=invalid_marker=0`，并记录已配置的1MiB RX串口缓冲。该门槛仅恢复正式资格，不计入E1结论。B05-004现已锁定为新session `E1-DEVTEMP-FORMAL-B05-004`，必须完整重跑253–315并通过63/63物理积分；不得覆盖或局部重跑B05-003。详见[`SCER-E1-260903-020_供电复检通过与B05-004锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-020_供电复检通过与B05-004锁定.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -381,6 +383,6 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-下一步先检查并以新run ID复核`E1-POWER-CHAIN-01`的5V输出及连接，确认无欠压后才锁定下一次完整B05重跑；不得降低4.75V质量阈值、覆盖B05-003或局部补跑。
-采集器必须运行至接收`collector_stop`；端点为Windows `192.168.10.11:8765`、Radxa `192.168.10.13`。完整高频raw
+下一步执行已锁定的B05-004：以新run ID完整运行253–315，且每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。
+采集器必须运行至接收`collector_stop`；端点为Windows `192.168.1.24:8765`、Radxa `192.168.1.29`。完整高频raw
 继续保存在Git外，Git只提交派生证据、manifest和实验日志。

@@ -1,0 +1,89 @@
+{
+  "schema_version": "e1-power-recheck-preflight-result-v1.0",
+  "preflight_id": "E1-B05-POWER-RECHECK-PREFLIGHT-001",
+  "formal_evidence": false,
+  "status": "passed_required_power_reverification_gate",
+  "purpose": "Requalify the unchanged E1-POWER-CHAIN-01 after B05-003 was rejected for observed undervoltage, before creating any new complete B05 rerun lock.",
+  "power_chain_lock": {
+    "path": "configs/E1_power_chain_lock_v1.0.json",
+    "lock_id": "E1-POWER-CHAIN-01",
+    "invariance_confirmation": "User confirmed the charger, input cable, INA226 chain, Type-C output cable, and Radxa power wiring were reseated and unchanged."
+  },
+  "transport": {
+    "windows_collector_host": "192.168.1.24",
+    "radxa_host": "192.168.1.29",
+    "port": 8765
+  },
+  "collector_session": {
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "serial_buffer_configuration": {
+      "status": "configured",
+      "requested_rx_size": 1048576,
+      "requested_tx_size": 16384
+    },
+    "collector_stop_control_records_per_session": 1
+  },
+  "idle_power_check": {
+    "run_key": "E1_B05_power_recheck_preflight_001_idle",
+    "collector_raw_outside_git": {
+      "path": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_B05_power_recheck_preflight_001.full.jsonl",
+      "bytes": 5618466,
+      "lines": 12976,
+      "sha256": "66C94BEFEFA94072E94DD0BAE9D1E667B8E5CF7F361A46A171A7AAF48DCD037D",
+      "sample": 12825,
+      "environment": 129,
+      "marker": 2,
+      "control": 1,
+      "invalid": 0,
+      "invalid_serial": 0,
+      "invalid_marker": 0,
+      "partial_serial_at_shutdown": 1
+    },
+    "bus_v": {"min": 5.055, "mean": 5.08106276803144, "max": 5.095},
+    "undervoltage_samples": 0
+  },
+  "load_power_check": {
+    "run_key": "E1-B05-POWER-RECHECK-LOAD-PREFLIGHT-001",
+    "runner": {
+      "path": "results/E1_B05_power_recheck_load_preflight_001.jsonl",
+      "sha256": "EC412B0172A0858AA4088C4A9A0305D45E50DB4A03AC76B8718ED9DD4477AFCE",
+      "rows": 9,
+      "successful": 9,
+      "failed": 0,
+      "configuration_counts": {"C0": 3, "C1": 3, "C2": 3},
+      "runner_log": "logs/runtime/E1_B05_power_recheck_load_preflight_001_runner.log",
+      "runner_log_sha256": "6BE5EBF1F5E45F562DAC6C859B142064EF1FE55D74B7026813C7A4DEAA17E1A3",
+      "server_log": "logs/runtime/llama_server_E1_B05_power_recheck_load_preflight_001.log",
+      "server_log_sha256": "45B7A7694426093A87995393480EF56D887DB8DDB4B061EE606384CA5B7766D85"
+    },
+    "collector_raw_outside_git": {
+      "path": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_B05_power_recheck_load_preflight_001.full.jsonl",
+      "bytes": 60080600,
+      "lines": 137488,
+      "sha256": "CD2839028A4B49CB3262755E1CDD560C5C7AC74494B6EC55DCA17F346281E20A",
+      "sample": 135946,
+      "environment": 1360,
+      "marker": 20,
+      "control": 1,
+      "invalid": 0,
+      "invalid_serial": 0,
+      "invalid_marker": 0,
+      "partial_serial_at_shutdown": 1
+    },
+    "bus_v": {"min": 5.00375, "mean": 5.06483091631962, "max": 5.11625},
+    "undervoltage_samples": 0
+  },
+  "acceptance": {
+    "serial_buffer_configured": true,
+    "runner_all_successful": true,
+    "all_collector_invalid_counters_zero": true,
+    "idle_and_load_undervoltage_samples_zero": true,
+    "load_bus_v_min_meets_4_75_v_gate": true,
+    "expected_load_marker_count_20": true,
+    "one_collector_stop_per_session": true,
+    "passed": true
+  },
+  "interpretation_boundary": "This is a nonformal recovery gate. It establishes eligibility to lock and rerun a complete B05 batch; it is not a substitute for 63 valid query-level physical-energy measurements."
+}

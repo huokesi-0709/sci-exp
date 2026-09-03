@@ -256,6 +256,28 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
             diagnostic["power_quality"]["firmware_undervoltage_threshold_v"],
         )
 
+    def test_power_recheck_passes_before_new_complete_b05_attempt004(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_power_recheck_preflight_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt004_lock_v3_20260903.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertFalse(result["formal_evidence"])
+        self.assertTrue(result["acceptance"]["passed"])
+        self.assertEqual(result["load_power_check"]["runner"]["successful"], 9)
+        self.assertEqual(result["load_power_check"]["runner"]["failed"], 0)
+        self.assertEqual(result["load_power_check"]["undervoltage_samples"], 0)
+        self.assertGreaterEqual(result["load_power_check"]["bus_v"]["min"], 4.75)
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-004")
+        self.assertEqual(lock["design"]["global_run_order_start"], 253)
+        self.assertEqual(lock["design"]["global_run_order_end"], 315)
+        self.assertFalse(lock["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()
