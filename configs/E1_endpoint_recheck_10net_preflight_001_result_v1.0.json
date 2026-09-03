@@ -1,0 +1,49 @@
+{
+  "schema_version": "e1-endpoint-recheck-preflight-result-v1.0",
+  "preflight_id": "E1-B05-ENDPOINT-RECHECK-10NET-001",
+  "formal_evidence": false,
+  "status": "passed_required_current_network_endpoint_gate",
+  "purpose": "Prove the current Windows collector and Radxa marker endpoints before locking a replacement complete B05 rerun after B05-004 was not executed because its former network endpoints were unavailable.",
+  "transport": {
+    "windows_collector_host": "192.168.10.11",
+    "radxa_host": "192.168.10.13",
+    "port": 8765
+  },
+  "collector_session": {
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "serial_buffer_configuration": {
+      "status": "configured",
+      "requested_rx_size": 1048576,
+      "requested_tx_size": 16384
+    },
+    "collector_stop_control_records_per_session": 1
+  },
+  "marker_preflight": {
+    "run_key": "E1_B05_endpoint_recheck_10net_001",
+    "idle_run_key": "E1_B05_endpoint_recheck_10net_001_idle",
+    "collector_raw_outside_git": {
+      "path": "D:\\sci-exp-data\\E1_20260903\\INA226_E1_B05_endpoint_recheck_10net_001.full.jsonl",
+      "bytes": 1936619,
+      "lines": 4487,
+      "sha256": "0BEFA502EBBCA9A95BCD4495FF1C9688A08DDB1818D525F04C423372BB2A8246",
+      "sample": 4428,
+      "environment": 45,
+      "marker": 2,
+      "control": 1,
+      "invalid": 0,
+      "invalid_serial": 0,
+      "invalid_marker": 0,
+      "partial_serial_at_shutdown": 1
+    }
+  },
+  "acceptance": {
+    "two_idle_markers_received": true,
+    "one_collector_stop_control_record": true,
+    "all_collector_invalid_counters_zero": true,
+    "serial_buffer_configured": true,
+    "passed": true
+  },
+  "interpretation_boundary": "This is a nonformal network transport gate. It does not contribute a query-level physical-energy measurement and does not replace the complete 63-run B05 rerun."
+}

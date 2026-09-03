@@ -1790,7 +1790,31 @@ stages:
           locked_windows_collector_host: 192.168.1.24
           observed_windows_wlan_host: 192.168.10.11
           disposition: do_not_execute_or_modify_create_new_endpoint_preflight_then_new_B05_lock
-      status: blocked_new_endpoint_preflight_before_B05_attempt005
+        B05_endpoint_recheck_10net_preflight_001:
+          result: configs/E1_endpoint_recheck_10net_preflight_001_result_v1.0.json
+          formal_evidence: false
+          status: passed_required_current_network_endpoint_gate
+          windows_collector_host: 192.168.10.11
+          radxa_host: 192.168.10.13
+          marker_count: 2
+          control_count: 1
+          collector_invalid: 0
+          collector_invalid_serial: 0
+          collector_invalid_marker: 0
+          serial_buffer_configuration: configured_rx_1048576_tx_16384
+        B05_attempt005_lock_20260903:
+          lock: configs/E1_formal_batch_B05_attempt005_lock_v3_20260903.json
+          status: locked_ready_for_execution_after_power_and_current_network_preflights
+          session_id: E1-DEVTEMP-FORMAL-B05-005
+          global_run_order_start: 253
+          global_run_order_end: 315
+          expected_run_count: 63
+          windows_collector_host: 192.168.10.11
+          radxa_host: 192.168.10.13
+          collector_autostop_required: true
+          replaces_rejected_attempts: [B05-001, B05-002, B05-003]
+          supersedes_unused_lock: B05-004
+      status: locked_ready_for_B05_attempt005_after_power_and_current_network_preflights
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1821,4 +1845,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003全raw欠压已由空载与真实负载供电复检解除：负载预检9/9成功、Vbus最低5.00375V、零欠压。B05-004因锁定的192.168.1.0/24端点与实测192.168.10.0/24端点冲突而未执行且不可修改；下一步先用192.168.10.11:8765完成独立UDP标记与collector_stop预检，再锁定新B05-005完整运行253–315并要求63/63有效物理积分；完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003全raw欠压已由空载与真实负载供电复检解除：负载预检9/9成功、Vbus最低5.00375V、零欠压。B05-004因锁定的192.168.1.0/24端点与实测192.168.10.0/24端点冲突而未执行且不可修改；当前192.168.10.11:8765 UDP标记/自动停止预检已经通过。B05-005已锁定，下一步以新session完整执行253–315并要求63/63有效物理积分；完成前不生成盲审包

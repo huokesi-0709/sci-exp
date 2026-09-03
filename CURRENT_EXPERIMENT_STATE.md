@@ -358,6 +358,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 - B05-004从未执行且不可复用：其不可变锁冻结Windows/Radxa端点为`192.168.1.24/192.168.1.29:8765`，但2026-09-03实测WLAN端点为`192.168.10.11/192.168.10.13:8765`。这不是供电失败，也不能通过修改既有锁修复；已登记为`ANOM-E1-20260903-009`。必须先以`.10.*`端点完成独立UDP marker + `collector_stop`短预检，随后才可创建全新B05-005锁并完整重跑253–315；不得覆盖或局部重跑B05-003。
 
+- 当前`.10.*`网段预检已经通过：Git外raw记录4,428个sample、2个idle marker和1个`collector_stop` control，`invalid=invalid_serial=invalid_marker=0`，并确认`serial_buffer_configuration.status=configured`（RX 1 MiB、TX 16 KiB）。该非正式传输门槛与先前供电复检共同满足，B05-005已锁定为新session `E1-DEVTEMP-FORMAL-B05-005`；固定Windows `192.168.10.11:8765`、Radxa `192.168.10.13`，完整重跑253–315。详见[`SCER-E1-260903-021_当前网段预检通过与B05-005锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-021_当前网段预检通过与B05-005锁定.md)。
+
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
   marker。该行`external_meter_valid=false`，不得进入E1有效子集。原因是操作者把pipeline初始化期尚未创建
@@ -385,4 +387,4 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-已锁定的B05-004因旧`.1.*`端点冲突而永久标记为未执行，不能修改或运行。下一步先在Windows `192.168.10.11:8765`与Radxa `192.168.10.13`之间完成新的非正式UDP标记/自动停止预检；仅当该预检通过，才可创建新run ID的B05-005锁并完整运行253–315。任何正式重跑的每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。
+B05-004因旧`.1.*`端点冲突而永久标记为未执行，不能修改或运行；当前`.10.*`端点预检已通过。下一步执行已锁定的B05-005：以新run ID完整运行253–315，采集器固定在Windows `192.168.10.11:8765`且必须运行至收到`collector_stop`。任何正式重跑的每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。

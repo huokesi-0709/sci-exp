@@ -297,6 +297,28 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         )
         self.assertIn("Do not execute", diagnostic["required_disposition"][0])
 
+    def test_current_network_preflight_passes_before_b05_attempt005(self) -> None:
+        endpoint = json.loads(
+            (ROOT / "configs" / "E1_endpoint_recheck_10net_preflight_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt005_lock_v3_20260903.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertFalse(endpoint["formal_evidence"])
+        self.assertTrue(endpoint["acceptance"]["passed"])
+        self.assertEqual(endpoint["transport"]["windows_collector_host"], "192.168.10.11")
+        self.assertEqual(endpoint["marker_preflight"]["collector_raw_outside_git"]["marker"], 2)
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-005")
+        self.assertEqual(lock["transport"]["windows_collector_host"], "192.168.10.11")
+        self.assertEqual(lock["transport"]["radxa_host"], "192.168.10.13")
+        self.assertEqual(lock["design"]["global_run_order_start"], 253)
+        self.assertEqual(lock["design"]["global_run_order_end"], 315)
+        self.assertFalse(lock["artifacts"]["overwrite_allowed"])
+
 
 if __name__ == "__main__":
     unittest.main()
