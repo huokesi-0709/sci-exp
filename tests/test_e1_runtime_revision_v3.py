@@ -346,6 +346,20 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["transport"]["radxa_host"], "192.168.1.29")
         self.assertIn("first automatic collector_stop attempt", lock["mandatory_execution_order"][7])
 
+    def test_b05_attempt007_completes_physical_collection(self) -> None:
+        result = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt007_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(result["formal_evidence"])
+        self.assertEqual(result["runner"]["successful"], 63)
+        self.assertEqual(result["energy_integration"]["valid_count"], 63)
+        self.assertEqual(result["collector_raw_outside_git"]["marker"], 128)
+        self.assertEqual(result["collector_raw_outside_git"]["invalid"], 0)
+        self.assertEqual(result["markers"]["collector_stop_acknowledged_attempt"], 1)
+        self.assertEqual(len(result["transport_observation"]["sender_ack_timeouts"]), 2)
+
     def test_b05_attempt005_is_rejected_and_com18_recovery_locks_attempt006(self) -> None:
         diagnostic = json.loads(
             (ROOT / "configs" / "E1_formal_batch_B05_attempt005_diagnostic_v1.0.json").read_text(

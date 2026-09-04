@@ -1,0 +1,15 @@
+{
+  "schema_version": "e1-formal-batch-result-v1.0",
+  "lock": "configs/E1_formal_batch_B05_attempt007_lock_v3_20260904.json",
+  "formal_attempt": true,
+  "formal_evidence": true,
+  "status": "accepted_physical_measurement_marker_delivery_verified_in_raw",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-007",
+  "design": {"global_run_order_start": 253, "global_run_order_end": 315, "expected_run_count": 63, "config_sha256_lf": "9A09562123798AC8698EFD3CF06FE1668C9872C1BB31C9B36AD623A01435A999", "task_manifest_sha256_lf": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048"},
+  "runner": {"output": "results/E1_devtemp_formal_v3_B05_attempt007.jsonl", "sha256": "FDD5963AF85E20F3CDC45AA5CAB2E6655026998A067376E808542B88B574291D", "bytes": 656417, "rows": 63, "successful": 63, "failed": 0, "configuration_counts": {"C0": 21, "C1": 20, "C2": 22}},
+  "collector_raw_outside_git": {"path": "D:\\sci-exp-data\\E1_20260904\\INA226_E1_devtemp_formal_v3_B05_attempt007.full.jsonl", "sha256": "4C2887CCAE0FB2AFCA3C89D5479CAB49186B1F34BD9ABA0F0EA948DDA7F8BFAE", "bytes": 330284858, "lines": 751181, "sample": 742744, "environment": 7428, "marker": 128, "firmware_marker": 128, "collector_control": 1, "invalid": 0, "invalid_serial": 0, "invalid_marker": 0, "partial_serial_at_shutdown": 1, "sequence_gap_events": 0, "missing_sequence_samples": 0, "sequence_regressions": 0, "maximum_device_gap_ms": 17.33, "bus_v_min": 4.955, "undervoltage_samples": 0, "serial_buffer_configuration": {"status": "configured", "requested_rx_size": 1048576, "requested_tx_size": 16384}},
+  "markers": {"idle_start": 1, "idle_end": 1, "query_start": 63, "query_end": 63, "query_boundaries_complete": true, "collector_stop_acknowledged_attempt": 1},
+  "energy_integration": {"energy_output": "results/E1_devtemp_formal_v3_B05_attempt007.deviceclock.energy.jsonl", "energy_sha256": "14A8516074CB37BB8811CCD848BE0891ADC7F00749877A22AA0960F1B7AE89B5", "energy_bytes": 62088, "merged_output": "results/E1_devtemp_formal_v3_B05_attempt007.deviceclock.meter_merged.jsonl", "merged_sha256": "7BEA7C1D5EFF3BF39DD09178DFC190EE5C8E9DBA60666F1B0724CBF775212AB5", "merged_bytes": 695897, "run_count": 63, "valid_count": 63, "invalid_count": 0, "idle_power_w": 1.277634122375698, "maximum_device_gap_ms": 16.021, "maximum_host_arrival_gap_ms": 31.0},
+  "transport_observation": {"sender_ack_timeouts": [{"run_order": 276, "run_key": "formal_exp_0041:C0:1"}, {"run_order": 287, "run_key": "formal_exp_0172:C0:1"}], "disposition": "nonblocking_observation_raw_collector_records_both_matched_query_boundaries_and_locked_acceptance_does_not_require_zero_sender_ack_timeouts"},
+  "disposition": "accepted_complete_B05_physical_energy_evidence_pending_blind_review"
+}

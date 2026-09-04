@@ -362,7 +362,7 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 - B05-005是部分正式尝试且被拒绝：Windows collector曾报告COM18读取`PermissionError`，操作者在runner完成global order 253–285的33/63条后终止运行。它的Git外raw仍完整保留（440,528 sample、67 marker、无`collector_stop`、无invalid、零欠压，`Vbus`最低4.795V），但不能拼接或补跑，因此`formal_evidence=false`。随后COM18的15秒直接读取及独立collector预检均通过（4,017 sample、2 marker、1 control、三项invalid为0）。
 
-- B05-006亦永久拒绝：runner虽63/63成功，但raw仅125/128个实验marker，`formal_exp_0136:C0:0`完全无query marker、`formal_exp_0005:C0:0`仅有start marker，且有6条运行中串口JSON损坏记录。runner的自动`collector_stop`三次未获ACK，之后人工补停；这些均禁止物理积分。当前网络已切换到Windows `192.168.1.24:8765`、Radxa `192.168.1.29`，并已完成真实负载C0/C1/C2各3次的9/9有效预检：零invalid/序列缺失/欠压，`Vbus`最低4.97125V，自动停止首次ACK。B05-007已锁定为全新session，完整重跑253–315；详见[`SCER-E1-260904-023_B05-006拒绝诊断与B05-007锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260904-023_B05-006拒绝诊断与B05-007锁定.md)。
+- B05-006亦永久拒绝：runner虽63/63成功，但raw仅125/128个实验marker，`formal_exp_0136:C0:0`完全无query marker、`formal_exp_0005:C0:0`仅有start marker，且有6条运行中串口JSON损坏记录。runner的自动`collector_stop`三次未获ACK，之后人工补停；这些均禁止物理积分。后续Windows `192.168.1.24:8765`、Radxa `192.168.1.29`上的真实负载预检9/9通过后，B05-007以全新session完整重跑253–315并通过：63/63 runner、63/63设备时钟积分有效、128/128实验marker、零invalid/序列缺失/欠压，以及自动停止首次ACK。runner内两次发送端marker ACK超时均有raw中完整的成对实际接收边界，按已冻结验收条件记录为非阻断通信观察。详见[`SCER-E1-260904-024_B05-007正式物理能耗批次通过.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260904-024_B05-007正式物理能耗批次通过.md)。
 
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
@@ -391,4 +391,4 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-B05-004因旧`.1.*`端点冲突而永久标记为未执行，B05-005因collector读取权限异常后的部分运行而永久拒绝，B05-006因marker/串口完整性和自动停止ACK失败而永久拒绝；均不能修改或重用。当前`.1.*`网络的真实负载预检已通过。下一步执行已锁定的B05-007：以新run ID完整运行253–315，采集器固定在Windows `192.168.1.24:8765`且runner自身的第一次`collector_stop`必须获ACK。任何正式重跑的每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。
+B05-004因旧`.1.*`端点冲突而永久标记为未执行，B05-005因collector读取权限异常后的部分运行而永久拒绝，B05-006因marker/串口完整性和自动停止ACK失败而永久拒绝；均不能修改或重用。B05-007已完成并通过全部锁定的物理测量门槛，至此B01-003至B05-007的315条Dev-Temp运行均有有效物理能耗。下一步进入冻结的盲法双审与仲裁；不得在审查完成前生成Oracle、选择路由阈值或报告E1配置异质性结论。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。

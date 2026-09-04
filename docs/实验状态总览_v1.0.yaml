@@ -1879,7 +1879,7 @@ stages:
           load_bus_v_min: 4.97125
         B05_attempt007_lock_20260904:
           lock: configs/E1_formal_batch_B05_attempt007_lock_v3_20260904.json
-          status: locked_ready_for_execution_after_current_network_serial_load_preflight
+          status: executed_and_accepted_physical_measurement
           session_id: E1-DEVTEMP-FORMAL-B05-007
           global_run_order_start: 253
           global_run_order_end: 315
@@ -1887,7 +1887,23 @@ stages:
           windows_collector_host: 192.168.1.24
           radxa_host: 192.168.1.29
           collector_autostop_required: true
-      status: locked_ready_for_B05_attempt007_after_current_network_serial_load_preflight
+        B05_attempt007_20260904:
+          result: configs/E1_formal_batch_B05_attempt007_result_v1.0.json
+          formal_attempt: true
+          formal_evidence: true
+          status: accepted_complete_B05_physical_energy_evidence
+          runner_rows: 63
+          runner_successful: 63
+          energy_valid_count: 63
+          marker_count: 128
+          collector_control: 1
+          collector_invalid: 0
+          sequence_missing_samples: 0
+          undervoltage_samples: 0
+          collector_stop_acknowledged_attempt: 1
+          sender_ack_timeout_observation_count: 2
+          disposition: proceed_to_frozen_blind_review_and_adjudication
+      status: physical_exhaustive_collection_complete_pending_blind_review
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1918,4 +1934,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005/B05-006；B01-003至B04-001均已63/63成功且物理积分有效，B03/B04发布控制偏差均已记录。B05-003全raw欠压已由空载与真实负载供电复检解除。B05-004因端点冲突而未执行，B05-005因COM18读取权限异常而仅完成33/63条，B05-006虽63/63推理成功但marker/串口完整性失败。当前192.168.1.24:8765网络与真实负载9-run预检已经通过。B05-007已锁定，下一步以新session完整执行253–315并要求63/63有效物理积分及自动停止首次ACK；完成前不生成盲审包
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005/B05-006；B01-003至B05-007已完成315/315条runner成功和315/315条有效物理积分。B05-007 raw拥有128个完整实验marker、零invalid/序列缺失/欠压及自动停止首次ACK；两次发送端marker ACK超时已由raw实际接收记录封存为非阻断通信观察。下一步按冻结角色进行盲法双审与仲裁；完成前不得生成Oracle、选择路由阈值或报告E1异质性结论
