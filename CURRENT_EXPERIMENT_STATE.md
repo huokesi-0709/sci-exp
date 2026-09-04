@@ -383,15 +383,22 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 ## 当前不能宣称
 
 - 018不能替代35条Dev-Temp × 3配置 × 3重复的315次正式穷举；
-- 尚无正式E1 Oracle配置占比、选择矩阵或Safety–Energy Pareto结论；
-- 在E1、盲审/仲裁及后续阶段完成前，不能提前给出E2–E8或Gold Test论文级结论。
+- E1 的 Oracle/配置异质性结果已完成 QA，但不能把 C3 回退当作实测生成配置，
+  也不能把 C1 的 9 组安全结果外推为普遍安全；
+- 仍不能提前给出 E2–E8 或 Gold Test 的论文级结论，直到各自的冻结模型、阈值和正式测试完成。
+
+2026-09-04，E1 已完成最终合并与机械 QA：Git 外最终表 315/315 行均为
+`status=ok` 且 `external_meter_valid=true`，C0/C1/C2 各 105 行，105 个完整
+query×repetition 组均含三配置；C 修正版 313 条分歧和 2 条低风险一致项抽查均已通过。
+Oracle 为 C1=9、C3 安全回退=96，`router_necessity_gate=true`。C3 是确定性安全回退，
+不是实测生成配置；C1 的 9 组也不得外推为普遍安全。最终工件和四个 SHA-256 见
+[`SCER-E1-260904-028_C仲裁最终合并与E1终检通过.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260904-028_C仲裁最终合并与E1终检通过.md)，
+私有文件仍保存在 `/home/radxa/e1-private/E1_final_merge_20260904/`，不进入 Git。
 
 ## 下一正式动作
 
-C 已回传 313 条裁决和 2 条低风险抽查；ID 集合、数量、裁决元数据及抽查门槛通过只读核验，但 291/313 条的 `final_value` 未覆盖该行全部 `disputed_fields`，其中包含实质安全字段和派生字段。当前状态为 `HOLD_C_RETURN_REPAIR_REQUIRED`，不能合并 Gold；返修要求和机械审计见 `docs/E1_C仲裁回传返修要求_v1.0.md` 与 `results/E1_C_adjudication_return_audit_v1.0.json`。A/B 原始文件、协议和 C 原始回传均不得被静默修改。
-C 已返回修正版；全量 313/313 条通过 18 字段、分歧覆盖、派生公式、时间字段、低风险抽查和哈希验收。当前状态升级为 `PASSED_C_RETURN_VALIDATION_CROSSWALK_MERGE_PENDING`；通过证据见 `results/E1_C_adjudication_repaired_audit_v1.0.json`。下一步只能在 Radxa 的 Git 外 `host_private/E1_blind_crosswalk.jsonl` 上完成盲编号回映射和 315 条最终 QA，不得把 crosswalk、私盐或原始 A/B/C 包提交进 Git。
-
-E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
-`E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
-推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-B05-004因旧`.1.*`端点冲突而永久标记为未执行，B05-005因collector读取权限异常后的部分运行而永久拒绝，B05-006因marker/串口完整性和自动停止ACK失败而永久拒绝；均不能修改或重用。B05-007已完成并通过全部锁定的物理测量门槛，至此B01-003至B05-007的315条Dev-Temp运行均有有效物理能耗。2026-09-04已由五个接受批次构建并校验不可覆盖的315条正式能耗主表`results/E1_devtemp_formal_v3_energy_master_v1.0.jsonl`（SHA-256 `A59AA5191E00F96B2968F0829E22FC929C24D993A1F4A65B95E25F89FE31DEA4`）；它只可作为配置盲化输出审查的输入，不能提前用于Oracle。用于实际发包的匿名角色登记为ANN-A、ANN-B、ANN-C-ORG，记录在`configs/E1_blind_review_execution_registry_v1.0.json`；其中背景/资格为用户陈述，项目未作外部核验。下一步生成Git外A/B盲审包并完成冻结的盲法双审与仲裁；不得在审查完成前生成Oracle、选择路由阈值或报告E1配置异质性结论。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。
+E1 已完成物理采集、盲法双审、313 条分歧全量仲裁、低风险一致项抽查、315 条最终合并和
+机械 QA，正式状态为 `formal_pass_final_qa_passed_ready_for_E2_preparation`。下一步进入
+E2 准备：核对风险标签与分区边界，使用 Dev-Train 训练风险头，使用 Dev-Temp 选择模型族和
+特征，使用 Gold Calibration 冻结阈值；在这些冻结完成前不得运行 Gold Test、E4 或 E5。
+最终 E1 私有工件不得提交 Git，且不得修改 A/B/C 原始回传或冻结协议。

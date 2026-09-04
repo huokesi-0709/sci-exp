@@ -1927,7 +1927,31 @@ stages:
           collector_stop_acknowledged_attempt: 1
           sender_ack_timeout_observation_count: 2
           disposition: proceed_to_frozen_blind_review_and_adjudication
-      status: physical_exhaustive_collection_complete_pending_blind_review
+      status: physical_exhaustive_collection_complete_and_final_qa_passed
+    final_adjudication_merge_20260904:
+      status: formal_pass_final_qa_passed_ready_for_E2_preparation
+      merge_output: /home/radxa/e1-private/E1_final_merge_20260904/E1_devtemp_formal_v3_adjudicated_v1.0.jsonl
+      merge_output_sha256: 2EAA19D29DDC48AB184A8E1FFEF067AE2785A193D8136FB4DB238F834AEFCEED
+      merge_audit: /home/radxa/e1-private/E1_final_merge_20260904/E1_devtemp_formal_v3_adjudicated_v1.0.audit.json
+      merge_audit_sha256: 96E289B7322AE0F2E10262582B147F67E8CD524FB5459EAF0EFCC9AE63DB2EF3
+      rows: 315
+      c_adjudicated_rows: 313
+      low_risk_audited_rows: 2
+      configuration_counts: {C0: 105, C1: 105, C2: 105}
+      complete_query_repetitions: 105
+      all_status_ok: true
+      all_external_meter_valid: true
+      heterogeneity_report: /home/radxa/e1-private/E1_final_merge_20260904/E1_configuration_heterogeneity_v1.0.json
+      heterogeneity_report_sha256: 56580F12F746D6C72AC6661C6AFF1C2F31935FBD0C811C70664F53CC6F3AC9FE
+      oracle_output: /home/radxa/e1-private/E1_final_merge_20260904/E1_safe_oracle_v1.0.jsonl
+      oracle_output_sha256: 1F3AECC9B3A5703DF7A71C1C57603FF170994753250C74B58C0995E83763CEBB
+      oracle_distribution: {C1: 9, C3: 96}
+      oracle_entropy_bits: 0.4220005168831531
+      router_necessity_gate: true
+      formal_evidence: true
+      private_boundary: crosswalk_and_final_outputs_remain_outside_Git
+    status: formal_pass_final_qa_passed_ready_for_E2_preparation
+    formal_pass: true
     formal_start_condition:
       - E0 formal_pass必须为true
       - 每次运行必须具有有效物理能耗external_meter_valid=true
@@ -1937,7 +1961,7 @@ stages:
 
   E2:
     name: Safety calibration
-    status: formal_blocked_by_sequence
+    status: preparation_allowed_formal_run_not_started
     formal_pass: false
   E3:
     name: 能耗预测
@@ -1957,5 +1981,5 @@ allowed_while_waiting:
   - explicitly_nonformal_dry_runs
 
 next_formal_action:
-  stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005/B05-006；B01-003至B05-007已完成315/315条runner成功和315/315条有效物理积分，并已校验固化为`E1_devtemp_formal_v3_energy_master_v1.0.jsonl`。B05-007 raw拥有128个完整实验marker、零invalid/序列缺失/欠压及自动停止首次ACK；两次发送端marker ACK超时已由raw实际接收记录封存为非阻断通信观察。下一步用已锁定的ANN-A、ANN-B和ANN-C-ORG角色生成Git外盲审包、完成独立双审与全量分歧仲裁；完成前不得生成Oracle、选择路由阈值或报告E1异质性结论
+  stage: E2
+  action: E1最终合并与QA已通过。开始E2准备：仅用Dev-Train训练风险头，仅用Dev-Temp选择模型族/特征，仅用Gold Calibration冻结阈值；冻结前不得运行Gold Test、E4或E5正式实验。E1最终合并表、Oracle、异质性报告和crosswalk继续保存在Git外私有目录。
