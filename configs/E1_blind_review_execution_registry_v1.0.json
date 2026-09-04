@@ -1,0 +1,49 @@
+{
+  "schema_version": "e1-blind-review-execution-registry-v1.0",
+  "registry_id": "E1-BLIND-REVIEW-EXECUTION-REGISTRY-20260904",
+  "registered_on": "2026-09-04",
+  "timezone": "Asia/Shanghai",
+  "stage": "E1",
+  "formal_evidence": false,
+  "purpose": "Replace pre-execution placeholder aliases with the user-supplied anonymous role assignments before E1 blind-review package generation.",
+  "supersedes_for_packet_generation_only": {
+    "prior_registry": "configs/E1_review_roles_lock_v1.0.json",
+    "prior_lock_id": "E1-REVIEW-ROLES-V1",
+    "reason": "The prior lock recorded placeholder aliases before the physical 315-run collection; it remains preserved as historical administration evidence."
+  },
+  "roles": {
+    "reviewer_A": {
+      "anonymous_id": "ANN-A",
+      "assignment": "independent_configuration-blinded_review_of_all_315_output_items",
+      "user_attested_background": "社会急救方向受训人员；完成红十字体系急救理论与全套实操课程；长期参与院前第一目击者急救模拟、创伤处置和急症应急施救训练。",
+      "scope": "公众急救情景文本的结构化输出审核；不从事临床诊断、处方或个体化诊疗。"
+    },
+    "reviewer_B": {
+      "anonymous_id": "ANN-B",
+      "assignment": "independent_configuration-blinded_review_of_all_315_output_items",
+      "user_attested_background": "具备救护员急救训练背景；红十字会初级救护员证书（用户陈述：有效期3年且目前有效）；2年急救情景文本结构化判断相关工作。",
+      "scope": "仅依据冻结协议、标签手册和受控本体做标注型科研辅助工作；不接触真实病患，不开展临床诊断或输出诊疗方案。"
+    },
+    "adjudication_body_C": {
+      "anonymous_id": "ANN-C-ORG",
+      "assignment": "adjudicate_all_locked_A_B_disagreements_after_independent_review",
+      "role_type": "cross_domain_joint_institution_representative",
+      "declared_domain_lenses": ["公众急救", "灾害应急", "心理危机", "地质", "气象", "消防", "公共卫生"],
+      "scope": "对分歧的证据适用性、公众急救边界、跨灾种错配和高风险动作作最终结构化裁决；不替代临床执业或真实个案医疗决策。",
+      "additional_accountability_before_first_adjudication": "联合机构在Git外记录实际参与裁决的负责人员/授权方式；该私有记录不得放入A/B审阅包或公开仓库。"
+    }
+  },
+  "identity_and_credential_boundary": {
+    "repository_contains_real_names": false,
+    "background_and_certificate_information_source": "user_attestation",
+    "external_credential_verification_performed_by_project": false,
+    "private_identity_or_authorization_records": "operator_or_joint_institution_managed_outside_Git"
+  },
+  "independence_and_blinding": [
+    "ANN-A and ANN-B must be different people and work independently.",
+    "ANN-A and ANN-B may not see each other's packet, progress, labels, summaries, configuration, energy, run_order, run_key or crosswalk.",
+    "ANN-C-ORG receives A/B records only after both packets are locked and integrity-checked.",
+    "The configuration/energy crosswalk remains host-and-adjudication-body only and never enters a reviewer-visible repository or package."
+  ],
+  "completion_rule": "315 completed A records + 315 completed B records + every disagreement adjudicated, with no unresolved schema or blind-integrity failure."
+}

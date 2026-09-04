@@ -1259,6 +1259,30 @@ stages:
       blind_salt_file_mode: '600'
       blind_salt_file_sha256: E7781B8C83EA7D5DAF640E5587AA3D52203471250BAA0A3782654C863987FA62
       blind_salt_status: generated_and_locked_outside_Git
+      blind_review_execution_registry_20260904:
+        registry: configs/E1_blind_review_execution_registry_v1.0.json
+        status: user_attested_anonymous_roles_registered_pending_private_packet_generation
+        reviewer_A_id: ANN-A
+        reviewer_B_id: ANN-B
+        adjudication_body_id: ANN-C-ORG
+        credential_verification: user_attested_not_externally_verified_by_project
+        independent_order_rule: reviewer_A_and_B_packets_use_different_deterministic_orders
+        handbook: docs/E1输出级盲审执行指南_v1.0.md
+      formal_energy_master_20260904:
+        output: results/E1_devtemp_formal_v3_energy_master_v1.0.jsonl
+        audit: results/E1_devtemp_formal_v3_energy_master_v1.0.audit.json
+        status: validated_315_of_315_physical_energy_rows_pending_blind_review
+        rows: 315
+        sha256: A59AA5191E00F96B2968F0829E22FC929C24D993A1F4A65B95E25F89FE31DEA4
+        source_batches: [B01-003, B02-001, B03-001, B04-001, B05-007]
+      blind_review_package_lock_20260904:
+        lock: configs/E1_blind_review_package_lock_v1.0.json
+        status: locked_ready_for_private_packet_generation
+        private_output_root: /home/radxa/e1-private/E1_devtemp_formal_v3_blind_review_20260904
+        packet_generator: scripts/生成E1盲法双审材料.py
+        reviewer_ids: [ANN-A, ANN-B]
+        adjudication_body_id: ANN-C-ORG
+        completion_gate: 315_A_plus_315_B_plus_all_disagreements_adjudicated
       B01_preflight_20260901:
         formal_evidence: false
         status: passed_ready_for_formal_B01
@@ -1934,4 +1958,4 @@ allowed_while_waiting:
 
 next_formal_action:
   stage: E1
-  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005/B05-006；B01-003至B05-007已完成315/315条runner成功和315/315条有效物理积分。B05-007 raw拥有128个完整实验marker、零invalid/序列缺失/欠压及自动停止首次ACK；两次发送端marker ACK超时已由raw实际接收记录封存为非阻断通信观察。下一步按冻结角色进行盲法双审与仲裁；完成前不得生成Oracle、选择路由阈值或报告E1异质性结论
+  action: 永久保留B01-001、B01-002、v2/v3预检及被拒绝的B05-001/B05-002/B05-003/B05-005/B05-006；B01-003至B05-007已完成315/315条runner成功和315/315条有效物理积分，并已校验固化为`E1_devtemp_formal_v3_energy_master_v1.0.jsonl`。B05-007 raw拥有128个完整实验marker、零invalid/序列缺失/欠压及自动停止首次ACK；两次发送端marker ACK超时已由raw实际接收记录封存为非阻断通信观察。下一步用已锁定的ANN-A、ANN-B和ANN-C-ORG角色生成Git外盲审包、完成独立双审与全量分歧仲裁；完成前不得生成Oracle、选择路由阈值或报告E1异质性结论

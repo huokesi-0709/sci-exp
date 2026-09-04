@@ -1,0 +1,61 @@
+{
+  "schema_version": "e1-formal-energy-master-audit-v1.0",
+  "formal_evidence": true,
+  "manifest": {
+    "path": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "rows": 315,
+    "sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048"
+  },
+  "source_artifacts": [
+    {
+      "path": "results/E1_devtemp_formal_v3_B01_attempt003.deviceclock.meter_merged.jsonl",
+      "rows": 63,
+      "bytes": 714215,
+      "sha256": "FF77C575CF0ED2490F09BE5DFB101F4FF283734B4068ED375503DB8F151DDB0B"
+    },
+    {
+      "path": "results/E1_devtemp_formal_v3_B02_attempt001.deviceclock.meter_merged.jsonl",
+      "rows": 63,
+      "bytes": 668715,
+      "sha256": "C38128816D5F13D4C617A4F0F880CA0E16B1695B0B95A3253B886604BC735EE6"
+    },
+    {
+      "path": "results/E1_devtemp_formal_v3_B03_attempt001.deviceclock.meter_merged.jsonl",
+      "rows": 63,
+      "bytes": 622221,
+      "sha256": "2075BDDF959283630924264B7AC102FAE124EEDC0972C23ABE5D9EE2035000EF"
+    },
+    {
+      "path": "results/E1_devtemp_formal_v3_B04_attempt001.deviceclock.meter_merged.jsonl",
+      "rows": 63,
+      "bytes": 717347,
+      "sha256": "9A002C642A85E162A84939E739B64CCA669D33B24FAD79D205B49C2C88784969"
+    },
+    {
+      "path": "results/E1_devtemp_formal_v3_B05_attempt007.deviceclock.meter_merged.jsonl",
+      "rows": 63,
+      "bytes": 695897,
+      "sha256": "7BEA7C1D5EFF3BF39DD09178DFC190EE5C8E9DBA60666F1B0724CBF775212AB5"
+    }
+  ],
+  "output": {
+    "path": "results/E1_devtemp_formal_v3_energy_master_v1.0.jsonl",
+    "rows": 315,
+    "bytes": 3418395,
+    "sha256": "A59AA5191E00F96B2968F0829E22FC929C24D993A1F4A65B95E25F89FE31DEA4"
+  },
+  "validation": {
+    "status_ok_count": 315,
+    "external_meter_valid_count": 315,
+    "configuration_counts": {
+      "C1": 105,
+      "C2": 105,
+      "C0": 105
+    },
+    "run_order_range": [
+      1,
+      315
+    ],
+    "disposition": "eligible_input_to_frozen_blind_output_review_only"
+  }
+}

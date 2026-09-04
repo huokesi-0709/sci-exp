@@ -121,9 +121,24 @@ class E1BlindReviewTests(unittest.TestCase):
             reviewer_a = MODULE._read_jsonl(
                 output / "reviewer_A" / "E1_review_A.jsonl"
             )
+            reviewer_b = MODULE._read_jsonl(
+                output / "reviewer_B" / "E1_review_B.jsonl"
+            )
             self.assertEqual(len(reviewer_a), 315)
+            self.assertEqual(len(reviewer_b), 315)
             self.assertTrue(
                 all(row["reviewer_id"] == "E1-REV-A-01" for row in reviewer_a)
+            )
+            self.assertTrue(
+                all(row["reviewer_id"] == "E1-REV-B-01" for row in reviewer_b)
+            )
+            self.assertEqual(
+                {row["blind_item_id"] for row in reviewer_a},
+                {row["blind_item_id"] for row in reviewer_b},
+            )
+            self.assertNotEqual(
+                [row["blind_item_id"] for row in reviewer_a],
+                [row["blind_item_id"] for row in reviewer_b],
             )
             self.assertTrue(
                 all(

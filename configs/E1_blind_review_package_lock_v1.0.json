@@ -1,0 +1,51 @@
+{
+  "schema_version": "e1-blind-review-package-lock-v1.0",
+  "lock_id": "E1-BLIND-REVIEW-PACKAGE-V1-20260904",
+  "locked_on": "2026-09-04",
+  "timezone": "Asia/Shanghai",
+  "stage": "E1",
+  "formal_evidence": false,
+  "status": "locked_ready_for_private_packet_generation",
+  "input_master": {
+    "path": "results/E1_devtemp_formal_v3_energy_master_v1.0.jsonl",
+    "sha256": "A59AA5191E00F96B2968F0829E22FC929C24D993A1F4A65B95E25F89FE31DEA4",
+    "rows": 315,
+    "requirements_verified": ["status=ok for all rows", "external_meter_valid=true for all rows", "C0/C1/C2 each have 105 rows"]
+  },
+  "frozen_inputs": {
+    "task_manifest": "configs/E1_devtemp_formal_run_manifest_seed42_v1.0.jsonl",
+    "task_manifest_sha256": "D2BE522F74060B276FB079525F77C2BF51BA9EF0E9176DFC3901073E43DD0048",
+    "personnel_registry": "configs/E1_blind_review_execution_registry_v1.0.json",
+    "personnel_registry_sha256": "5AC66EFB81FA073505A45D6B8D462E77FCB508232EEE944CD88419AF6DD73AA7",
+    "review_handbook": "docs/E1输出级盲审执行指南_v1.0.md",
+    "review_handbook_sha256": "E8971576FC5EE0C0C116E0600A32ED3C4CF5142CDE0D9E5D50E27D81CD27648B",
+    "generator": "scripts/生成E1盲法双审材料.py",
+    "generator_sha256": "B8B54222CB554BAA576AB27A9F01EF72E7AE444B208AE918B790037479340EB6",
+    "private_salt_file": "/home/radxa/e1-private/E1_blind_salt_v1.hex",
+    "private_salt_manifest": "configs/E1_blind_salt_manifest_v1.0.json"
+  },
+  "reviewers": {
+    "reviewer_A_id": "ANN-A",
+    "reviewer_B_id": "ANN-B",
+    "adjudication_body_id": "ANN-C-ORG",
+    "role_ids_distinct": true,
+    "reviewer_a_order_seed": 20260904,
+    "reviewer_b_order_seed": 20260905,
+    "reviewer_orders_must_differ": true
+  },
+  "private_output": {
+    "root": "/home/radxa/e1-private/E1_devtemp_formal_v3_blind_review_20260904",
+    "reviewer_A_packet": "reviewer_A/E1_review_A.jsonl",
+    "reviewer_B_packet": "reviewer_B/E1_review_B.jsonl",
+    "host_crosswalk": "host_private/E1_blind_crosswalk.jsonl",
+    "adjudication_template": "host_private/E1_adjudication_template.jsonl",
+    "repository_rule": "No packet, private salt, crosswalk, A/B raw review or C adjudication output may enter Git before a separately approved de-identification release.",
+    "crosswalk_visibility": "host_only_until_C_decisions_are_locked"
+  },
+  "release_and_completion_rules": [
+    "Release only ANN-A's packet to ANN-A and only ANN-B's packet to ANN-B, together with the handbook; do not give either reviewer the repository.",
+    "Require exactly 315 complete records per reviewer and validate IDs, field types and derived y_* fields before comparing A/B labels.",
+    "ANN-C-ORG receives only the necessary blinded disagreements after both original reviewer files are immutable and hash-recorded.",
+    "No Oracle, routing threshold, E1 heterogeneity or E2 analysis may be generated before all disagreements are adjudicated and remapped by the private crosswalk."
+  ]
+}

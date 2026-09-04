@@ -58,6 +58,10 @@ def _blind_id(secret: bytes, run_key: str) -> str:
     return f"E1-BLIND-{digest[:20].upper()}"
 
 
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
 def _validate_reviewer_ids(
     reviewer_a_id: str,
     reviewer_b_id: str,
@@ -183,7 +187,13 @@ def main() -> int:
             }
         )
 
-    random.Random(args.review_seed).shuffle(review_rows)
+    # A/B see the same 315 blinded records, but in independently randomized
+    # deterministic orders.  Sharing an order makes it unnecessarily easy to
+    # coordinate progress item-by-item, which weakens independent review.
+    reviewer_a_rows = list(review_rows)
+    reviewer_b_rows = list(review_rows)
+    random.Random(args.review_seed).shuffle(reviewer_a_rows)
+    random.Random(args.review_seed + 1).shuffle(reviewer_b_rows)
     output = Path(args.output_directory)
     reviewer_a_path = output / "reviewer_A" / "E1_review_A.jsonl"
     reviewer_b_path = output / "reviewer_B" / "E1_review_B.jsonl"
@@ -206,11 +216,11 @@ def main() -> int:
 
     reviewer_a = [
         dict(row, reviewer_slot="A", reviewer_id=reviewer_a_id)
-        for row in review_rows
+        for row in reviewer_a_rows
     ]
     reviewer_b = [
         dict(row, reviewer_slot="B", reviewer_id=reviewer_b_id)
-        for row in review_rows
+        for row in reviewer_b_rows
     ]
     _write_jsonl_new(reviewer_a_path, reviewer_a)
     _write_jsonl_new(reviewer_b_path, reviewer_b)
@@ -222,12 +232,26 @@ def main() -> int:
     summary = {
         "schema_version": "e1-blind-review-package-v1.0",
         "items": len(review_rows),
-        "review_seed": args.review_seed,
+        "reviewer_a_order_seed": args.review_seed,
+        "reviewer_b_order_seed": args.review_seed + 1,
+        "reviewer_orders_are_independently_randomized": True,
         "reviewer_a_id": reviewer_a_id,
         "reviewer_b_id": reviewer_b_id,
         "adjudicator_id": adjudicator_id,
         "configuration_hidden_from_review_packets": True,
-        "crosswalk_visibility": "HOST_AND_ADJUDICATOR_ONLY",
+        "crosswalk_visibility": "HOST_ONLY_UNTIL_ADJUDICATION_IS_LOCKED",
+        "issued_packets": {
+            "reviewer_A": {
+                "path": str(reviewer_a_path),
+                "rows": len(reviewer_a),
+                "sha256": _sha256(reviewer_a_path),
+            },
+            "reviewer_B": {
+                "path": str(reviewer_b_path),
+                "rows": len(reviewer_b),
+                "sha256": _sha256(reviewer_b_path),
+            },
+        },
         "formal_completion_rule": "315 A reviews + 315 B reviews + all disagreements adjudicated",
     }
     summary_path.write_text(
