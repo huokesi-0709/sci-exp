@@ -1,0 +1,49 @@
+{
+  "schema_version": "e1-c-adjudication-repaired-audit-v1.0",
+  "audit_date": "2026-09-04",
+  "status": "PASSED_C_RETURN_VALIDATION_CROSSWALK_MERGE_PENDING",
+  "source_directory": "D:/desktop/AAAAA标注/E1/returns/C",
+  "source_files": {
+    "E1_review_C_adjudication_REPAIRED.jsonl": {
+      "sha256": "6E151D582CF512A9256B6833BFFF135BEC17EA003294D4C1DF9367C1307604C8",
+      "rows": 313
+    },
+    "E1_low_risk_agreement_audit.jsonl": {
+      "sha256": "1F90857DA0940C853C3587037234EE74432E6D5EAA32C136BDAB3B7A0BC245FB",
+      "rows": 2,
+      "confirmed_low_risk": 2
+    },
+    "E1_C_adjudication_report_REPAIRED.md": {
+      "sha256": "1FB0607D1BA359852FF15B23158A61D87ABA10B8998C36A5CC6CB6D64AB7B332"
+    },
+    "SHA256SUMS_C_REPAIRED.txt": {
+      "sha256": "58AB3A8B16321C9849EE9024B93F177C4F2B8F1C7A8664335BA724C28B70C3C3"
+    }
+  },
+  "checks": {
+    "disagreement_rows": 313,
+    "adjudication_rows": 313,
+    "blind_item_set_match": true,
+    "unique_blind_item_ids": 313,
+    "final_value_full_18_fields": 313,
+    "final_value_covers_disputed_fields": 313,
+    "duplicate_disputed_fields": 0,
+    "decisions": {"NEW": 313},
+    "unresolved_or_exclude": 0,
+    "adjudicator_ids": {"ANN-C-ORG": 313},
+    "adjudicated_at_present": 313,
+    "derived_label_formula_errors": 0,
+    "severity_4_without_severe_failure": 0,
+    "low_risk_candidates": 2,
+    "low_risk_audited": 2,
+    "required_low_risk_audits": 1,
+    "low_risk_audit_requirement_met": true,
+    "declared_hashes_match": true
+  },
+  "input_integrity": {
+    "a_b_original_files_modified": false,
+    "protocol_or_label_definitions_modified": false,
+    "c_return_files_modified": false
+  },
+  "next_gate": "Use the Git-external host_private/E1_blind_crosswalk.jsonl on Radxa to map the 313 C decisions plus 2 audited agreements back to the 315-row energy master; run final Gold QA before E1 statistics."
+}
