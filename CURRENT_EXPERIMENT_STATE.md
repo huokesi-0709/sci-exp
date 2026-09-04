@@ -388,6 +388,8 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 ## 下一正式动作
 
+C 已回传 313 条裁决和 2 条低风险抽查；ID 集合、数量、裁决元数据及抽查门槛通过只读核验，但 291/313 条的 `final_value` 未覆盖该行全部 `disputed_fields`，其中包含实质安全字段和派生字段。当前状态为 `HOLD_C_RETURN_REPAIR_REQUIRED`，不能合并 Gold；返修要求和机械审计见 `docs/E1_C仲裁回传返修要求_v1.0.md` 与 `results/E1_C_adjudication_return_audit_v1.0.json`。A/B 原始文件、协议和 C 原始回传均不得被静默修改。
+
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。

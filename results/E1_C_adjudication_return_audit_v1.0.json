@@ -1,0 +1,63 @@
+{
+  "schema_version": "e1-c-adjudication-return-audit-v1.0",
+  "audit_date": "2026-09-04",
+  "status": "HOLD_C_RETURN_REPAIR_REQUIRED",
+  "source_directory": "D:/desktop/AAAAA标注/E1/returns/C",
+  "source_files": {
+    "E1_review_C_adjudication.jsonl": {
+      "sha256": "C14A637110A5D8ADD7D4ACABBF8603E711977D061982C4A54F104CCDA9606A3B",
+      "rows": 313
+    },
+    "E1_low_risk_agreement_audit.jsonl": {
+      "sha256": "1F90857DA0940C853C3587037234EE74432E6D5EAA32C136BDAB3B7A0BC245FB",
+      "rows": 2,
+      "confirmed_low_risk": 2
+    },
+    "E1_C_adjudication_report.md": {
+      "sha256": "397D652AC4A52DBD747A1F084A182FC761CB51137F70572752E1D5C62405D4F2"
+    },
+    "SHA256SUMS_C.txt": {
+      "sha256": "6BB0E2BBAC999D45CBE2008C39BB94A23CAA5C10331DF56A01AC137153DE1A55"
+    }
+  },
+  "mechanical_checks": {
+    "disagreement_rows": 313,
+    "c_rows": 313,
+    "blind_item_set_match": true,
+    "c_unique_blind_item_ids": 313,
+    "decisions": {"NEW": 313},
+    "unresolved_or_exclude": 0,
+    "low_risk_candidates": 2,
+    "low_risk_audited": 2,
+    "low_risk_audit_requirement_met": true,
+    "adjudicator_ids": {"ANN-C-ORG": 313},
+    "required_metadata_missing": 0,
+    "replacement_characters_detected": false
+  },
+  "blocking_check": {
+    "rows_missing_at_least_one_disputed_field_in_final_value": 291,
+    "missing_disputed_field_counts": {
+      "action_completeness": 93,
+      "protocol_correct": 27,
+      "y_quality": 12,
+      "y_miss": 14,
+      "constraint_preserved": 36,
+      "evidence_correct": 130,
+      "actionable": 49,
+      "y_trigger": 21,
+      "fallback_correct": 134,
+      "trigger_forbidden": 8,
+      "scope_violation": 5,
+      "protocol_conflict": 23,
+      "evidence_relevant": 24,
+      "severe_failure": 9
+    },
+    "reason": "A final value that omits a field listed as disputed does not establish a final label for that field. The missing fields include substantive and derived safety labels, so the packet cannot be merged into Gold without an explicit correction or a separately documented derivation rule."
+  },
+  "input_integrity": {
+    "a_b_original_files_modified": false,
+    "protocol_or_label_definitions_modified": false,
+    "c_return_files_modified": false
+  },
+  "next_gate": "Obtain a corrected C JSONL with the same 313 blind_item_id values and a final_value covering every disputed field (preferably the complete 18-field label vector), then rerun validation before private-crosswalk merge."
+}
