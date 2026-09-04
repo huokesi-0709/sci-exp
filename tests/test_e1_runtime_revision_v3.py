@@ -319,6 +319,33 @@ class E1RuntimeRevisionV3Tests(unittest.TestCase):
         self.assertEqual(lock["design"]["global_run_order_end"], 315)
         self.assertFalse(lock["artifacts"]["overwrite_allowed"])
 
+    def test_b05_attempt006_rejection_and_current_network_load_gate_lock_b05_attempt007(self) -> None:
+        diagnostic = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt006_diagnostic_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        preflight = json.loads(
+            (ROOT / "configs" / "E1_network_serial_load_preflight_001_result_v1.0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        lock = json.loads(
+            (ROOT / "configs" / "E1_formal_batch_B05_attempt007_lock_v3_20260904.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(diagnostic["formal_attempt"])
+        self.assertFalse(diagnostic["formal_evidence"])
+        self.assertEqual(diagnostic["collector_raw_outside_git"]["marker"], 125)
+        self.assertEqual(diagnostic["collector_raw_outside_git"]["invalid_serial"], 6)
+        self.assertTrue(preflight["acceptance"]["passed"])
+        self.assertEqual(preflight["energy_integration"]["valid_count"], 9)
+        self.assertEqual(preflight["transport"]["windows_collector_host"], "192.168.1.24")
+        self.assertEqual(lock["artifacts"]["session_id"], "E1-DEVTEMP-FORMAL-B05-007")
+        self.assertEqual(lock["transport"]["radxa_host"], "192.168.1.29")
+        self.assertIn("first automatic collector_stop attempt", lock["mandatory_execution_order"][7])
+
     def test_b05_attempt005_is_rejected_and_com18_recovery_locks_attempt006(self) -> None:
         diagnostic = json.loads(
             (ROOT / "configs" / "E1_formal_batch_B05_attempt005_diagnostic_v1.0.json").read_text(

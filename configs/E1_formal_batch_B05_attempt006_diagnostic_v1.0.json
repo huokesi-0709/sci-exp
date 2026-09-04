@@ -1,0 +1,50 @@
+{
+  "schema_version": "e1-formal-batch-diagnostic-v1.0",
+  "diagnostic_id": "E1-FORMAL-B05-ATTEMPT006-DIAGNOSTIC-20260904",
+  "formal_attempt": true,
+  "formal_evidence": false,
+  "status": "rejected_marker_and_serial_integrity_failure",
+  "session_id": "E1-DEVTEMP-FORMAL-B05-006",
+  "run_order": {"start": 253, "end": 315, "count": 63},
+  "runner": {
+    "path": "results/E1_devtemp_formal_v3_B05_attempt006.jsonl",
+    "sha256": "4E6F3D40A9D619B956573F3A64133A411A5E7F07BCBF0D19DDA104DBCEE7F512",
+    "bytes": 656456,
+    "rows": 63,
+    "successful": 63,
+    "failed": 0,
+    "collector_stop": "not_acknowledged_after_3_attempts"
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260904\\INA226_E1_devtemp_formal_v3_B05_attempt006.full.jsonl",
+    "sha256": "DC339CED9265F509DFEA8024DD13C5D33715EF86FA21DB8D49946AA47D2F77BD",
+    "bytes": 341386818,
+    "lines": 775411,
+    "sample": 766726,
+    "environment": 7667,
+    "marker": 125,
+    "control": 1,
+    "invalid": 6,
+    "invalid_serial": 6,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1,
+    "serial_buffer_configuration": {"status": "configured", "requested_rx_size": 1048576, "requested_tx_size": 16384}
+  },
+  "marker_integrity": {
+    "expected_total": 128,
+    "observed_total": 125,
+    "idle_start": 1,
+    "idle_end": 1,
+    "query_start": 62,
+    "query_end": 61,
+    "run_without_any_query_marker": "formal_exp_0136:C0:0",
+    "run_with_start_only": "formal_exp_0005:C0:0"
+  },
+  "serial_integrity": {
+    "collector_invalid_records": 6,
+    "source": "serial",
+    "error_type": "JSONDecodeError",
+    "interpretation": "Six complete serial fragments were malformed. This is evidence of in-run byte loss or corruption, not the separately audited shutdown partial tail."
+  },
+  "disposition": "preserve_rejected_diagnostic_do_not_integrate_or_partial_rerun_create_new_network_serial_load_preflight_before_any_new_B05_lock"
+}

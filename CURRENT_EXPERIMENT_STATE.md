@@ -360,7 +360,9 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 
 - 当前`.10.*`网段预检已经通过：Git外raw记录4,428个sample、2个idle marker和1个`collector_stop` control，`invalid=invalid_serial=invalid_marker=0`，并确认`serial_buffer_configuration.status=configured`（RX 1 MiB、TX 16 KiB）。该非正式传输门槛与先前供电复检共同满足，B05-005已锁定为新session `E1-DEVTEMP-FORMAL-B05-005`；固定Windows `192.168.10.11:8765`、Radxa `192.168.10.13`，完整重跑253–315。详见[`SCER-E1-260903-021_当前网段预检通过与B05-005锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260903-021_当前网段预检通过与B05-005锁定.md)。
 
-- B05-005是部分正式尝试且被拒绝：Windows collector曾报告COM18读取`PermissionError`，操作者在runner完成global order 253–285的33/63条后终止运行。它的Git外raw仍完整保留（440,528 sample、67 marker、无`collector_stop`、无invalid、零欠压，`Vbus`最低4.795V），但不能拼接或补跑，因此`formal_evidence=false`。随后COM18的15秒直接读取及独立collector预检均通过（4,017 sample、2 marker、1 control、三项invalid为0）。B05-006已锁定为全新session `E1-DEVTEMP-FORMAL-B05-006`，完整重跑253–315；详见[`SCER-E1-260904-022_B05-005中止诊断与B05-006锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260904-022_B05-005中止诊断与B05-006锁定.md)。
+- B05-005是部分正式尝试且被拒绝：Windows collector曾报告COM18读取`PermissionError`，操作者在runner完成global order 253–285的33/63条后终止运行。它的Git外raw仍完整保留（440,528 sample、67 marker、无`collector_stop`、无invalid、零欠压，`Vbus`最低4.795V），但不能拼接或补跑，因此`formal_evidence=false`。随后COM18的15秒直接读取及独立collector预检均通过（4,017 sample、2 marker、1 control、三项invalid为0）。
+
+- B05-006亦永久拒绝：runner虽63/63成功，但raw仅125/128个实验marker，`formal_exp_0136:C0:0`完全无query marker、`formal_exp_0005:C0:0`仅有start marker，且有6条运行中串口JSON损坏记录。runner的自动`collector_stop`三次未获ACK，之后人工补停；这些均禁止物理积分。当前网络已切换到Windows `192.168.1.24:8765`、Radxa `192.168.1.29`，并已完成真实负载C0/C1/C2各3次的9/9有效预检：零invalid/序列缺失/欠压，`Vbus`最低4.97125V，自动停止首次ACK。B05-007已锁定为全新session，完整重跑253–315；详见[`SCER-E1-260904-023_B05-006拒绝诊断与B05-007锁定.md`](docs/实验日志/SC-EA-RAG/测量链/SCER-E1-260904-023_B05-006拒绝诊断与B05-007锁定.md)。
 
 - `E1-DEVTEMP-FORMAL-B01-001`已作为中止的正式尝试永久保留：runner仅1行（run order 1、C1、推理
   `status=ok`），但`external_marker_errors`含两次`TimeoutError`；Git外raw只有2条空闲marker，没有查询
@@ -389,4 +391,4 @@ Reviewer B=`E1-REV-B-01`、Adjudicator=`E1-ADJ-01`，角色锁为`E1-REVIEW-ROLE
 E0、018最终非正式dry-run、`E1-POWER-CHAIN-01`、315次全局运行清单、`E1-REVIEW-ROLES-V1`、
 `E1-BLIND-SALT-V1`、`E1-FORMAL-RUNTIME-V3-20260901`及B01-003至B04-001结果均已封存。B05-001的
 推理输出也已封存，但其物理raw发生串口损坏，不能覆盖、不能积分、不能局部补跑；30分钟串口恢复预检已通过。
-B05-004因旧`.1.*`端点冲突而永久标记为未执行，B05-005因collector读取权限异常后的部分运行而永久拒绝；二者均不能修改或重用。COM18恢复预检及`.10.*`端点预检均已通过。下一步执行已锁定的B05-006：以新run ID完整运行253–315，采集器固定在Windows `192.168.10.11:8765`且必须运行至收到`collector_stop`。任何正式重跑的每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。
+B05-004因旧`.1.*`端点冲突而永久标记为未执行，B05-005因collector读取权限异常后的部分运行而永久拒绝，B05-006因marker/串口完整性和自动停止ACK失败而永久拒绝；均不能修改或重用。当前`.1.*`网络的真实负载预检已通过。下一步执行已锁定的B05-007：以新run ID完整运行253–315，采集器固定在Windows `192.168.1.24:8765`且runner自身的第一次`collector_stop`必须获ACK。任何正式重跑的每个query样本必须保持`bus_v>=4.75V`、无欠压；不得降低质量阈值、覆盖旧批次或局部补跑。完整高频raw继续保存在Git外，Git只提交派生证据、manifest和实验日志。

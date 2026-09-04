@@ -1,0 +1,52 @@
+{
+  "schema_version": "e1-network-serial-load-preflight-result-v1.0",
+  "preflight_id": "E1-B05-NETWORK-SERIAL-LOAD-PREFLIGHT-001",
+  "formal_evidence": false,
+  "status": "passed_required_current_network_and_serial_load_gate",
+  "purpose": "Requalify the changed 192.168.1.0/24 marker transport and collector integrity under actual C0/C1/C2 inference load after B05-006 was rejected for missing markers and serial corruption.",
+  "transport": {"windows_collector_host": "192.168.1.24", "radxa_host": "192.168.1.29", "port": 8765},
+  "collector_session": {
+    "serial": "COM18",
+    "baud": 921600,
+    "flush_interval_seconds": 1.0,
+    "serial_buffer_configuration": {"status": "configured", "requested_rx_size": 1048576, "requested_tx_size": 16384}
+  },
+  "load_runner": {
+    "path": "results/E1_B05_network_serial_load_preflight_001.jsonl",
+    "sha256": "441878DDD02723C955C354A7053D1D0E09817E8122EAD1216BE9F74E9D792C67",
+    "bytes": 84234,
+    "rows": 9,
+    "successful": 9,
+    "failed": 0,
+    "configuration_counts": {"C0": 3, "C1": 3, "C2": 3}
+  },
+  "collector_raw_outside_git": {
+    "path": "D:\\sci-exp-data\\E1_20260904\\INA226_E1_B05_network_serial_load_preflight_001.full.jsonl",
+    "sha256": "0B7BFB0E64B3C95A3173248C6C2F588ECCC4B6A741DA10B80DDC8AACA52FC723",
+    "bytes": 45582609,
+    "lines": 104315,
+    "sample": 103134,
+    "environment": 1032,
+    "marker": 20,
+    "control": 1,
+    "invalid": 0,
+    "invalid_serial": 0,
+    "invalid_marker": 0,
+    "partial_serial_at_shutdown": 1
+  },
+  "marker_integrity": {"idle_start": 1, "idle_end": 1, "query_start": 9, "query_end": 9, "expected_total": 20, "observed_total": 20},
+  "device_clock_quality": {"sequence_gap_events": 0, "missing_sequence_samples": 0, "sequence_regressions": 0, "maximum_device_gap_ms": 16.817},
+  "power_quality": {"undervoltage_samples": 0, "bus_v": {"min": 4.97125, "mean": 5.035827018732911, "max": 5.10375}},
+  "energy_integration": {
+    "energy_output": "results/E1_B05_network_serial_load_preflight_001.deviceclock.energy.jsonl",
+    "energy_sha256": "7D0122884B01D57CA213EBBA5CDD76942DF5480F57ED744A3B1F0D726F39B273",
+    "merged_output": "results/E1_B05_network_serial_load_preflight_001.deviceclock.meter_merged.jsonl",
+    "merged_sha256": "16B66D1F88A0EBD4DF5FDD520100935648B7B6CD953872254A32B015187EBC77",
+    "run_count": 9,
+    "valid_count": 9,
+    "invalid_count": 0,
+    "idle_power_w": 1.2880327685957647
+  },
+  "acceptance": {"runner_all_successful": true, "all_energy_rows_valid": true, "all_collector_invalid_counters_zero": true, "markers_complete": true, "sequence_continuous": true, "no_undervoltage": true, "collector_stop_acknowledged_first_attempt": true, "passed": true},
+  "interpretation_boundary": "This is a nonformal current-network and serial-load gate. It does not replace the complete 63-run B05 rerun."
+}
