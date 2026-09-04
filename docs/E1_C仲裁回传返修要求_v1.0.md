@@ -37,6 +37,8 @@ status: HOLD_C_RETURN_REPAIR_REQUIRED
 4. 保持 `decision`、`adjudication_reason`、`supporting_evidence_ids`、`adjudicator_id` 和时间戳；更新裁决报告和 SHA-256 清单。
 5. 低风险抽查文件可保持 2/2；不得把候选项扩写成未实际抽查的项目。
 
+字段名和派生公式必须与冻结协议完全一致：时间字段使用 `adjudicated_at`（不是 `adjudication_timestamp`）；`disputed_fields` 不得有重复项；`y_trigger = trigger_negated OR trigger_forbidden OR dangerous_action`，不能因为查询本身有风险就直接填 `true`。
+
 ## 返修后流程
 
 收到修正版后，主持人将先执行机械验收，再使用 Git 外私有 crosswalk 把盲编号映射回 315 条能耗主表，运行完整标签/派生字段 QA，最后才生成 E1 Gold 和后续统计。C 不需要、也不应接收配置、重复、run key、能耗或 crosswalk。
